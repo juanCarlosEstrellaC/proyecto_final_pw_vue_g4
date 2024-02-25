@@ -31,19 +31,23 @@
           <td>{{ vehiculo.cilindraje }}</td>
           <td>{{ vehiculo.avaluo }}</td>
           <td>{{ vehiculo.precioDiario }}</td>
-          <td><button>Rentar</button></td>
+          <td>
+            <router-link :to="{ path: '/rentar', query: { id: vehiculo.id } }"
+              >Rentar</router-link
+            >
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
+  <router-view />
 </template>
 
 <script>
 export default {
   data() {
     return {
-      marca: null,
-      modelo: null,
+      id: null,
       listadoVehiculos: [
         {
           id: 1,
@@ -83,11 +87,7 @@ export default {
   },
   methods: {
     presionarBoton() {
-      const vehiculo = {
-        marca: this.marca,
-        modelo: this.modelo,
-      };
-      this.$emit("miEvento", cliente);
+      this.$emit("miEvento", this.id);
     },
   },
 };
@@ -104,28 +104,29 @@ export default {
   background-color: rgb(241, 222, 198);
   border: solid 1px black;
 }
-.tabla{
+.tabla {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 table {
-    width: 90%;
-    border-collapse: collapse;
-  }
+  width: 90%;
+  border-collapse: collapse;
+}
 
-  th, td {
-    border: 1px solid #dddddd;
-    text-align: center;
-    padding: 8px;
-    width: calc(100% / 8);
-  }
+th,
+td {
+  border: 1px solid #dddddd;
+  text-align: center;
+  padding: 8px;
+  width: calc(100% / 8);
+}
 
-  th {
-    background-color: #4CAF50;
-    color: white;
-  }
+th {
+  background-color: #4caf50;
+  color: white;
+}
 
 button {
   margin: 10px;
