@@ -1,12 +1,12 @@
 <template>
   <h1>{{ titulo }}</h1>
-  <div class="contenedor" v-if="!mostrarMensaje">
+  <div class="contenedor">
     <label for="">Nombre:</label>
     <input type="text" v-model="nombre" />
     <label for="">Apellido:</label>
     <input type="text" v-model="apellido" />
     <label for="">Cédula:</label>
-    <input type="text" v-model="cedula" />
+    <input type="text" v-model="cedula" :disabled="!editableCedula" />
     <label for="">Fecha de Nacimiento:</label>
     <input type="date" v-model="fechaNacimiento" />
     <label for="">Genero:</label>
@@ -27,12 +27,20 @@ export default {
       type: String,
       default: "boton",
     },
+    editableCedula: {
+      type: Boolean,
+      default: true, 
+    },
+    valorCedula: {
+      type: String,
+      default: "1234567", 
+    },
   },
   data() {
     return {
       nombre: null,
       apellido: null,
-      cedula: null,
+      cedula: this.valorCedula,
       fechaNacimiento: null,
       genero: null,
       mostrarMensaje: false,
@@ -47,10 +55,7 @@ export default {
         fechaNacimiento: this.fechaNacimiento,
         genero: this.genero,
       };
-      this.mostrarMensaje = true;
-    },
-    regresarEstado() {
-      this.mostrarMensaje = false;
+      this.$emit("eventoBoton", true);
     },
   },
 };

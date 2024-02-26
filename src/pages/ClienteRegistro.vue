@@ -1,5 +1,5 @@
 <template>
-  <h1>Registro</h1>
+  <!-- <h1>Registro</h1>
   <div class="contenedor" v-if="!mostrarMensaje">
     <label for="">Nombre:</label>
     <input type="text" v-model="nombre" />
@@ -13,8 +13,18 @@
     <input type="text" v-model="genero" />
 
     <button @click="presionarBoton">Registrar</button>
+  </div> -->
+
+  <div v-if="!mostrarMensaje">
+    <FormularioCliente
+      titulo="Registro de Cliente"
+      nombreBoton="Registrar"
+      @eventoBoton="presionarBoton"
+      :editableCedula="true"
+      :valorCedula="cedula"
+    />
   </div>
-  <div v-else>
+  <div v-else class="mensaje">
     <div v-if="registroExitoso">
       <Mensaje titulo="Registrado con Éxito" informacion="Ahora puede rentar un vehículo" @eventoMensaje="regresarEstado"/>
     </div>
@@ -26,9 +36,12 @@
   
 <script>
 import Mensaje from '@/components/Mensaje.vue';
+import FormularioCliente from "@/components/FormularioCliente.vue";
+
 export default {
   components:{
     Mensaje,
+    FormularioCliente,
   },
   props: {
     nombreBoton: String,
@@ -88,5 +101,8 @@ label{
 input {
   margin: 5px;
   text-align: center;
+}
+.mensaje {
+  margin-top: 100px;
 }
 </style>

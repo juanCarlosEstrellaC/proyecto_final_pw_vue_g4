@@ -1,5 +1,5 @@
 <template>
-  <h1>Registro</h1>
+  <!-- <h1>Registro</h1>
   <div class="contenedor" v-if="!mostrarMensaje">
     <label for="">Nombre:</label>
     <input type="text" v-model="nombre" />
@@ -13,18 +13,33 @@
     <input type="text" v-model="genero" />
 
     <button @click="presionarBoton">Actualizar</button>
+  </div> -->
+
+  <div v-if="!mostrarMensaje">
+    <FormularioCliente
+      titulo="Actualizar"
+      nombreBoton="Actualizar"
+      @eventoBoton="presionarBoton"
+      :editableCedula="false"
+      :valorCedula="cedula"
+    />
   </div>
-  
-  <div v-else>
-    <Mensaje titulo="Actualización exitosa" informacion="Sus datos están al día." @eventoMensaje="regresarEstado"/>
+  <div v-else class="mensaje">
+    <Mensaje
+      titulo="Actualización exitosa"
+      informacion="Sus datos están al día."
+      @eventoMensaje="regresarEstado"
+    />
   </div>
 </template>
   
 <script>
-import Mensaje from '@/components/Mensaje.vue';
+import Mensaje from "@/components/Mensaje.vue";
+import FormularioCliente from "@/components/FormularioCliente.vue";
 export default {
-  components:{
-    Mensaje
+  components: {
+    Mensaje,
+    FormularioCliente,
   },
   props: {
     nombreBoton: String,
@@ -33,7 +48,7 @@ export default {
     return {
       nombre: null,
       apellido: null,
-      cedula: null,
+      cedula: "111111111",
       fechaNacimiento: null,
       genero: null,
       mostrarMensaje: false,
@@ -50,9 +65,9 @@ export default {
       };
       this.mostrarMensaje = true;
     },
-    regresarEstado(){
-      this.mostrarMensaje = false
-    }
+    regresarEstado() {
+      this.mostrarMensaje = false;
+    },
   },
 };
 </script>
@@ -75,12 +90,16 @@ button {
   border: solid 1px black;
 }
 
-label{
+label {
   margin-top: 10px;
 }
 
 input {
   margin: 5px;
   text-align: center;
+}
+
+.mensaje {
+  margin-top: 100px;
 }
 </style>
