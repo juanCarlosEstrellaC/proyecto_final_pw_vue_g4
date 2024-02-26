@@ -8,7 +8,7 @@
     <label for="">Cédula:</label>
     <input type="text" v-model="cedula" />
     <label for="">Fecha de Nacimiento:</label>
-    <input type="text" v-model="fechaNacimiento" />
+    <input type="date" v-model="fechaNacimiento" />
     <label for="">Genero:</label>
     <input type="text" v-model="genero" />
 
