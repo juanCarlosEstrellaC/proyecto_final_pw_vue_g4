@@ -58,7 +58,7 @@ export default {
   },
   methods: {
     regresarPaginaPrincipal() {
-      router.push("/clientes");
+      router.push("/renta");
     },
     presionarBoton(){
       this.imprimirMenjajes = true;
@@ -109,8 +109,17 @@ export default {
 }
 
 button {
-  margin: 10px;
+  margin: 30px;
   background-color: rgb(255, 206, 127);
   border: solid 1px black;
+}
+
+label{
+  margin-top: 10px;
+}
+
+input {
+  margin: 5px;
+  text-align: center;
 }
 </style>

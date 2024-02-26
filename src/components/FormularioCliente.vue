@@ -1,33 +1,32 @@
 <template>
-  <h1>Registro</h1>
+  <h1>{{ titulo }}</h1>
   <div class="contenedor" v-if="!mostrarMensaje">
     <label for="">Nombre:</label>
     <input type="text" v-model="nombre" />
     <label for="">Apellido:</label>
     <input type="text" v-model="apellido" />
     <label for="">Cédula:</label>
-    <input type="text" v-model="cedula" placeholder="Cedula invariante"/>
+    <input type="text" v-model="cedula" />
     <label for="">Fecha de Nacimiento:</label>
     <input type="date" v-model="fechaNacimiento" />
     <label for="">Genero:</label>
     <input type="text" v-model="genero" />
 
-    <button @click="presionarBoton">Actualizar</button>
-  </div>
-  
-  <div v-else>
-    <Mensaje titulo="Actualización exitosa" informacion="Sus datos están al día." @eventoMensaje="regresarEstado"/>
+    <button @click="presionarBoton">{{ nombreBoton }}</button>
   </div>
 </template>
-  
+
 <script>
-import Mensaje from '@/components/Mensaje.vue';
 export default {
-  components:{
-    Mensaje
-  },
   props: {
-    nombreBoton: String,
+    titulo: {
+      type: String,
+      default: "titulo",
+    },
+    nombreBoton: {
+      type: String,
+      default: "boton",
+    },
   },
   data() {
     return {
@@ -50,13 +49,13 @@ export default {
       };
       this.mostrarMensaje = true;
     },
-    regresarEstado(){
-      this.mostrarMensaje = false
-    }
+    regresarEstado() {
+      this.mostrarMensaje = false;
+    },
   },
 };
 </script>
-  
+
 <style scoped>
 .contenedor {
   display: flex;
@@ -75,7 +74,7 @@ button {
   border: solid 1px black;
 }
 
-label{
+label {
   margin-top: 10px;
 }
 

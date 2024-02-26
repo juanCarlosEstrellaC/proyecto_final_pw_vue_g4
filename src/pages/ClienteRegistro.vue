@@ -15,7 +15,12 @@
     <button @click="presionarBoton">Registrar</button>
   </div>
   <div v-else>
-    <Mensaje titulo="Registrado con Éxito" informacion="Ahora puede rentar un vehículo" @eventoMensaje="regresarEstado"/>
+    <div v-if="registroExitoso">
+      <Mensaje titulo="Registrado con Éxito" informacion="Ahora puede rentar un vehículo" @eventoMensaje="regresarEstado"/>
+    </div>
+    <div v-else>
+      <Mensaje titulo="Error al registrarse" informacion="Ocurrió un error al registrarse" @eventoMensaje="regresarEstado"/>
+    </div>
   </div>
 </template>
   
@@ -36,6 +41,7 @@ export default {
       fechaNacimiento: null,
       genero: null,
       mostrarMensaje: false,
+      registroExitoso:true,
     };
   },
   methods: {
@@ -48,6 +54,7 @@ export default {
         genero: this.genero,
       };
       this.mostrarMensaje = true;
+      this.registroExitoso = false;
     },
     regresarEstado(){
       this.mostrarMensaje = false
@@ -69,8 +76,17 @@ export default {
 }
 
 button {
-  margin: 10px;
+  margin: 30px;
   background-color: rgb(255, 206, 127);
   border: solid 1px black;
+}
+
+label{
+  margin-top: 10px;
+}
+
+input {
+  margin: 5px;
+  text-align: center;
 }
 </style>
