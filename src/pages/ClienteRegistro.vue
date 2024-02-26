@@ -1,6 +1,6 @@
 <template>
   <h1>Registro</h1>
-  <div class="contenedor">
+  <div class="contenedor" v-if="!mostrarMensaje">
     <label for="">Nombre:</label>
     <input type="text" v-model="nombre" />
     <label for="">Apellido:</label>
@@ -14,10 +14,17 @@
 
     <button @click="presionarBoton">Registrar</button>
   </div>
+  <div v-else>
+    <Mensaje titulo="Registrado con Éxito" informacion="Ahora puede rentar un vehículo" @eventoMensaje="regresarEstado"/>
+  </div>
 </template>
   
-  <script>
+<script>
+import Mensaje from '@/components/Mensaje.vue';
 export default {
+  components:{
+    Mensaje,
+  },
   props: {
     nombreBoton: String,
   },
@@ -28,6 +35,7 @@ export default {
       cedula: null,
       fechaNacimiento: null,
       genero: null,
+      mostrarMensaje: false,
     };
   },
   methods: {
@@ -39,8 +47,11 @@ export default {
         fechaNacimiento: this.fechaNacimiento,
         genero: this.genero,
       };
-      this.$emit("miEvento", cliente);
+      this.mostrarMensaje = true;
     },
+    regresarEstado(){
+      this.mostrarMensaje = false
+    }
   },
 };
 </script>
