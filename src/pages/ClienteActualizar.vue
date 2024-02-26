@@ -4,7 +4,6 @@
       titulo="Actualizar Datos"
       nombreBoton="Actualizar"
       :editableCedula="false"
-      :valorCedula="cedula"
       @eventoBoton="presionarBoton($event)"
     />
   </div>

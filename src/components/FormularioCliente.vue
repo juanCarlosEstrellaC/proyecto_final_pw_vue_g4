@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { setCedula } from '@/servicios/cedulaServicio';
+import { getCedula, setCedula } from '@/servicios/cedulaServicio';
 export default {
   props: {
     titulo: {
@@ -32,14 +32,10 @@ export default {
       type: Boolean,
       default: true,
     },
-    valorCedula: {
-      type: String,
-      default: "",
-    },
   },
   mounted() {
     if (!this.editableCedula) {
-      this.cedula = this.valorCedula;
+      this.cedula = getCedula();
     }
   },
   data() {

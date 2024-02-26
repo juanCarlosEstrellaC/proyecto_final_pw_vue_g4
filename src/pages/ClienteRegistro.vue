@@ -29,7 +29,6 @@
 import Mensaje from "@/components/Mensaje.vue";
 import FormularioCliente from "@/components/FormularioCliente.vue";
 import { insertarClienteFachada } from "../helpers/clienteCliente.js";
-import {setCedula} from "../servicios/cedulaServicio"
 
 export default {
   components: {
