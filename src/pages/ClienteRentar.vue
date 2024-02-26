@@ -5,38 +5,45 @@
     <input type="text" v-model="marca" />
     <label for="">Modelo:</label>
     <input type="text" v-model="modelo" />
-    <button @click="presionarBoton">Buscar</button>
+    <button @click="buscar">Buscar</button>
   </div>
 
-  <div class="tabla">
-    <table>
-      <thead>
-        <tr>
-          <th>Placa</th>
-          <th>Marca</th>
-          <th>Modelo</th>
-          <th>Año de Fabricación</th>
-          <th>Estado</th>
-          <th>Precio Diario</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="vehiculo in listadoVehiculos" :key="vehiculo.id">
-          <td>{{ vehiculo.placa }}</td>
-          <td>{{ vehiculo.marca }}</td>
-          <td>{{ vehiculo.modelo }}</td>
-          <td>{{ vehiculo.anioFabricacion }}</td>
-          <td>{{ vehiculo.estado }}</td>
-          <td>{{ vehiculo.precioDiario }}</td>
-          <td>
-            <router-link :to="{ path: '/rentar', query: { id: vehiculo.id, placa: vehiculo.placa } }"
-              >Rentar</router-link
-            >
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="tabla" v-if="existeBusqueda">
+    <div class="encabezado">
+      <table>
+        <thead>
+          <tr>
+            <th>Placa</th>
+            <th>Marca</th>
+            <th>Modelo</th>
+            <th>Año de Fabricación</th>
+            <th>Estado</th>
+            <th>Precio Diario</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+    
+    <div class="cuerpo">
+      <table>
+        <tbody>
+          <tr v-for="vehiculo in listadoVehiculos" :key="vehiculo.id">
+            <td>{{ vehiculo.placa }}</td>
+            <td>{{ vehiculo.marca }}</td>
+            <td>{{ vehiculo.modelo }}</td>
+            <td>{{ vehiculo.anioFabricacion }}</td>
+            <td>{{ vehiculo.estado }}</td>
+            <td>{{ vehiculo.precioDiario }}</td>
+            <td>
+              <router-link :to="{ path: '/rentar', query: { id: vehiculo.id, placa: vehiculo.placa } }"
+                >Rentar</router-link
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -45,7 +52,98 @@ export default {
   data() {
     return {
       id: null,
+      existeBusqueda: false,
       listadoVehiculos: [
+        {
+          id: 1,
+          marca: "Toyota",
+          modelo: "Corolla",
+          placa: "ABC123",
+          anioFabricacion: 2020,
+          estado: "Disponible",
+          precioDiario: 50,
+          rentar: true,
+        },
+        {
+          id: 2,
+          marca: "Honda",
+          modelo: "Civic",
+          placa: "XYZ789",
+          anioFabricacion: 2018,
+          estado: "No Disponible",
+          precioDiario: 45,
+          rentar: false,
+        },
+        {
+          id: 3,
+          marca: "Ford",
+          modelo: "Mustang",
+          placa: "DEF456",
+          anioFabricacion: 2019,
+          estado: "Disponible",
+          precioDiario: 60,
+          rentar: true,
+        },
+        {
+          id: 1,
+          marca: "Toyota",
+          modelo: "Corolla",
+          placa: "ABC123",
+          anioFabricacion: 2020,
+          estado: "Disponible",
+          precioDiario: 50,
+          rentar: true,
+        },
+        {
+          id: 2,
+          marca: "Honda",
+          modelo: "Civic",
+          placa: "XYZ789",
+          anioFabricacion: 2018,
+          estado: "No Disponible",
+          precioDiario: 45,
+          rentar: false,
+        },
+        {
+          id: 3,
+          marca: "Ford",
+          modelo: "Mustang",
+          placa: "DEF456",
+          anioFabricacion: 2019,
+          estado: "Disponible",
+          precioDiario: 60,
+          rentar: true,
+        },
+        {
+          id: 1,
+          marca: "Toyota",
+          modelo: "Corolla",
+          placa: "ABC123",
+          anioFabricacion: 2020,
+          estado: "Disponible",
+          precioDiario: 50,
+          rentar: true,
+        },
+        {
+          id: 2,
+          marca: "Honda",
+          modelo: "Civic",
+          placa: "XYZ789",
+          anioFabricacion: 2018,
+          estado: "No Disponible",
+          precioDiario: 45,
+          rentar: false,
+        },
+        {
+          id: 3,
+          marca: "Ford",
+          modelo: "Mustang",
+          placa: "DEF456",
+          anioFabricacion: 2019,
+          estado: "Disponible",
+          precioDiario: 60,
+          rentar: true,
+        },
         {
           id: 1,
           marca: "Toyota",
@@ -80,8 +178,8 @@ export default {
     };
   },
   methods: {
-    presionarBoton() {
-      this.$emit("miEvento", this.id);
+    buscar() {
+      this.existeBusqueda = true;
     },
   },
 };
@@ -98,15 +196,26 @@ export default {
   background-color: rgb(241, 222, 198);
   border: solid 1px black;
 }
+
 .tabla {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: relative; 
   margin: 20px;
+  overflow: hidden; 
+}
+
+.encabezado {
+  position: absolute; 
+  top: 0; 
+  width: 100%; 
+}
+
+.cuerpo {
+  overflow-y: auto; 
+  max-height: 350px; 
 }
 
 table {
-  width: 90%;
+  width: 100%; 
   border-collapse: collapse;
 }
 
@@ -115,7 +224,7 @@ td {
   border: 1px solid #dddddd;
   text-align: center;
   padding: 8px;
-  width: calc(100% / 8);
+  width: 14.28%
 }
 
 th {
