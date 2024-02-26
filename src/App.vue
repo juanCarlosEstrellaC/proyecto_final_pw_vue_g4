@@ -1,18 +1,21 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
-  <PaginaInicio />
+  
+  <RetirarPage />
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
 import PaginaInicio from './pages/PaginaInicio.vue';
+import RetirarPage from './pages/RetirarPage.vue';
+
 
 export default {
   name: 'App',
   components: {
     HelloWorld,
-    PaginaInicio
+    PaginaInicio,
+    RetirarPage
   }
 }
 </script>
