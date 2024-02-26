@@ -1,5 +1,5 @@
 <template>
-  <h1>Rentar</h1>
+  <h1>Rentar Vehículo</h1>
   <div class="contenedor">
     <label for="">Marca:</label>
     <input type="text" v-model="marca" />

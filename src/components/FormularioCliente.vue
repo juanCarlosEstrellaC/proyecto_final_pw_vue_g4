@@ -29,18 +29,23 @@ export default {
     },
     editableCedula: {
       type: Boolean,
-      default: true, 
+      default: true,
     },
     valorCedula: {
       type: String,
-      default: "1234567", 
+      default: "",
     },
+  },
+  mounted() {
+    if (!this.editableCedula) {
+      this.cedula = this.valorCedula;
+    }
   },
   data() {
     return {
       nombre: null,
       apellido: null,
-      cedula: this.valorCedula,
+      cedula: null,
       fechaNacimiento: null,
       genero: null,
       mostrarMensaje: false,
@@ -55,7 +60,7 @@ export default {
         fechaNacimiento: this.fechaNacimiento,
         genero: this.genero,
       };
-      this.$emit("eventoBoton", true);
+      this.$emit("eventoBoton", cliente);
     },
   },
 };
