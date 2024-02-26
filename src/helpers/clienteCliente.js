@@ -5,6 +5,11 @@ const consultar = async (id) => {
     console.log(info);
     return info;
 }
+const consultarPorCedula = async (cedula) => {
+    const info = axios.get(`http://localhost:8082/API/v1.0/Renta/clientes/${cedula}`).then(r => r.data)
+    console.log(info);
+    return info;
+}
 const insertar = async (body) => {
     const info = axios.post(`http://localhost:8082/API/v1.0/Renta/clientes`, body).then(r => r.data)
     console.log(info);
@@ -21,6 +26,9 @@ const eliminar = async (id) => {
 // Métodos Fachada:
 export const consultarClienteFachada = async (id) => {
     return await consultar(id);
+}
+export const consultarClientePorCedulaFachada = async (cedula) => {
+    //return await consultarPorCedula(cedula);
 }
 export const insertarClienteFachada = async (body) => {
     //return await insertar(body);

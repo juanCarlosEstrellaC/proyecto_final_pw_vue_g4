@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import { setCedula } from '@/servicios/cedulaServicio';
 export default {
   props: {
     titulo: {
@@ -60,6 +61,7 @@ export default {
         fechaNacimiento: this.fechaNacimiento,
         genero: this.genero,
       };
+      setCedula(this.cedula)
       this.$emit("eventoBoton", cliente);
     },
   },

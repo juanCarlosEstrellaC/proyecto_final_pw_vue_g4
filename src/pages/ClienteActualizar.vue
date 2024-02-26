@@ -20,8 +20,10 @@
 <script>
 import Mensaje from "@/components/Mensaje.vue";
 import FormularioCliente from "@/components/FormularioCliente.vue";
-import { actualizarClienteFachada } from "@/helpers/clienteCliente";
+import { actualizarClienteFachada, consultarClientePorCedulaFachada } from "@/helpers/clienteCliente";
 import { consultarClienteFachada } from "@/helpers/clienteCliente";
+import { getCedula } from "@/servicios/cedulaServicio";
+
 
 export default {
   components: {
@@ -30,22 +32,22 @@ export default {
   },
   data() {
     return {
-      cedula: "111111111",
+      cedula: getCedula(),
       mostrarMensaje: false,
     };
   },
   methods: {
     async presionarBoton(clienteRecibido) {
-      await actualizarClienteFachada(clienteRecibido);
-      console.log("Cliente Actualizado: ", clienteRecibido);
+      console.log(this.cedula);
+      // const cli = await consultarClientePorCedulaFachada(this.cedula);
+      // const id = cli.id;
+      // await actualizarClienteFachada(id, clienteRecibido);
+      // console.log("Cliente Actualizado: ", clienteRecibido);
       this.mostrarMensaje = true;
     },
     regresarEstado() {
       this.mostrarMensaje = false;
     },
-    async buscarCliente(){
-      const c = await consultarClienteFachada(id)
-    }
   },
 };
 </script>
