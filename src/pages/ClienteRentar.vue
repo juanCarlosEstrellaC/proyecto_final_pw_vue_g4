@@ -12,27 +12,25 @@
     <table>
       <thead>
         <tr>
+          <th>Placa</th>
           <th>Marca</th>
           <th>Modelo</th>
-          <th>Placa</th>
           <th>Año de Fabricación</th>
-          <th>Cilindraje</th>
-          <th>Avalúo</th>
+          <th>Estado</th>
           <th>Precio Diario</th>
           <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="vehiculo in listadoVehiculos" :key="vehiculo.id">
+          <td>{{ vehiculo.placa }}</td>
           <td>{{ vehiculo.marca }}</td>
           <td>{{ vehiculo.modelo }}</td>
-          <td>{{ vehiculo.placa }}</td>
           <td>{{ vehiculo.anioFabricacion }}</td>
-          <td>{{ vehiculo.cilindraje }}</td>
-          <td>{{ vehiculo.avaluo }}</td>
+          <td>{{ vehiculo.estado }}</td>
           <td>{{ vehiculo.precioDiario }}</td>
           <td>
-            <router-link :to="{ path: '/rentar', query: { id: vehiculo.id } }"
+            <router-link :to="{ path: '/rentar', query: { id: vehiculo.id, placa: vehiculo.placa } }"
               >Rentar</router-link
             >
           </td>
@@ -54,8 +52,7 @@ export default {
           modelo: "Corolla",
           placa: "ABC123",
           anioFabricacion: 2020,
-          cilindraje: 2000,
-          avaluo: 25000,
+          estado: "Disponible",
           precioDiario: 50,
           rentar: true,
         },
@@ -65,8 +62,7 @@ export default {
           modelo: "Civic",
           placa: "XYZ789",
           anioFabricacion: 2018,
-          cilindraje: 1800,
-          avaluo: 22000,
+          estado: "No Disponible",
           precioDiario: 45,
           rentar: false,
         },
@@ -76,8 +72,7 @@ export default {
           modelo: "Mustang",
           placa: "DEF456",
           anioFabricacion: 2019,
-          cilindraje: 2500,
-          avaluo: 35000,
+          estado: "Disponible",
           precioDiario: 60,
           rentar: true,
         },
@@ -107,6 +102,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 20px;
 }
 
 table {

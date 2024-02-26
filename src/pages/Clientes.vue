@@ -1,5 +1,5 @@
 <template>
-  <h1>Pag clientes</h1>
+  <h1>Pagina clientes</h1>
   <NavBar />
   <router-view />
 </template>
