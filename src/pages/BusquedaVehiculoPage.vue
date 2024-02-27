@@ -14,17 +14,15 @@
         </tr>
       </thead>
       <tbody>
-        <!--
-          <tr v-for="usuario in usuarios" :key="usuario.id"> 
-        -->
+        <!-- <tr v-for="vehiculo in vehiculos" :key="vehiculo.id"></tr> -->
         <tr>
-          <td>{{dat.marcaid}}</td>
-          <td>{{data.modelo}}</td>
-          <td>{{data.modelo}}</td>
+          <td>{{ chevrolet}}</td>
+          <td>{{ sail }}</td>
+          <td>{{pyu895 }}</td>
           <td>
-            <button @click="goVisualizar(marca.id)">Visualizar</button>
-            <button @click="goActualizar(marca.id)">Actualizar</button>
-            <button @click="goEliminar(marca.id)">Eliminar</button>
+            <button @click="goVisualizar()">Visualizar</button>
+            <button @click="goActulizar()">Actualizar</button>
+            <button @click="goEliminar()">Eliminar</button>
           </td>
         </tr>
       </tbody>
@@ -38,18 +36,27 @@ export default {
   data() {
     return {
       marcaid: null,
-      data: null
+      data: null,
     };
   },
   methods: {
+    //consulta un VehiculoTO
     async consultarPorId() {
       const data = await consultarVehiculoFachada(this.marca);
-      console.log(data);
+      console.log(vehiculos);
     },
-
-    goVisualizar(id) {},
-    goActulizar(id) {},
-    goeliminar(id) {},
+ //debe ir el id del vehiculo como argumento para relizar la busqueda de Vehiculo completo en el path 
+    goVisualizar() {
+      this.$router.push("/empleados");
+    },
+    //debe ir el id del vehiculo como argumento para relizar la actualizacion en el path 
+    goActulizar() {
+      this.$router.push("/empleados/vehiculo/actualizar");
+    },
+    //solo debe mostrar mensaje si se eliminó o no el vehículo
+    goEliminar() {
+      this.$router.push("/empleados/vehiculo/actualizar");
+    },
   },
 };
 </script>

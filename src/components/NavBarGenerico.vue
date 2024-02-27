@@ -1,13 +1,21 @@
 <template>
   <div>
-    <router-link to="/empleados/clientes">Clientes</router-link>
-    <router-link to="/empleados/vehiculo">Vehículo</router-link>
-    <router-link to="/empleado/reserva">Reserva</router-link>
+    <router-link v-for="elemento in elementos" :key="elemento.id" :to="elemento.ruta">
+      {{ elemento.text }}
+    </router-link>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+    props:{
+        elementos:{
+            type: Array,
+            required: true,
+        },
+    },
+
+}
 </script>
 
 <style>
