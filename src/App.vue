@@ -1,12 +1,13 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
   
-  <RetirarPage />
+  <ReportePage />
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
 import PaginaInicio from './pages/PaginaInicio.vue';
+import ReportePage from './pages/ReportePage.vue';
 import RetirarPage from './pages/RetirarPage.vue';
 
 
@@ -15,7 +16,7 @@ export default {
   components: {
     HelloWorld,
     PaginaInicio,
-    RetirarPage
+    ReportePage
   }
 }
 </script>

@@ -1,10 +1,12 @@
 <template>
   <div class="container">
     <h1>Retirar vehiculo reservado</h1>
+    <label for="">Numero de reserva</label>
     <input type="text" name="" id="" v-model="nReserva" />
+   
     <button  @click="buscarRetiroPorNReserva">Buscar reservas</button>
     <div v-show="mostrarTabla" class="tablaRetiro" >
-<table>
+   <table v-if="datos.length > 0">
   <tr>
     <th>Placa</th>
     <th>Modelo</th>
@@ -20,6 +22,7 @@
     <td>{{reservadoPor}}</td>
   </tr>
 </table>
+ <p v-else>No hay datos para mostrar</p>
 <button @click="retirarAuto">Retirar auto</button>
 </div>
   </div>
