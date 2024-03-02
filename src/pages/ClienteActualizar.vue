@@ -3,7 +3,7 @@
     <FormularioCliente
       titulo="Actualizar Datos"
       nombreBoton="Actualizar"
-      :editableCedula="false"
+      :editablenumeroCedula="false"
       @eventoBoton="presionarBoton($event)"
     />
   </div>
@@ -17,11 +17,8 @@
 </template>
   
 <script>
-import Mensaje from "@/components/Mensaje.vue";
 import FormularioCliente from "@/components/FormularioCliente.vue";
-import { actualizarClienteFachada, consultarClientePorCedulaFachada } from "@/helpers/clienteCliente";
-import { consultarClienteFachada } from "@/helpers/clienteCliente";
-import { getCedula } from "@/servicios/cedulaServicio";
+import Mensaje from "@/components/Mensaje.vue";
 
 
 export default {
@@ -31,14 +28,14 @@ export default {
   },
   data() {
     return {
-      cedula: getCedula(),
+      numeroCedula: "",
       mostrarMensaje: false,
     };
   },
   methods: {
     async presionarBoton(clienteRecibido) {
-      console.log(this.cedula);
-      // const cli = await consultarClientePorCedulaFachada(this.cedula);
+      console.log(this.numeroCedula);
+      // const cli = await consultarClientePornumeroCedulaFachada(this.numeroCedula);
       // const id = cli.id;
       // await actualizarClienteFachada(id, clienteRecibido);
       // console.log("Cliente Actualizado: ", clienteRecibido);

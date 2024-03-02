@@ -3,7 +3,7 @@
     <FormularioCliente
       titulo="Registro de Cliente"
       nombreBoton="Registrar"
-      :editableCedula="true"
+      :editablenumeroCedula="true"
       @eventoBoton="presionarBoton($event)"
     />
   </div>
@@ -26,8 +26,8 @@
 </template>
   
 <script>
-import Mensaje from "@/components/Mensaje.vue";
 import FormularioCliente from "@/components/FormularioCliente.vue";
+import Mensaje from "@/components/Mensaje.vue";
 import { insertarClienteFachada } from "../helpers/clienteCliente.js";
 
 export default {
@@ -44,6 +44,8 @@ export default {
   methods: {
     async presionarBoton(clienteRecibido) {
       console.log("Cliente Recibido ", clienteRecibido);
+      console.log("ClienteRegistro: ", clienteRecibido.numeroCedula);
+
       try {
         const respuesta = await insertarClienteFachada(clienteRecibido);
         if (respuesta === 1) {

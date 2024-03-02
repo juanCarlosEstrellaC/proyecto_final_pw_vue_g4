@@ -6,7 +6,7 @@
     <label for="">Apellido:</label>
     <input type="text" v-model="apellido" />
     <label for="">Cédula:</label>
-    <input type="number" v-model="cedula" :disabled="!editableCedula" />
+    <input type="text" v-model="numeroCedula" />
     <label for="">Fecha de Nacimiento:</label>
     <input type="date" v-model="fechaNacimiento" />
     <label for="">Genero:</label>
@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import { getCedula, setCedula } from '@/servicios/cedulaServicio';
 export default {
   props: {
     titulo: {
@@ -28,21 +27,17 @@ export default {
       type: String,
       default: "boton",
     },
-    editableCedula: {
+    editablenumeroCedula: {
       type: Boolean,
       default: true,
     },
   },
-  mounted() {
-    if (!this.editableCedula) {
-      this.cedula = getCedula();
-    }
-  },
+
   data() {
     return {
       nombre: null,
       apellido: null,
-      cedula: null,
+      numeroCedula: null,
       fechaNacimiento: null,
       genero: null,
       mostrarMensaje: false,
@@ -53,11 +48,11 @@ export default {
       const cliente = {
         nombre: this.nombre,
         apellido: this.apellido,
-        celula: this.cedula,
+        numeroCedula: this.numeroCedula,
         fechaNacimiento: this.fechaNacimiento,
         genero: this.genero,
       };
-      setCedula(this.cedula)
+      console.log("FormularioCliente: ", cliente.numeroCedula);
       this.$emit("eventoBoton", cliente);
     },
   },
