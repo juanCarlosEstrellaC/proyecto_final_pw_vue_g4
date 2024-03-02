@@ -11,9 +11,14 @@ const consultarPorCedula = async (cedula) => {
     return info;
 }
 const insertar = async (body) => {
-    const info = axios.post(`http://localhost:8082/API/v1.0/Renta/clientes`, body).then(r => r.data)
-    console.log(info);
+    try {
+        const response = await axios.post(`http://localhost:8082/API/v1.0/Renta/clientes`, body);
+        return response.data;
+    } catch (error) {
+        throw error; 
+    }
 }
+
 const actualizar = async (id, body) => {
     const info = axios.put(`http://localhost:8082/API/v1.0/Renta/clientes/${id}`, body).then(r => r.data)
     console.log(info);
@@ -31,8 +36,14 @@ export const consultarClientePorCedulaFachada = async (cedula) => {
     //return await consultarPorCedula(cedula);
 }
 export const insertarClienteFachada = async (body) => {
-    //return await insertar(body);
+    try {
+        const response = await insertar(body);
+        return response;
+    } catch (error) {
+        throw error;
+    }
 }
+
 export const actualizarClienteFachada = async (id, body) => {
     //return await actualizar(id, body);
 }

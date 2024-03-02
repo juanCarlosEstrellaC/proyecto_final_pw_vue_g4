@@ -6,7 +6,7 @@
     <label for="">Apellido:</label>
     <input type="text" v-model="apellido" />
     <label for="">Cédula:</label>
-    <input type="text" v-model="cedula" :disabled="!editableCedula" />
+    <input type="number" v-model="cedula" :disabled="!editableCedula" />
     <label for="">Fecha de Nacimiento:</label>
     <input type="date" v-model="fechaNacimiento" />
     <label for="">Genero:</label>

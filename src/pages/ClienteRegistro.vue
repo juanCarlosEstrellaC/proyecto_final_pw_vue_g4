@@ -43,15 +43,27 @@ export default {
   },
   methods: {
     async presionarBoton(clienteRecibido) {
-      await insertarClienteFachada(clienteRecibido);
-      console.log("Cliente Registrado ", clienteRecibido);
-
-      this.mostrarMensaje = true;
-      this.registroExitoso = false;
+      console.log("Cliente Recibido ", clienteRecibido);
+      try {
+        const respuesta = await insertarClienteFachada(clienteRecibido);
+        if (respuesta === 1) {
+          this.mostrarMensaje = true;
+          this.registroExitoso = true;
+        } else {
+          console.error("Error al registrar cliente: ", respuesta);
+          this.mostrarMensaje = true;
+          this.registroExitoso = false;
+        }
+      } catch (error) {
+        console.error("Error al registrar cliente: ", error);
+        this.mostrarMensaje = true;
+        this.registroExitoso = false;
+      }
     },
     regresarEstado() {
       this.mostrarMensaje = false;
     },
+
   },
 };
 </script>
