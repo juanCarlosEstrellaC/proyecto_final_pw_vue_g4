@@ -54,10 +54,38 @@ const routes = [
         path: '/empleado/reserva',
         component: () => import('../pages/EmpleadoReservaPage.vue')
     },
-    {
-        path: '/empleado/reserva/retiro/codigo',
-        component: () => import('../pages/EmpleadoReservaRetiroCodigoPage.vue')
-    }
+
+
+{ 
+path: '/empleado/reserva/retiro/codigo',
+component: () => import('../pages/EmpleadoReservaRetiroCodigoPage.vue')
+},
+{
+    path: '/registro',
+    component: () => import('../pages/ClienteRegistro.vue')
+},
+{
+    path: '/actualizar',
+    component: () => import('../pages/ClienteActualizar.vue')
+},
+{
+    path: '/renta',
+    component: () => import('../pages/ClienteRentar.vue')
+},
+{
+    path: '/clientes',
+    component: () => import('../pages/Clientes.vue')
+},
+{
+    path: '/empleados',
+    component: () => import('../pages/Empleados.vue')
+},
+{
+    path: '/rentar',
+    component: () => import('../pages/VehiculoRentar.vue')
+}
+
+   
 ]
 
 // Configuro el router[c]:

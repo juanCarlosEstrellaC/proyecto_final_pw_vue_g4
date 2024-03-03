@@ -1,20 +1,26 @@
 <template>
-  <EmpleadoPage/>
+
+<!-- <EmpleadoPage/> -->
+  <PaginaInicio/>
   <Footer/>
+  
+
 </template>
 
 <script>
 import PaginaInicio from './pages/PaginaInicio.vue'
 import Footer from './components/Footer.vue'
 import EmpleadoPage from './pages/EmpleadoPage.vue'
-
+import Cliente from './pages/Clientes.vue'
 
 export default {
   name: 'App',
   components: {
     PaginaInicio,
     EmpleadoPage,
-    Footer
+    Footer,
+    Cliente, 
+   
   }
 }
 </script>
@@ -28,4 +34,6 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+
+
 </style>
