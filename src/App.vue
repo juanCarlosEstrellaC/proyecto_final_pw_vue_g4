@@ -1,22 +1,20 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  
-  <ReportePage />
+<NavBar/>
+  <router-view />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import PaginaInicio from './pages/PaginaInicio.vue';
-import ReportePage from './pages/ReportePage.vue';
-import RetirarPage from './pages/RetirarPage.vue';
+
+
+import NavBar from './components/NavBar.vue';
+import EmpleadoRetirarPageVue from './pages/EmpleadoRetirarPage.vue';
 
 
 export default {
   name: 'App',
   components: {
-    HelloWorld,
-    PaginaInicio,
-    ReportePage
+    NavBar
+
   }
 }
 </script>

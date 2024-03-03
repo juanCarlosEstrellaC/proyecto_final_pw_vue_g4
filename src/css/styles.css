@@ -1,0 +1,18 @@
+
+h1{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.center-input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px; /* Ajusta el margen inferior según sea necesario */
+  }
+  
+  .tabla{
+    display: block;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    width: 100%;
+  }
