@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { consultarVehiFachada } from "@/helpers/clienteCliente";
+import { consultarVehiculoPorMarcaYModeloFachada } from "@/helpers/clienteCliente";
 export default {
   data() {
     return {
@@ -64,7 +64,7 @@ export default {
   methods: {
     async buscar() {
       this.existeBusqueda = true;
-      this.listadoVehiculos = await consultarVehiFachada(
+      this.listadoVehiculos = await consultarVehiculoPorMarcaYModeloFachada(
         this.marca,
         this.modelo
       );

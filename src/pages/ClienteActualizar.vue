@@ -19,7 +19,7 @@
 <script>
 import FormularioCliente from "@/components/FormularioCliente.vue";
 import Mensaje from "@/components/Mensaje.vue";
-import { consultarClientePorCIFachada, consultarClientePorCedulaFachada, actualizarClienteFachada } from "@/helpers/clienteCliente";
+import { actualizarClienteParcialFachada, consultarClientePorCIFachada } from "@/helpers/clienteCliente";
 
 
 export default {
@@ -36,7 +36,7 @@ export default {
   methods: {
     async presionarBoton(clienteRecibido) {
       const clienteConsultado = await consultarClientePorCIFachada(clienteRecibido.numeroCedula)
-      await actualizarClienteFachada(clienteConsultado.id, clienteRecibido);
+      await actualizarClienteParcialFachada(clienteConsultado.id, clienteRecibido);
       this.mostrarMensaje = true;
     },
     regresarEstado() {
