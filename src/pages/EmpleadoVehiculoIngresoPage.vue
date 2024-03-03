@@ -3,7 +3,7 @@
 
   <!-- <FormularioVehiculo :txtBtn="Btn" />  -->
 
-  <div>
+  <div v-if="!mostrarMensaje">
     <FormularioGenerico
       type="text"
       etiqueta="Placa"
@@ -58,8 +58,33 @@
       placeholder="BMW"
       v-model="valDia"
     />
+    <div>
+      <button @click="ingreso">Ingreso</button>
+    </div>
+  </div>
 
-    <button @click="ingreso">Ingreso</button>
+  <div v-else class="mensaje">
+    <div v-if="registroExitoso">
+      <Mensaje
+        titulo="Registrado con Éxito"
+        informacion="Se Ingreso el vehiculo por un usuario"
+        @eventoMensaje="regresarEstado"
+      />
+    </div>
+    <div v-else>
+      <Mensaje
+        titulo="Error al registrarse"
+        informacion="Ocurrió un error al ingresar vehiculo"
+        @eventoMensaje="regresarEstado"
+      />
+    </div>
+  </div>
+
+  <div v-if="errorplaca">
+    <MensajeTemp
+      titulo="Error con los datos"
+      informacion="Placa ya existente en la base de datos"
+    />
   </div>
 </template>
 
@@ -67,14 +92,17 @@
 <script>
 import FormularioVehiculoFer from "../components/FormularioVehiculoFer.vue";
 import FormularioGenerico from "../components/FormularioGenerico.vue";
-
-import {insertarEmpleadoVehiculoFachada} from "../helpers/clienteEmpleado.js";
+import Mensaje from "@/components/Mensaje.vue";
+import MensajeTemp from "@/components/MensajeTemp.vue";
+import { insertarEmpleadoVehiculoFachada } from "../helpers/clienteEmpleado.js";
 
 export default {
   name: "EmpleadoVehiculoIngresoPage",
   components: {
     FormularioVehiculoFer,
     FormularioGenerico,
+    Mensaje,
+    MensajeTemp,
   },
   data() {
     return {
@@ -88,11 +116,14 @@ export default {
       cilindraje: null,
       avaluo: null,
       valDia: null,
+      mostrarMensaje: false,
+      registroExitoso: true,
+      errorplaca: false,
     };
   },
   methods: {
     async ingreso() {
-      const vehiculoBody = {
+    const vehiculoBody = {
         placa: this.placa,
         modelo: this.modelo,
         marca: this.marca,
@@ -101,23 +132,54 @@ export default {
         cilindraje: this.cilindraje,
         avaluo: this.avaluo,
         renta: this.valDia,
-      };
+    };
 
-      await insertarEmpleadoVehiculoFachada(vehiculoBody);
+    try {
+        const respuesta = await insertarEmpleadoVehiculoFachada(vehiculoBody);
 
-      console.log("se ingreso un vehiculo");
-      this.placa = null;
-      this.modelo = null;
-      this.marca = null;
-      this.anio = null;
-      this.pFabricacion = null;
-      this.cilindraje = null;
-      this.avaluo = null;
-      this.valDia = null;
+console.log(respuesta);
+        if (respuesta === 1) {
+            console.log("se ingreso un vehiculo");
+            this.mostrarMensaje = true;
+            this.registroExitoso = true;
+        } else if (respuesta === 2) {
+            console.log("Error al registrar vehiculo: Placa ya existente");
+            this.errorplaca = true; // Establece errorcedula a true inicialmente
+
+            // Espera 3 segundos y luego cambia errorcedula a false
+            setTimeout(() => {
+                this.errorplaca = false;
+            }, 3000);
+        } else {
+            console.error("Error al registrar cliente: ", respuesta);
+            this.mostrarMensaje = true;
+            this.registroExitoso = false;
+        }
+    } catch (error) {
+        console.error("Error al registrar cliente: ", error);
+        this.mostrarMensaje = true;
+        this.registroExitoso = false;
+    }
+
+    this.placa = null;
+    this.modelo = null;
+    this.marca = null;
+    this.anio = null;
+    this.pFabricacion = null;
+    this.cilindraje = null;
+    this.avaluo = null;
+    this.valDia = null;
+},
+
+    regresarEstado() {
+      this.mostrarMensaje = false;
     },
   },
 };
 </script>
 
-<style>
+<style scoped>
+.mensaje {
+  margin-top: 100px;
+}
 </style>
