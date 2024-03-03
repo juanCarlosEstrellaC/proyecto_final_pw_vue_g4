@@ -35,10 +35,10 @@ export default {
   methods: {
     async presionarBoton(clienteRecibido) {
       console.log(this.numeroCedula);
-      // const cli = await consultarClientePornumeroCedulaFachada(this.numeroCedula);
-      // const id = cli.id;
-      // await actualizarClienteFachada(id, clienteRecibido);
-      // console.log("Cliente Actualizado: ", clienteRecibido);
+      const cli = await consultarClientePornumeroCedulaFachada(this.numeroCedula);
+      const id = cli.id;
+      await actualizarClienteFachada(id, clienteRecibido);
+      console.log("Cliente Actualizado: ", clienteRecibido);
       this.mostrarMensaje = true;
     },
     regresarEstado() {

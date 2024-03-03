@@ -31,7 +31,6 @@
           <button @click="cambiarFechas">Cambiar fechas</button>
         </div>
       </div>
-      
     </div>
   </div>
 
@@ -39,7 +38,6 @@
     <h1>Vehículo Reservado con éxito</h1>
     <button @click="regresarPaginaPrincipal">Aceptar</button>
   </div>
-
 </template>
 
 <script>
@@ -52,23 +50,37 @@ export default {
       fechaInicio: this.fechaInicio,
       fechaFin: this.fechaFin,
       imprimirMenjajes: false,
-      vehiculoDisponible: true,
+      vehiculoDisponible: false,
       reservaRealizada: false,
+      tarjeta: null,
     };
   },
   methods: {
     regresarPaginaPrincipal() {
       router.push("/renta");
     },
-    presionarBoton(){
-      this.imprimirMenjajes = true;
+    presionarBoton() {
+      if (!this.placa || !this.cedula || !this.fechaInicio || !this.fechaFin) {
+        alert(
+          "Por favor, completa todos los campos antes de realizar la renta."
+        );
+      } else if (this.fechaFin < this.fechaInicio) {
+        alert(
+          "¡Error de fecha!\n\n¿Intentando viajar en el tiempo?\nLa fecha de fin no puede ser anterior a la fecha de inicio.\nCambia las fechas para rentar un vehículo"
+        );
+        this.cambiarFechas();
+      } else {
+        this.vehiculoDisponible= false,
+        this.imprimirMenjajes = true;
+      }
     },
-    cambiarFechas(){
+    cambiarFechas() {
       this.fechaInicio = null;
       this.fechaFin = null;
       this.imprimirMenjajes = false;
     },
     reservar(){
+      //guardar tarjeta credito.
       this.reservaRealizada = true;
     }
   },
@@ -114,7 +126,7 @@ button {
   border: solid 1px black;
 }
 
-label{
+label {
   margin-top: 10px;
 }
 

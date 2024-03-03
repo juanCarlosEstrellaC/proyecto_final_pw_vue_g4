@@ -52,7 +52,6 @@ export default {
         fechaNacimiento: this.fechaNacimiento,
         genero: this.genero,
       };
-      console.log("FormularioCliente: ", cliente.numeroCedula);
       this.$emit("eventoBoton", cliente);
     },
   },

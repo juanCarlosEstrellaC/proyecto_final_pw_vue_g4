@@ -24,7 +24,7 @@
         </thead>
       </table>
     </div>
-    
+
     <div class="cuerpo">
       <table>
         <tbody>
@@ -36,7 +36,11 @@
             <td>{{ vehiculo.estado }}</td>
             <td>{{ vehiculo.precioDiario }}</td>
             <td>
-              <router-link :to="{ path: '/rentar', query: { id: vehiculo.id, placa: vehiculo.placa } }"
+              <router-link
+                :to="{
+                  path: '/rentar',
+                  query: { id: vehiculo.id, placa: vehiculo.placa },
+                }"
                 >Rentar</router-link
               >
             </td>
@@ -48,138 +52,42 @@
 </template>
 
 <script>
+import { consultarVehiFachada } from "@/helpers/clienteCliente";
 export default {
   data() {
     return {
       id: null,
       existeBusqueda: false,
-      listadoVehiculos: [
-        {
-          id: 1,
-          marca: "Toyota",
-          modelo: "Corolla",
-          placa: "ABC123",
-          anioFabricacion: 2020,
-          estado: "Disponible",
-          precioDiario: 50,
-          rentar: true,
-        },
-        {
-          id: 2,
-          marca: "Honda",
-          modelo: "Civic",
-          placa: "XYZ789",
-          anioFabricacion: 2018,
-          estado: "No Disponible",
-          precioDiario: 45,
-          rentar: false,
-        },
-        {
-          id: 3,
-          marca: "Ford",
-          modelo: "Mustang",
-          placa: "DEF456",
-          anioFabricacion: 2019,
-          estado: "Disponible",
-          precioDiario: 60,
-          rentar: true,
-        },
-        {
-          id: 1,
-          marca: "Toyota",
-          modelo: "Corolla",
-          placa: "ABC123",
-          anioFabricacion: 2020,
-          estado: "Disponible",
-          precioDiario: 50,
-          rentar: true,
-        },
-        {
-          id: 2,
-          marca: "Honda",
-          modelo: "Civic",
-          placa: "XYZ789",
-          anioFabricacion: 2018,
-          estado: "No Disponible",
-          precioDiario: 45,
-          rentar: false,
-        },
-        {
-          id: 3,
-          marca: "Ford",
-          modelo: "Mustang",
-          placa: "DEF456",
-          anioFabricacion: 2019,
-          estado: "Disponible",
-          precioDiario: 60,
-          rentar: true,
-        },
-        {
-          id: 1,
-          marca: "Toyota",
-          modelo: "Corolla",
-          placa: "ABC123",
-          anioFabricacion: 2020,
-          estado: "Disponible",
-          precioDiario: 50,
-          rentar: true,
-        },
-        {
-          id: 2,
-          marca: "Honda",
-          modelo: "Civic",
-          placa: "XYZ789",
-          anioFabricacion: 2018,
-          estado: "No Disponible",
-          precioDiario: 45,
-          rentar: false,
-        },
-        {
-          id: 3,
-          marca: "Ford",
-          modelo: "Mustang",
-          placa: "DEF456",
-          anioFabricacion: 2019,
-          estado: "Disponible",
-          precioDiario: 60,
-          rentar: true,
-        },
-        {
-          id: 1,
-          marca: "Toyota",
-          modelo: "Corolla",
-          placa: "ABC123",
-          anioFabricacion: 2020,
-          estado: "Disponible",
-          precioDiario: 50,
-          rentar: true,
-        },
-        {
-          id: 2,
-          marca: "Honda",
-          modelo: "Civic",
-          placa: "XYZ789",
-          anioFabricacion: 2018,
-          estado: "No Disponible",
-          precioDiario: 45,
-          rentar: false,
-        },
-        {
-          id: 3,
-          marca: "Ford",
-          modelo: "Mustang",
-          placa: "DEF456",
-          anioFabricacion: 2019,
-          estado: "Disponible",
-          precioDiario: 60,
-          rentar: true,
-        },
-      ],
+      listadoVehiculos: [{},],
     };
   },
   methods: {
     buscar() {
       this.existeBusqueda = true;
+      this.listadoVehiculos = [
+        {},
+        {
+          id: 1,
+          marca: "Toyota",
+          modelo: "Corolla",
+          placa: "ABC123",
+          anioFabricacion: 2020,
+          estado: "Disponible",
+          precioDiario: 50,
+          rentar: true,
+        },
+        {
+          id: 2,
+          marca: "Honda",
+          modelo: "Civic",
+          placa: "XYZ789",
+          anioFabricacion: 2018,
+          estado: "No Disponible",
+          precioDiario: 45,
+          rentar: false,
+        },
+      ];
+      //this.listadoVehiculos = consultarVehiFachada(this.marca, this.modelo);
     },
   },
 };
@@ -198,24 +106,24 @@ export default {
 }
 
 .tabla {
-  position: relative; 
+  position: relative;
   margin: 20px;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 .encabezado {
-  position: absolute; 
-  top: 0; 
-  width: 100%; 
+  position: absolute;
+  top: 0;
+  width: 100%;
 }
 
 .cuerpo {
-  overflow-y: auto; 
-  max-height: 350px; 
+  overflow-y: auto;
+  max-height: 350px;
 }
 
 table {
-  width: 100%; 
+  width: 100%;
   border-collapse: collapse;
 }
 
@@ -224,7 +132,7 @@ td {
   border: 1px solid #dddddd;
   text-align: center;
   padding: 8px;
-  width: 14.28%
+  width: 14.28%;
 }
 
 th {
@@ -238,7 +146,7 @@ button {
   border: solid 1px black;
 }
 
-label{
+label {
   margin-top: 10px;
 }
 
