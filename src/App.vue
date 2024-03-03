@@ -1,6 +1,7 @@
 <template>
    <!-- <PaginaInicio /> -->
    <Clientes />
+   <!-- hola -->
 </template>
 
 <script>
