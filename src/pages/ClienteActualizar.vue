@@ -19,6 +19,7 @@
 <script>
 import FormularioCliente from "@/components/FormularioCliente.vue";
 import Mensaje from "@/components/Mensaje.vue";
+import { consultarClientePorCIFachada, consultarClientePorCedulaFachada, actualizarClienteFachada } from "@/helpers/clienteCliente";
 
 
 export default {
@@ -28,17 +29,14 @@ export default {
   },
   data() {
     return {
-      numeroCedula: "",
+      numeroCedula: null,
       mostrarMensaje: false,
     };
   },
   methods: {
     async presionarBoton(clienteRecibido) {
-      console.log(this.numeroCedula);
-      const cli = await consultarClientePornumeroCedulaFachada(this.numeroCedula);
-      const id = cli.id;
-      await actualizarClienteFachada(id, clienteRecibido);
-      console.log("Cliente Actualizado: ", clienteRecibido);
+      const clienteConsultado = await consultarClientePorCIFachada(clienteRecibido.numeroCedula)
+      await actualizarClienteFachada(clienteConsultado.id, clienteRecibido);
       this.mostrarMensaje = true;
     },
     regresarEstado() {

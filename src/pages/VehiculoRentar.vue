@@ -25,7 +25,7 @@
         <div v-else class="mensajeBad">
           <h3>Vehículo No Disponible</h3>
           <h5>
-            No Es posible rentar el vehículo en las fechas solicitadas. Por
+            No es posible rentar el vehículo en las fechas solicitadas. Por
             favor, ingrese nuevas fechas.
           </h5>
           <button @click="cambiarFechas">Cambiar fechas</button>
@@ -34,21 +34,45 @@
     </div>
   </div>
 
-  <div v-else>
-    <h1>Vehículo Reservado con éxito</h1>
-    <button @click="regresarPaginaPrincipal">Aceptar</button>
-  </div>
+  <div v-else class="reservaCorrecta">
+  <h1>Vehículo Reservado con éxito</h1>
+  <h3>Estimado usuario</h3>
+
+  <h4>Usted reservó el vehículo:</h4>
+  <p>
+    <span><strong>Marca:</strong> {{ marca }}</span><br>
+    <span><strong>Modelo:</strong> {{ modelo }}</span><br>
+    <span><strong>Placa:</strong> {{ placa }}</span>
+  </p>
+  
+  <h4>El periodo de vigencia de la renta es:</h4>
+  <p>
+    <span><strong>Fecha de Inicio:</strong> {{ fechaInicio }}</span><br>
+    <span><strong>Fecha de Fin:</strong> {{ fechaFin }}</span>
+  </p>
+
+
+
+  <button @click="regresarPaginaPrincipal">Aceptar</button>
+</div>
+
+
+
 </template>
 
 <script>
+import { guardarRentaFachada } from "@/helpers/clienteCliente";
 import router from "@/router/router";
 export default {
   data() {
     return {
       placa: this.$route.query.placa,
-      cedula: this.cedula,
-      fechaInicio: this.fechaInicio,
-      fechaFin: this.fechaFin,
+      cedula: "",
+      fechaInicio: "",
+      fechaFin: "",
+      estado: this.$route.query.estado,
+      marca: this.$route.query.marca,
+      modelo: this.$route.query.modelo,
       imprimirMenjajes: false,
       vehiculoDisponible: false,
       reservaRealizada: false,
@@ -70,19 +94,39 @@ export default {
         );
         this.cambiarFechas();
       } else {
-        this.vehiculoDisponible= false,
+        if (this.estado === "Disponible") {
+          this.vehiculoDisponible = true;
+        } else {
+          this.vehiculoDisponible = false;
+        }
         this.imprimirMenjajes = true;
-      }
+
+        // console.log("Placa:", this.placa);
+        // console.log("Cédula:", this.cedula);
+        // console.log("Fecha de Inicio:", this.fechaInicio);
+        // console.log("Fecha de Fin:", this.fechaFin);
+        // console.log("Estado:", this.estado);
+        // console.log("Marca:", this.marca);
+        // console.log("Modelo:", this.modelo);
+       }
     },
     cambiarFechas() {
       this.fechaInicio = null;
       this.fechaFin = null;
       this.imprimirMenjajes = false;
     },
-    reservar(){
-      //guardar tarjeta credito.
+    reservar() {
+      const renta = {
+        placa: this.placa,
+        cedula: this.cedula,
+        fechaInicio: this.fechaInicio,
+        fechaFin: this.fechaFin,
+        tarjeta: this.tarjeta,
+      };
+
+      //guardarRentaFachada(renta);
       this.reservaRealizada = true;
-    }
+    },
   },
 };
 </script>
@@ -93,7 +137,7 @@ export default {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin: 10px auto;
+  margin: 30px auto;
   width: 300px;
   background-color: rgb(241, 222, 198);
   border: solid 1px black;
@@ -119,6 +163,18 @@ export default {
   background-color: rgb(224, 149, 95);
   border: solid 1px black;
 }
+
+.reservaCorrecta{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 30px auto;
+  width: 40%;
+  background-color: rgb(101, 224, 95);
+  border: solid 1px black;
+}
+
 
 button {
   margin: 30px;

@@ -11,7 +11,7 @@
     <div v-if="registroExitoso">
       <Mensaje
         titulo="Registrado con Éxito"
-        informacion="Ahora puede rentar un vehículo"
+        informacion="¡Felicidades!, Ahora puede rentar un vehículo"
         @eventoMensaje="regresarEstado"
       />
     </div>
