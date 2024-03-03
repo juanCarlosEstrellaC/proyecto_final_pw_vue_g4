@@ -20,7 +20,7 @@ export default {
 
       barranavegacion:[
         {id:1, text:'Registrar Cliente', ruta:'/empleados/clientes/registro'},
-        {id:2, text:'Buscar Cliente', ruta:'/empleados/clientes/registro'}
+        {id:2, text:'Buscar Cliente', ruta:'/empleados/clientes/busqueda'}
       ],
 
     }

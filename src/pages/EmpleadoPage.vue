@@ -1,7 +1,7 @@
 <template>
   <h1>Pagina general de Empleado</h1>
   <NavBarGenerico :elementos="barranavegacion"/>
-  <router-view/>
+ <router-view/>
 </template>
 
 <script>

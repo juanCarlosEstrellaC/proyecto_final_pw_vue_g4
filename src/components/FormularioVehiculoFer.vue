@@ -63,7 +63,7 @@
 
 <script>
 export default {
-  name: "FormularioVehiculo",
+  name: "FormularioVehiculoFer",
   props: {
     txtBtn: {
       type: String,

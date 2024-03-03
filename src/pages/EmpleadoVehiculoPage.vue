@@ -9,7 +9,7 @@
 import NavBarGenerico from '../components/NavBarGenerico.vue'
 
 export default {
-  name:'VehiculoPage'
+  name:'EmpleadoVehiculoPage'
   ,
   components: {
     NavBarGenerico,
