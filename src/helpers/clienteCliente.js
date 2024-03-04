@@ -72,3 +72,15 @@ export const guardarRentaFachada = async (body) => {
         throw error;
     }
 }
+
+// Cotizar Vehículo:
+const consultarValorTotal = async (body) => {
+    console.log("helper",body);
+    const info = axios.post(`http://localhost:8082/API/v1.0/Renta/clientes/cotizar`, body).then(r => r.data)
+    console.log(info);
+    return info;
+}
+
+export const consultarValorTotalFachada = async (body) => {
+    return await consultarValorTotal(body);
+}

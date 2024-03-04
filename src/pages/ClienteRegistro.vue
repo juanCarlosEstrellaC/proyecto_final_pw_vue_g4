@@ -3,7 +3,6 @@
     <FormularioCliente
       titulo="Registro de Cliente"
       nombreBoton="Registrar"
-      :editablenumeroCedula="true"
       @eventoBoton="presionarBoton($event)"
     />
   </div>

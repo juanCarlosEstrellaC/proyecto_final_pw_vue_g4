@@ -10,7 +10,7 @@
       <label for="">Fecha Fin:</label>
       <input type="date" v-model="fechaFin" />
 
-      <button @click="presionarBoton">Rentar</button>
+      <button @click="presionarBoton">Verificar Disponibilidad</button>
     </div>
 
     <div class="mensajes" v-if="imprimirMenjajes">
@@ -18,16 +18,18 @@
         <div v-if="vehiculoDisponible" class="mensajeOk">
           <h3>Vehículo Disponible</h3>
           <h5>Es posible rentar el vehículo</h5>
+          <h4>El valor total a pagar es:</h4>
+          <h2>$ {{ valorTotal }}</h2>
           <label for="">Ingrese su Número Tarjeta de Crédito:</label>
           <input type="number" v-model="tarjeta" />
           <button @click="reservar">Reservar</button>
         </div>
         <div v-else class="mensajeBad">
           <h3>Vehículo No Disponible</h3>
-          <h5>
-            No es posible rentar el vehículo en las fechas solicitadas. Por
-            favor, ingrese nuevas fechas.
-          </h5>
+          <h5>No es posible rentar el vehículo en las fechas solicitadas.</h5>
+          <h3>El vehículo se encontrará disponible desde el</h3>
+          <h2>{{ fechaDisponibilidad }}</h2>
+          <h5>Por favor, cambie las fechas e intente nuevamente.</h5>
           <button @click="cambiarFechas">Cambiar fechas</button>
         </div>
       </div>
@@ -35,33 +37,34 @@
   </div>
 
   <div v-else class="reservaCorrecta">
-  <h1>Vehículo Reservado con éxito</h1>
-  <h3>Estimado usuario</h3>
+    <h1>Vehículo Reservado con éxito</h1>
+    <h3>Estimado usuario, se ha generado el número de reserva:</h3>
+    <h2>{{ numeroReserva }}</h2>
 
-  <h4>Usted reservó el vehículo:</h4>
-  <p>
-    <span><strong>Marca:</strong> {{ marca }}</span><br>
-    <span><strong>Modelo:</strong> {{ modelo }}</span><br>
-    <span><strong>Placa:</strong> {{ placa }}</span>
-  </p>
-  
-  <h4>El periodo de vigencia de la renta es:</h4>
-  <p>
-    <span><strong>Fecha de Inicio:</strong> {{ fechaInicio }}</span><br>
-    <span><strong>Fecha de Fin:</strong> {{ fechaFin }}</span>
-  </p>
-
-
-
-  <button @click="regresarPaginaPrincipal">Aceptar</button>
-</div>
-
-
-
+    <h4>Para el vehículo:</h4>
+    <p>
+      <span><strong>Marca:</strong> {{ marca }}</span
+      ><br />
+      <span><strong>Modelo:</strong> {{ modelo }}</span
+      ><br />
+      <span><strong>Placa:</strong> {{ placa }}</span>
+    </p>
+    <h4>El periodo de vigencia de la renta es:</h4>
+    <p>
+      <span><strong>Fecha de Inicio:</strong> {{ fechaInicio }}</span
+      ><br />
+      <span><strong>Fecha de Fin:</strong> {{ fechaFin }}</span>
+    </p>
+    <button @click="regresarPaginaPrincipal">Aceptar</button>
+  </div>
 </template>
 
 <script>
-import { guardarRentaFachada } from "@/helpers/clienteCliente";
+import {
+  consultarClientePorCIFachada,
+  consultarValorTotalFachada,
+  guardarRentaFachada,
+} from "@/helpers/clienteCliente";
 import router from "@/router/router";
 export default {
   data() {
@@ -77,16 +80,20 @@ export default {
       vehiculoDisponible: false,
       reservaRealizada: false,
       tarjeta: null,
+      valorTotal: 100,
+      numeroReserva: 1234,
+      fechaDisponibilidad: "23/03/2024",
+      formulario: false,
     };
   },
   methods: {
     regresarPaginaPrincipal() {
       router.push("/renta");
     },
-    presionarBoton() {
+    async presionarBoton() {
       if (!this.placa || !this.cedula || !this.fechaInicio || !this.fechaFin) {
         alert(
-          "Por favor, completa todos los campos antes de realizar la renta."
+          "Por favor, completa todos los campos antes de verificar la disponibilidad."
         );
       } else if (this.fechaFin < this.fechaInicio) {
         alert(
@@ -94,21 +101,43 @@ export default {
         );
         this.cambiarFechas();
       } else {
-        if (this.estado === "Disponible") {
-          this.vehiculoDisponible = true;
-        } else {
-          this.vehiculoDisponible = false;
-        }
-        this.imprimirMenjajes = true;
+        await this.buscarCedula();
 
-        // console.log("Placa:", this.placa);
-        // console.log("Cédula:", this.cedula);
-        // console.log("Fecha de Inicio:", this.fechaInicio);
-        // console.log("Fecha de Fin:", this.fechaFin);
-        // console.log("Estado:", this.estado);
-        // console.log("Marca:", this.marca);
-        // console.log("Modelo:", this.modelo);
-       }
+        if (this.formulario){
+          if (this.estado === "Disponible") {
+            this.vehiculoDisponible = true;
+            const cotizacion = {
+              placa: this.placa,
+              fechaInicio: this.fechaInicio,
+              fechaFin: this.fechaFin,
+            };
+            this.valorTotal = await consultarValorTotalFachada(cotizacion);
+          } else {
+            this.vehiculoDisponible = false;
+          }
+          this.imprimirMenjajes = true;
+        } else {
+          alert(
+            "Se produjo un error al buscar la cédula. Por favor, ingrese una cédula válida."
+          );
+        }
+      }
+    },
+    async buscarCedula() {
+      try {
+        const c = await consultarClientePorCIFachada(this.cedula);
+        console.log(c);
+        if (c !== null) {
+          this.formulario = true;
+        } else {
+          this.formulario = false;
+          alert("Cédula no encontrada, por favor inténtelo de nuevo.");
+        }
+      } catch (error) {
+        alert(
+          "Se produjo un error al buscar la cédula. Por favor, ingrese una cédula válida."
+        );
+      }
     },
     cambiarFechas() {
       this.fechaInicio = null;
@@ -124,7 +153,7 @@ export default {
         tarjeta: this.tarjeta,
       };
 
-      //guardarRentaFachada(renta);
+      guardarRentaFachada(renta);
       this.reservaRealizada = true;
     },
   },
@@ -164,7 +193,7 @@ export default {
   border: solid 1px black;
 }
 
-.reservaCorrecta{
+.reservaCorrecta {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -175,7 +204,11 @@ export default {
   border: solid 1px black;
 }
 
-
+.mensajeOk label,
+input,
+button {
+  margin-bottom: 30px;
+}
 button {
   margin: 30px;
   background-color: rgb(255, 206, 127);
