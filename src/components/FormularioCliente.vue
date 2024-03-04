@@ -1,23 +1,45 @@
 <template>
   <h1>{{ titulo }}</h1>
-  <div class="contenedor">
-    <label for="">Nombre:</label>
-    <input type="text" v-model="nombre" />
-    <label for="">Apellido:</label>
-    <input type="text" v-model="apellido" />
-    <label for="">Cédula:</label>
-    <input type="text" v-model="numeroCedula" />
-    <label for="">Fecha de Nacimiento:</label>
-    <input type="date" v-model="fechaNacimiento" />
-    <label for="">Genero:</label>
-    <input type="text" v-model="genero" />
+  <div class="center-input">
+      <FloatLabel>
+        <InputText id="nombre" v-model="nombre"/>
+        <label for="nombre">Nombre</label>
+        </FloatLabel>
+       <FloatLabel>
+        <InputText id="apellido" v-model="apellido"/>
+        <label for="apellido">Apellido</label>
+      </FloatLabel>
+       <FloatLabel>
+        <InputText id="numeroCedula" v-model="numeroCedula"/>
+        <label for="numeroCedula">Cédula</label>
+      </FloatLabel>
+    <label for="fechaNacimiento">Fecha de Nacimiento</label>
+        <InputText id="fechaNacimiento" v-model="fechaNacimiento" type="date" />
+        
+    
+       <FloatLabel>
+         <Dropdown v-model="genero" :options="generoOptions" optionLabel="label" placeholder="Selecciona un género" />
+        <label for="genero">Genero</label>
+      </FloatLabel>
 
-    <button @click="presionarBoton">{{ nombreBoton }}</button>
+   <Button @click="presionarBoton" severity="danger" raised  :label="nombreBoton" />
+
+    
   </div>
 </template>
 
 <script>
+import FloatLabel from 'primevue/floatlabel';
+
+import Button from 'primevue/button';
+import InputText from 'primevue/inputtext';
+import Dropdown from 'primevue/dropdown';
 export default {
+  components:{
+    FloatLabel,
+    Button,InputText,Dropdown
+
+  },
   props: {
     titulo: {
       type: String,
@@ -35,6 +57,11 @@ export default {
 
   data() {
     return {
+        generoOptions: [
+        { label: 'Masculino', value: 'masculino' },
+        { label: 'Femenino', value: 'femenino' },
+        { label: 'Otro', value: 'otro' }
+      ],
       nombre: null,
       apellido: null,
       numeroCedula: null,
@@ -58,30 +85,6 @@ export default {
 };
 </script>
 
-<style scoped>
-.contenedor {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  margin: 0 auto;
-  width: 300px;
-  background-color: rgb(241, 222, 198);
-  border: solid 1px black;
-}
+<style >
 
-button {
-  margin: 30px;
-  background-color: rgb(255, 206, 127);
-  border: solid 1px black;
-}
-
-label {
-  margin-top: 10px;
-}
-
-input {
-  margin: 5px;
-  text-align: center;
-}
 </style>

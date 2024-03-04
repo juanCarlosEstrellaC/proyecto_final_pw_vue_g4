@@ -1,14 +1,25 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+
+
 const routes = [
     
+    {
+        path: '/',
+        component: () => import('../pages/PaginaInicio.vue')
+    },
+    {
+        path: '/empleados/reportes',
+        component: () => import('../pages/ReportePage.vue')
+    },
     {
         path: '/empleados',
         component: () => import('../pages/EmpleadoPage.vue')
     },
     {
-        path: '/empleados/clientes',
-        component: () => import('../pages/EmpleadoClientesPage.vue')
+        path: '/empleado/reserva/sinreserva',
+        component: () => import('../pages/ReportePage.vue')
     },
+    
     {
         path: '/empleados/clientes/registro',
         component: () => import('../pages/EmpleadoClienteRegistroPage.vue')
@@ -27,10 +38,7 @@ const routes = [
         name: 'ActualizarCliente',
         component: () => import('../pages/EmpleadoClienteActualizarPage.vue')
     },
-    {
-        path: '/empleados/vehiculo',
-        component: () => import('../pages/EmpleadoVehiculoPage.vue')
-    },
+   
     {
         path: '/empleados/vehiculo/ingreso',
         component: () => import('../pages/EmpleadoVehiculoIngresoPage.vue')
@@ -50,15 +58,12 @@ const routes = [
         name : 'ActualizarVehiculo',
         component: () => import('../pages/EmpleadoVehiculoActualizarPage.vue')
     },
-    {
-        path: '/empleado/reserva',
-        component: () => import('../pages/EmpleadoReservaPage.vue')
-    },
+   
 
 
 { 
-path: '/empleado/reserva/retiro/codigo',
-component: () => import('../pages/EmpleadoReservaRetiroCodigoPage.vue')
+path: '/empleado/reserva/retiro',
+component: () => import('../pages/EmpleadoRetirarPage.vue')
 },
 {
     path: '/registro',
@@ -76,10 +81,7 @@ component: () => import('../pages/EmpleadoReservaRetiroCodigoPage.vue')
     path: '/clientes',
     component: () => import('../pages/Clientes.vue')
 },
-{
-    path: '/empleados',
-    component: () => import('../pages/Empleados.vue')
-},
+
 {
     path: '/rentar',
     component: () => import('../pages/VehiculoRentar.vue')

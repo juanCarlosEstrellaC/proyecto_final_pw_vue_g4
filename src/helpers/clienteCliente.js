@@ -14,6 +14,8 @@ const consultarPorCedula = async (cedula) => {
 const insertar = async (body) => {
     try {
         const response = await axios.post(`http://localhost:8082/API/v1.0/Renta/clientes`, body);
+        console.log("respuesta desde helpers: "+response);
+        console.log("respuesta desde helpers: "+response.data);
         return response.data;
     } catch (error) {
         throw error;

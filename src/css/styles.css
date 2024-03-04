@@ -1,0 +1,195 @@
+#app {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    
+   
+  }
+ 
+  h1{
+    margin: 50px 0px 50px;
+    color: rgb(241, 57, 57);
+    font-size: 7vmin;
+ 
+   
+    
+    
+  }
+  text{
+    margin: 50px 0px 50px;
+    color: rgba(253, 24, 24, 0.849);
+    font-size: 7.5vmin;
+   
+
+    
+  }
+  .menu-link{
+    text-decoration: none;
+    color: inherit;
+}
+h2{
+    font-size: 4.5vmin;
+    margin-top: 5px;
+}
+h3{
+    font-size: 4.5vmin;
+    margin-left: 50px;
+}
+p{
+    
+    font-size: 3vmin;
+}
+.logo{
+    margin-top: 5px;
+    height: 100%;
+    width: 100%;
+    padding-right: 50px;
+   
+}
+.p-component{
+    font-size: 2.5vmin;
+}
+.center-input {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0px 5px ; 
+    
+    
+  }
+  
+.p-menubar{
+
+    background-color: white;
+    margin: 120px 100px 15px;
+    height: 70px;
+  
+
+}
+
+
+.p-menuitem-text{
+
+    color: rgb(44, 23, 23);
+}
+
+.p-menuitem-icon{
+    color: rgb(44, 23, 23);
+
+}
+.p-menuitem-link{
+
+    height: 40px;
+    
+}
+
+
+.p-menubar-root-list{
+
+    padding-left: 25px;
+  
+}
+
+.container{
+    display: grid;
+    justify-content: center;
+    padding: 10px;
+    align-items: center;
+    width: 80%;
+    height: auto;
+    border-radius: 10px;
+    
+    backdrop-filter: blur(20px);
+    border: 2px solid rgba(255, 255, 255, 0.429);
+    
+}
+section{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin: 25px 0px 50px;
+}
+.p-button{
+    width: auto;
+    margin: 25px;
+}
+
+.p-button :hover{
+
+    margin: 2px;
+}
+.p-datatable{
+    margin-bottom: 100px;
+}
+th{
+    background-color: rgba(81, 90, 122, 0.242);
+    backdrop-filter: blur(10px);
+   color: rgb(255, 255, 255);
+
+}
+td{
+    background-color: rgba(255, 255, 255, 0.178);
+    backdrop-filter: blur(10px);
+
+}
+.p-column-title{
+    font-size: 2.3vmin;
+}
+.p-float-label{
+    font-size: 2.5vmin;
+    color: rgb(33, 33, 33);
+    
+
+}
+label{
+    color: rgb(33, 33, 33);
+    font-size: 2vmin;
+}
+.inputs{
+    width: 100%;
+}
+input{
+    margin: 25px 0px 25px;
+    background-color: rgba(255, 255, 255, 0.674);
+    backdrop-filter: blur(10px);
+    width: 100%;
+}
+.p-dropdown{
+    margin: 25px 0px 25px;
+    background-color: rgba(255, 255, 255, 0.674);
+    backdrop-filter: blur(10px);
+    width: 100%;
+}
+a :after{
+    background-color: red;
+}
+.p-button-label{
+    font-size: 2.5vmin ;
+}
+
+@media screen and (max-width:700px){
+  
+   
+    
+    .container{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+
+    }
+    .imagen-header{
+        height: 100%;
+    }
+
+    
+}
+@media screen and (max-width:400px){
+             
+    .p-menubar{
+         margin: 0px;
+    }
+   
+    
+}

@@ -79,6 +79,26 @@ const data = axios.post(`http://localhost:8082/API/v1.0/Renta/empleados/insertar
 console.log(data);
 
 }
+const actualizarRetiro =async (nReserva)=> {
+    const data=axios.put(`http://localhost:8082/API/v1.0/Renta/reservas/retiro?numeroReserva=${nReserva}`).then(r=>r.data);
+    console.log(data);
+}
+
+const consultarReserva= async (nReserva)=> {
+
+    
+   const data= axios.get(`http://localhost:8082/API/v1.0/Renta/reservas/${nReserva}`).then(r => r.data);
+    console.log(data);
+   return data;
+}
+
+const reporteReserva= async (fechaInicio,FechaFin)=> {
+
+    
+    const data= axios.get(`http://localhost:8082/API/v1.0/Renta/reservas/${fechaInicio}/${FechaFin}`).then(r => r.data);
+     console.log(data);
+    return data;
+ }
 
 
 export const insertarEmpleadoVehiculoFachada = async (body) => {
@@ -138,4 +158,16 @@ const actualizarEmpleadoVehiculo = async(id, body)=>{
 export const actualizarEmpleadoVehiculoFachada = async (id, body) => {
 
     return await actualizarEmpleadoVehiculo(id,body);
+}
+export const actualizarRetiroFachada=async(nReserva)=>{
+    await actualizarRetiro(nReserva);
+}
+
+export const consultarReservaFachada=async(nReserva)=>{
+    return await consultarReserva(nReserva);
+}
+
+
+export const reporteReservaFachada=async(fechaInicio,FechaFin)=>{
+    return await reporteReserva(fechaInicio,FechaFin);
 }

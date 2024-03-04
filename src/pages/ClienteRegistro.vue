@@ -1,4 +1,7 @@
 <template>
+<NavBarVue/>
+<section>
+<div class="container">
   <div v-if="!mostrarMensaje">
     <FormularioCliente
       titulo="Registro de Cliente"
@@ -23,6 +26,8 @@
       />
     </div>
   </div>
+  </div>
+  </section>
 </template>
   
 <script>
@@ -30,10 +35,11 @@ import FormularioCliente from "@/components/FormularioCliente.vue";
 import Mensaje from "@/components/Mensaje.vue";
 import { insertarClienteFachada } from "../helpers/clienteCliente.js";
 
+import NavBarVue from '@/components/NavBar.vue';
 export default {
   components: {
     Mensaje,
-    FormularioCliente,
+    FormularioCliente,NavBarVue
   },
   data() {
     return {
@@ -70,7 +76,7 @@ export default {
 };
 </script>
   
-<style scoped>
+<style >
 .mensaje {
   margin-top: 100px;
 }

@@ -1,30 +1,26 @@
 <template>
-  <h1>Pagina general de Empleado</h1>
-  <NavBarGenerico :elementos="barranavegacion"/>
- <router-view/>
+  
+  <NavBarEmpleadoVue />
+   <router-view />  
+  <Footer/>
 </template>
 
 <script>
+import NavBarEmpleadoVue from '@/components/NavBarEmpleado.vue'
 
 
-import NavBarGenerico from '../components/NavBarGenerico.vue'
 
 export default {
 
 name: 'EmpleadoPage',
   components: {
-    NavBarGenerico,
+   NavBarEmpleadoVue
   },
   data(){
 
     return{
 
-      barranavegacion:[
-        {id:1, text:'Clientes', ruta:'/empleados/clientes'},
-        {id:2, text:'Vehículo', ruta:'/empleados/vehiculo'},
-        {id:2, text:'Reserva', ruta:'/empleado/reserva'}
-      ],
-
+    
     }
   }
 }

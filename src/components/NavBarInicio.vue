@@ -4,14 +4,19 @@
     <header >
   
       <Menubar :model="items" class="custom-menubar">
-         <template #start>
-            <h3>Clientes</h3>
-        </template>
-        <template #end>
+          <template #start>
+          
           <router-link :to="{ path: '/' }" class="menu-link">
           <img src="https://upload.wikimedia.org/wikipedia/commons/f/fd/Avis_logo.svg" alt="Logo" class="logo">
          </router-link>
+
         </template>
+          <template #end>
+           <h3>Rent a car</h3>
+        </template>
+      
+
+
       </Menubar>
   
     </header>
@@ -30,28 +35,7 @@ export default {
     Menubar
   },data() {
     return {
-      items: [
-        {
-          label: 'Registro',
-          icon: 'pi pi-fw pi-home',
-          command: () => {
-            this.$router.push('/registro');
-          }
-        },
-        {
-          label: 'Actualizacion de datos',
-          icon: 'pi pi-fw pi-chart-bar',
-          command: () => {
-            this.$router.push('/actualizar');
-          }
-        }, {
-          label: 'Buscar un auto',
-          icon: 'pi pi-fw pi-home',
-          command: () => {
-            this.$router.push('/renta');
-          }
-        }
-      ]
+    
     };
   }
 
@@ -78,5 +62,10 @@ export default {
 
     
 }
-
+h2{
+   
+    margin-top:55px;
+    font-size: 8vmin;
+    margin-right: 50px;
+}
 </style>

@@ -1,4 +1,6 @@
 <template>
+
+
   <div v-if="!reservaRealizada">
     <div class="contenedor">
       <label for="">Placa:</label>
@@ -11,6 +13,7 @@
       <input type="date" v-model="fechaFin" />
 
       <button @click="presionarBoton">Rentar</button>
+      
     </div>
 
     <div class="mensajes" v-if="imprimirMenjajes">
@@ -28,7 +31,9 @@
             No Es posible rentar el vehículo en las fechas solicitadas. Por
             favor, ingrese nuevas fechas.
           </h5>
-          <button @click="cambiarFechas">Cambiar fechas</button>
+          <button @click="cambiarFechas()">Cambiar fechas</button>
+        
+      
         </div>
       </div>
     </div>
@@ -40,11 +45,16 @@
   </div>
 </template>
 
-<script>
+<script >
 import router from "@/router/router";
+
+
+
 export default {
+
   data() {
     return {
+      
       placa: this.$route.query.placa,
       cedula: this.cedula,
       fechaInicio: this.fechaInicio,
@@ -56,15 +66,20 @@ export default {
     };
   },
   methods: {
+    
     regresarPaginaPrincipal() {
       router.push("/renta");
     },
     presionarBoton() {
+       
       if (!this.placa || !this.cedula || !this.fechaInicio || !this.fechaFin) {
+        
+       
         alert(
           "Por favor, completa todos los campos antes de realizar la renta."
         );
       } else if (this.fechaFin < this.fechaInicio) {
+     
         alert(
           "¡Error de fecha!\n\n¿Intentando viajar en el tiempo?\nLa fecha de fin no puede ser anterior a la fecha de inicio.\nCambia las fechas para rentar un vehículo"
         );
