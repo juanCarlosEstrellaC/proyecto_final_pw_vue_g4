@@ -5,10 +5,10 @@
       <input type="text" v-model="placa" />
       <label for="">Cédula:</label>
       <input type="text" v-model="cedula" />
-      <label for="">Fecha Inicio:</label>
-      <input type="date" v-model="fechaInicio" />
+      <label for="fechaInicio">Fecha Inicio:</label>
+      <input type="date" id="fechaInicio" v-model="fechaInicio" :min="fechaMinima" />
       <label for="">Fecha Fin:</label>
-      <input type="date" v-model="fechaFin" />
+      <input type="date" v-model="fechaFin" :min="fechaMinima"/>
 
       <button @click="presionarBoton">Verificar Disponibilidad</button>
     </div>
@@ -62,6 +62,7 @@
 <script>
 import {
   consultarClientePorCIFachada,
+  consultarReservaPorPlacaFachada,
   consultarValorTotalFachada,
   guardarRentaFachada,
 } from "@/helpers/clienteCliente";
@@ -81,9 +82,11 @@ export default {
       reservaRealizada: false,
       tarjeta: null,
       valorTotal: 100,
-      numeroReserva: 1234,
-      fechaDisponibilidad: "23/03/2024",
+      numeroReserva: null,
+      fechaDisponibilidad: null,
       formulario: false,
+      fechaMinima: this.getFechaMinima()
+
     };
   },
   methods: {
@@ -114,6 +117,9 @@ export default {
             this.valorTotal = await consultarValorTotalFachada(cotizacion);
           } else {
             this.vehiculoDisponible = false;
+            const res = await consultarReservaPorPlacaFachada(this.placa);
+            console.log(res);
+            this.fechaDisponibilidad = res.fechaFin;
           }
           this.imprimirMenjajes = true;
         } else {
@@ -144,17 +150,26 @@ export default {
       this.fechaFin = null;
       this.imprimirMenjajes = false;
     },
-    reservar() {
+    async reservar() {
       const renta = {
         placa: this.placa,
         cedula: this.cedula,
+        tarjeta: this.tarjeta,
         fechaInicio: this.fechaInicio,
         fechaFin: this.fechaFin,
-        tarjeta: this.tarjeta,
       };
 
-      guardarRentaFachada(renta);
+      const reserva = await guardarRentaFachada(renta);
+      console.log(reserva);
+      console.log(reserva.numeroReserva);
+      this.numeroReserva = reserva.numeroReserva;
       this.reservaRealizada = true;
+    },
+    getFechaMinima() {
+      const hoy = new Date();
+      const mes = hoy.getMonth() + 1 < 10 ? `0${hoy.getMonth() + 1}` : hoy.getMonth() + 1;
+      const dia = hoy.getDate() < 10 ? `0${hoy.getDate()}` : hoy.getDate();
+      return `${hoy.getFullYear()}-${mes}-${dia}`;
     },
   },
 };
