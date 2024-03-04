@@ -18,7 +18,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 div a {
   color: #2c3e50;
   margin: 0px 10px;

@@ -2,7 +2,7 @@
 
 <!-- <EmpleadoPage/> -->
   <PaginaInicio/>
-  <Footer/>
+ 
   
 
 </template>
@@ -33,6 +33,9 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  position: relative;
+  min-height: 100vh;
+  padding-bottom: 60px; /* Ajusta esto al alto de tu footer */
 }
 
 

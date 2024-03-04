@@ -184,8 +184,11 @@ export const consultarEmpleadoVehiculoPlacaFachada = async (val) => {
 //-------------------------------------------------------------------------------
 // Actualizar Cliente desde Empleado
 const actualizarEmpleadoVehiculo = async (id, body) => {
-    const data = axios.put(`http://localhost:8082/API/v1.0/Renta/empleados/actualizarVehiculo/${id}`, body).then(r => r.data);
+    const data = axios.patch(`http://localhost:8082/API/v1.0/Renta/empleados/actualizarVehiculo/${id}`, body).then(r => r.data);
     console.log(data);
+
+
+    
 
 }
 export const actualizarEmpleadoVehiculoFachada = async (id, body) => {

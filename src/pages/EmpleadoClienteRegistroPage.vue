@@ -103,8 +103,7 @@ export default {
 
       console.log("Cliente Recibido ", clienteBody);
       console.log("ClienteRegistro: ", clienteBody.numeroCedula);
-      const val = await insertarEmpleadoClienteFachada(clienteBody);
-      console.log("este es el valor: " + val);
+      
 
       try {
         const respuesta = await insertarEmpleadoClienteFachada(clienteBody);
@@ -114,16 +113,14 @@ export default {
           this.mostrarMensaje = true;
           this.registroExitoso = true;
         } else if (respuesta === 2) {
-          console.log("Error al registrar vehiculo: Placa ya existente");
+          console.log("Error al registrar cliente: cedula ya existente");
           this.errorcedula = true; // Establece errorcedula a true inicialmente
 
           // Espera 3 segundos y luego cambia errorcedula a false
           setTimeout(() => {
             this.errorcedula = false;
           }, 3000);
-        } else if (respuesta === 3) {
-          console.log("datos incompletos");
-        } else {
+        }  else {
           console.error("Error al registrar cliente: ", respuesta);
           this.mostrarMensaje = true;
           this.registroExitoso = false;

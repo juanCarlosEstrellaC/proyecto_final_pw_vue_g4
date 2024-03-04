@@ -1,6 +1,6 @@
 <template>
   <h1>Buscar vehículo por Marca</h1>
-  <input type="text" name="" id="" v-model="marcaid" />
+  <input type="text" name="" id="" v-model="marcaid" @keydown.enter="consultarPorMarca" />
   <button @click="consultarPorMarca">Buscar</button>
 
   <div v-if="mensajeVacio">

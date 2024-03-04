@@ -39,12 +39,27 @@
   <div>
     <button @click="actualizar">Actualizar</button>
   </div>
+
+  <div v-if="datosincompletos">
+    <MensajeTemp
+      titulo="Error con los datos"
+      informacion="Cedula ya existente en la base de datos"
+    />
+  </div>
+
+  <div v-if="correcto">
+    <MensajeTemp
+      titulo="Actulizacion Correcta"
+      informacion="Todos se hizo correctamente"
+    />
+  </div>
 </template>
 
 <script>
 import FormularioClienteFer from "../components/FormularioClienteFer.vue";
 import FormularioGenerico from "../components/FormularioGenerico.vue";
 import { actualizarEmpleadoClienteFachada } from "../helpers/clienteEmpleado.js";
+import MensajeTemp from "@/components/MensajeTemp.vue";
 
 export default {
   name: "EmpleadoClienteActualizarPage",
@@ -52,6 +67,7 @@ export default {
   components: {
     FormularioClienteFer,
     FormularioGenerico,
+    MensajeTemp,
   },
   data() {
     return {
@@ -60,7 +76,8 @@ export default {
       apellido: null,
       fNacimiento: null,
       genero: null,
-      
+      datosincompletos: false,
+      correcto: false,
     };
   },
   methods: {
@@ -74,26 +91,33 @@ export default {
       };
 
       const cedulaParaBuscar = clienteBody.numeroCedula;
+      if (this.cedula !== null && this.apellido !== null) {
+        await actualizarEmpleadoClienteFachada(
+          this.$route.params.id,
+          clienteBody
+        );
 
-      await actualizarEmpleadoClienteFachada(
-        this.$route.params.id,
-        clienteBody
-      );
-      console.log("se actualzó");
+        this.correcto = true; 
+       
+        console.log("se actualzó");
+        setTimeout(() => {
+          this.$router.push({
+            name: "VisualizarCliente",
+            params: { cedula: cedulaParaBuscar },
+          });
+        }, 2500);
 
+        this.nombre = null;
+        this.apellido = null;
+        this.genero = null;
+        this.fNacimiento = null;
+        this.cedula = null;
+        return;
+      }
+      this.datosincompletos = true; 
       setTimeout(() => {
-        this.$router.push({
-        name: "VisualizarCliente",
-        params: { cedula: cedulaParaBuscar },
-      });
-      }, 500);
-      console.log("se elimino");
-
-      this.nombre = null;
-      this.apellido = null;
-      this.genero = null;
-      this.fNacimiento = null;
-      this.cedula = null;
+        this.datosincompletos = false;
+      }, 3000);
     },
   },
 };

@@ -3,7 +3,6 @@
     <FormularioCliente
       titulo="Registro de Cliente"
       nombreBoton="Registrar"
-      :editablenumeroCedula="true"
       @eventoBoton="presionarBoton($event)"
     />
   </div>
@@ -11,7 +10,7 @@
     <div v-if="registroExitoso">
       <Mensaje
         titulo="Registrado con Éxito"
-        informacion="Ahora puede rentar un vehículo"
+        informacion="¡Felicidades!, Ahora puede rentar un vehículo"
         @eventoMensaje="regresarEstado"
       />
     </div>

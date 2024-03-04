@@ -1,73 +1,73 @@
 <template>
-  <h1>Rentar Vehículo</h1>
-  <div class="contenedor">
-    <label for="">Marca:</label>
-    <input type="text" v-model="marca" />
-    <label for="">Modelo:</label>
-    <input type="text" v-model="modelo" />
-    <button @click="buscar">Buscar</button>
+  <div class="arriba">
+    <h1>Rentar Vehículo</h1>
+    <div class="contenedor">
+      <label for="">Marca:</label>
+      <input type="text" v-model="marca" />
+      <label for="">Modelo:</label>
+      <input type="text" v-model="modelo" />
+      <button @click="buscar">Buscar</button>
+    </div>
   </div>
-
   <div class="tabla" v-if="existeBusqueda">
-    <div class="encabezado">
-      <table>
-        <thead>
-          <tr>
-            <th>Placa</th>
-            <th>Marca</th>
-            <th>Modelo</th>
-            <th>Año de Fabricación</th>
-            <th>Estado</th>
-            <th>Precio Diario</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-      </table>
-    </div>
-
-    <div class="cuerpo">
-      <table>
-        <tbody>
-          <tr v-for="vehiculo in listadoVehiculos" :key="vehiculo.id">
-            <td>{{ vehiculo.placa }}</td>
-            <td>{{ vehiculo.marca }}</td>
-            <td>{{ vehiculo.modelo }}</td>
-            <td>{{ vehiculo.anioFabricacion }}</td>
-            <td>{{ vehiculo.estado }}</td>
-            <td>{{ vehiculo.renta }}</td>
-            <td>
-              <router-link
-                :to="{
-                  path: '/rentar',
-                  query: { id: vehiculo.id, placa: vehiculo.placa },
-                }"
-                >Rentar</router-link
-              >
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Placa</th>
+          <th>Marca</th>
+          <th>Modelo</th>
+          <th>Estado</th>
+          <th>Precio Diario</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="vehiculo in listadoVehiculos" :key="vehiculo.id">
+          <td>{{ vehiculo.placa }}</td>
+          <td>{{ vehiculo.marca }}</td>
+          <td>{{ vehiculo.modelo }}</td>
+          <td>{{ vehiculo.estado }}</td>
+          <td>{{ vehiculo.renta }}</td>
+          <td>
+            <router-link class="j"
+              :to="{
+                path: '/rentar',
+                query: {
+                  id: vehiculo.id,
+                  placa: vehiculo.placa,
+                  estado: vehiculo.estado,
+                  marca: vehiculo.marca,
+                  modelo: vehiculo.modelo,
+                },
+              }"
+              >Rentar</router-link
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
 <script>
-import { consultarVehiFachada } from "@/helpers/clienteCliente";
+import { consultarVehiculoPorMarcaYModeloFachada } from "@/helpers/clienteCliente";
 export default {
   data() {
     return {
       id: null,
       existeBusqueda: false,
       listadoVehiculos: [],
-      marca:null,
-      modelo:null,
+      marca: null,
+      modelo: null,
     };
   },
   methods: {
-   async buscar() {
+    async buscar() {
       this.existeBusqueda = true;
-     this.listadoVehiculos = await consultarVehiFachada(this.marca, this.modelo);
-     console.log(this.listadoVehiculos);
+      this.listadoVehiculos = await consultarVehiculoPorMarcaYModeloFachada(
+        this.marca,
+        this.modelo
+      );
     },
   },
 };
@@ -85,6 +85,19 @@ export default {
   border: solid 1px black;
 }
 
+.j {
+  padding: 10px 20px; 
+  font-size: 16px; 
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+}
 .tabla {
   position: relative;
   margin: 20px;

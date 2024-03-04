@@ -5,8 +5,8 @@
     <input type="text" v-model="nombre" />
     <label for="">Apellido:</label>
     <input type="text" v-model="apellido" />
-    <label for="">Cédula:</label>
-    <input type="text" v-model="numeroCedula" />
+    <label v-if="mostrarCedula" for="">Cédula:</label>
+    <input v-if="mostrarCedula" type="text" v-model="numeroCedula" />
     <label for="">Fecha de Nacimiento:</label>
     <input type="date" v-model="fechaNacimiento" />
     <label for="">Genero:</label>
@@ -27,9 +27,9 @@ export default {
       type: String,
       default: "boton",
     },
-    editablenumeroCedula: {
+    mostrarCedula: {
       type: Boolean,
-      default: true,
+      default: true, 
     },
   },
 

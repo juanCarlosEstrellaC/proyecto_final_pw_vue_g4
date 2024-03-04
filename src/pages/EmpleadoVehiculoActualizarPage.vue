@@ -59,21 +59,35 @@
     <button @click="actualizar">Actualizar</button>
   </div>
 
-  <div v-if="mensajeafirmativo">
+  <div v-if="correcto">
     <label for="">se actualizó correctamente</label>
   </div>
 
-  
+  <div v-if="datosincompletos">
+    <MensajeTemp
+      titulo="Error con los datos"
+      informacion="Completa los datos minimos"
+    />
+  </div>
+
+  <div v-if="correcto">
+    <MensajeTemp
+      titulo="Actulizacion Correcta"
+      informacion="Todos se hizo correctamente"
+    />
+  </div>
 </template>
 
 <script>
 import FormularioGenerico from "../components/FormularioGenerico.vue";
 import { actualizarEmpleadoVehiculoFachada } from "../helpers/clienteEmpleado.js";
+import MensajeTemp from "@/components/MensajeTemp.vue";
 
 export default {
   name: "EmpleadoVehiculoActualizarPage",
   components: {
     FormularioGenerico,
+    MensajeTemp,
   },
   data() {
     return {
@@ -86,8 +100,8 @@ export default {
       cilindraje: null,
       avaluo: null,
       valDia: null,
-      mensajeafirmativo: false,
-      
+      datosincompletos: false,
+      correcto: false,
     };
   },
   methods: {
@@ -102,29 +116,23 @@ export default {
         avaluo: this.avaluo,
         renta: this.valDia,
       };
-if(vehiculoBody===null){
+      if (this.placa !== null && this.marca !== null) {
+        const placaParaBuscar = vehiculoBody.placa;
+        await actualizarEmpleadoVehiculoFachada(
+          this.$route.params.id,
+          vehiculoBody
+        );
 
-
-}
-      const placaParaBuscar = vehiculoBody.placa;
-      await actualizarEmpleadoVehiculoFachada(
-        this.$route.params.id,
-        vehiculoBody
-      );
-
-      console.log("se actualizo un vehiculo");
-      this.mensajeafirmativo = true;
-      setTimeout(() => {
-        this.mensajeafirmativo = false;
-      }, 3000);
-
-      setTimeout(() => {
+        this.correcto= true;
+        console.log("se actualzó");
+setTimeout(() => {
         this.$router.push({
           name: "VisualizarVehiculo",
           params: { placa: placaParaBuscar },
         });
-      }, 2000);
-      this.placa = null;
+      }, 2500);
+
+this.placa = null;
       this.modelo = null;
       this.marca = null;
       this.anio = null;
@@ -132,6 +140,14 @@ if(vehiculoBody===null){
       this.cilindraje = null;
       this.avaluo = null;
       this.valDia = null;
+      return
+
+      }
+      this.datosincompletos = true;
+      setTimeout(() => {
+        this.datosincompletos = false;
+      }, 3000);
+      
     },
   },
 };

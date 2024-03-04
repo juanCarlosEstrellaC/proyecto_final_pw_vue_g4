@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Buscar cliente por Apellido</h1>
-    <input type="text" v-model="apellidoid" />
+    <input type="text" v-model="apellidoid" @keydown.enter="consultarPorApellido"/>
     <button @click="consultarPorApellido">Buscar</button>
 
     <div v-if="mensajeVacio">
@@ -54,20 +54,23 @@ export default {
     };
   },
   methods: {
-    async consultarPorApellido() {
-      this.data = await consultarEmpleadoClienteFachada(this.apellidoid);
+    async consultarPorApellido(event) {
+    
+        this.data = await consultarEmpleadoClienteFachada(this.apellidoid);
 
-      if (this.data.length != 0) {
-        this.mostrar = true;
-        console.log("consulat desde em,todo");
-        console.log(this.data);
-        return this.data;
-      }
-      this.mensajeVacio = true;
-      setTimeout(() => {
-        this.mensajeVacio = false;
-      }, 3000);
+        if (this.data.length != 0) {
+          this.mostrar = true;
+          console.log("consulat desde em,todo");
+          console.log(this.data);
+          return this.data;
+        }
+        this.mensajeVacio = true;
+        setTimeout(() => {
+          this.mensajeVacio = false;
+        }, 3000);
+      
     },
+
     // Redirige a la ruta de visualización con la cedula del cliente
     goVisualizar(cedula) {
       this.$router.push({ name: "VisualizarCliente", params: { cedula } });
