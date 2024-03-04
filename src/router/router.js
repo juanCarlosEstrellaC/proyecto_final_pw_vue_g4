@@ -54,6 +54,10 @@ const routes = [
         path: '/empleado/reserva',
         component: () => import('../pages/EmpleadoReservaPage.vue')
     },
+    {
+        path: '/generarpdf',
+        component: () => import('../pages/Formul.vue')
+    },
 
 
 { 

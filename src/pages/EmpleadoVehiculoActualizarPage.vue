@@ -116,38 +116,46 @@ export default {
         avaluo: this.avaluo,
         renta: this.valDia,
       };
-      if (this.placa !== null && this.marca !== null) {
+      if (
+        this.placa !== null &&
+        this.marca !== null &&
+        this.modelo !== null &&
+        this.anio !== null &&
+        this.pFabricacion !== null &&
+        this.cilindraje !== null &&
+        this.valDia !== null &&
+        this.avaluo !== null &&
+        this.cilindraje !== null
+      ) {
         const placaParaBuscar = vehiculoBody.placa;
         await actualizarEmpleadoVehiculoFachada(
           this.$route.params.id,
           vehiculoBody
         );
 
-        this.correcto= true;
+        this.correcto = true;
         console.log("se actualzó");
-setTimeout(() => {
-        this.$router.push({
-          name: "VisualizarVehiculo",
-          params: { placa: placaParaBuscar },
-        });
-      }, 2500);
+        setTimeout(() => {
+          this.$router.push({
+            name: "VisualizarVehiculo",
+            params: { placa: placaParaBuscar },
+          });
+        }, 2500);
 
-this.placa = null;
-      this.modelo = null;
-      this.marca = null;
-      this.anio = null;
-      this.pFabricacion = null;
-      this.cilindraje = null;
-      this.avaluo = null;
-      this.valDia = null;
-      return
-
+        this.placa = null;
+        this.modelo = null;
+        this.marca = null;
+        this.anio = null;
+        this.pFabricacion = null;
+        this.cilindraje = null;
+        this.avaluo = null;
+        this.valDia = null;
+        return;
       }
       this.datosincompletos = true;
       setTimeout(() => {
         this.datosincompletos = false;
       }, 3000);
-      
     },
   },
 };

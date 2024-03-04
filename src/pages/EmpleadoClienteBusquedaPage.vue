@@ -35,6 +35,8 @@
       </table>
     </div>
   </div>
+
+  <button @click="goPdf()">Eliminar</button>
 </template>
 
 <script>
@@ -78,6 +80,10 @@ export default {
     // Redirige a la ruta de actualización con el ID del cliente
     goActualizar(id) {
       this.$router.push({ name: "ActualizarCliente", params: { id } });
+    },
+
+    goPdf() {
+      this.$router.push('/generarpdf');
     },
     // Redirige a la ruta de eliminación con el ID del cliente
     async goEliminar(id) {

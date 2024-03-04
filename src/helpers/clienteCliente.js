@@ -58,7 +58,7 @@ export const consultarVehiculoPorMarcaYModeloFachada = async (marca, modelo) => 
 // Renta:
 const guardarRenta = async (body) => {
     try {
-        const response = await axios.post(`http://localhost:8082/API/v1.0/Renta/clientes`, body);
+        const response = await axios.post(`http://localhost:8082/API/v1.0/Renta/clientes/generarReserva`, body);
         return response.data;
     } catch (error) {
         throw error;
@@ -82,4 +82,13 @@ const consultarValorTotal = async (body) => {
 
 export const consultarValorTotalFachada = async (body) => {
     return await consultarValorTotal(body);
+}
+// Consultar Reserva por Placa desde Cliente:
+const consultarReservaPorPlaca = async (placa) => {
+    const info = await axios.get(`http://localhost:8082/API/v1.0/Renta/clientes/reservas/${placa}`).then(r => r.data)
+    console.log(info);
+    return info;
+}
+export const consultarReservaPorPlacaFachada = async (placa) => {
+    return await consultarReservaPorPlaca(placa);
 }

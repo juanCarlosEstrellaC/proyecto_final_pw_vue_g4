@@ -5,10 +5,15 @@
       <input type="text" v-model="placa" />
       <label for="">Cédula:</label>
       <input type="text" v-model="cedula" />
-      <label for="">Fecha Inicio:</label>
-      <input type="date" v-model="fechaInicio" />
+      <label for="fechaInicio">Fecha Inicio:</label>
+      <input
+        type="date"
+        id="fechaInicio"
+        v-model="fechaInicio"
+        :min="fechaMinima"
+      />
       <label for="">Fecha Fin:</label>
-      <input type="date" v-model="fechaFin" />
+      <input type="date" v-model="fechaFin" :min="fechaMinima" />
 
       <button @click="presionarBoton">Verificar Disponibilidad</button>
     </div>
@@ -36,7 +41,7 @@
     </div>
   </div>
 
-  <div v-else class="reservaCorrecta">
+  <div ref="pdfContent" v-else class="reservaCorrecta">
     <h1>Vehículo Reservado con éxito</h1>
     <h3>Estimado usuario, se ha generado el número de reserva:</h3>
     <h2>{{ numeroReserva }}</h2>
@@ -55,11 +60,13 @@
       ><br />
       <span><strong>Fecha de Fin:</strong> {{ fechaFin }}</span>
     </p>
-    <button @click="regresarPaginaPrincipal">Aceptar</button>
   </div>
+  <button  v-if="generacion" @click="regresarPaginaPrincipal">Aceptar</button>
+  <button v-if="generacion" @click="generarPDF">Generar PDF</button>
 </template>
 
 <script>
+import html2pdf from "html2pdf.js";
 import {
   consultarClientePorCIFachada,
   consultarValorTotalFachada,
@@ -81,9 +88,11 @@ export default {
       reservaRealizada: false,
       tarjeta: null,
       valorTotal: 100,
-      numeroReserva: 1234,
-      fechaDisponibilidad: "23/03/2024",
+      numeroReserva: null,
+      fechaDisponibilidad: null,
       formulario: false,
+      fechaMinima: this.getFechaMinima(),
+      generacion: false,
     };
   },
   methods: {
@@ -103,7 +112,7 @@ export default {
       } else {
         await this.buscarCedula();
 
-        if (this.formulario){
+        if (this.formulario) {
           if (this.estado === "Disponible") {
             this.vehiculoDisponible = true;
             const cotizacion = {
@@ -114,6 +123,9 @@ export default {
             this.valorTotal = await consultarValorTotalFachada(cotizacion);
           } else {
             this.vehiculoDisponible = false;
+            const res = await consultarReservaPorPlacaFachada(this.placa);
+            console.log(res);
+            this.fechaDisponibilidad = res.fechaFin;
           }
           this.imprimirMenjajes = true;
         } else {
@@ -144,7 +156,7 @@ export default {
       this.fechaFin = null;
       this.imprimirMenjajes = false;
     },
-    reservar() {
+    async reservar() {
       const renta = {
         placa: this.placa,
         cedula: this.cedula,
@@ -154,7 +166,24 @@ export default {
       };
 
       guardarRentaFachada(renta);
+      const reserva = await guardarRentaFachada(renta);
+      console.log(reserva);
+      console.log(reserva.numeroReserva);
+      this.numeroReserva = reserva.numeroReserva;
       this.reservaRealizada = true;
+      this.generacion = true;
+    },
+    getFechaMinima() {
+      const hoy = new Date();
+      const mes =
+        hoy.getMonth() + 1 < 10 ? `0${hoy.getMonth() + 1}` : hoy.getMonth() + 1;
+      const dia = hoy.getDate() < 10 ? `0${hoy.getDate()}` : hoy.getDate();
+      return `${hoy.getFullYear()}-${mes}-${dia}`;
+    },
+    generarPDF() {
+      const content = this.$refs.pdfContent;
+
+      html2pdf(content);
     },
   },
 };

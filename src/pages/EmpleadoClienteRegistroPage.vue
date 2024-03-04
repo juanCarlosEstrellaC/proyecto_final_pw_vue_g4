@@ -36,6 +36,12 @@
       v-model="genero"
     />
 
+    <FormularioGenerico
+      type="text"
+      etiqueta="correo"
+      v-model="correo"
+    />
+
     <label> Registro por parte del empleado</label>
 
     <div>
@@ -89,6 +95,7 @@ export default {
       mostrarMensaje: false,
       registroExitoso: true,
       errorcedula: false,
+      correo: null,
     };
   },
   methods: {
@@ -99,6 +106,7 @@ export default {
         genero: this.genero,
         fechaNacimiento: this.fNacimiento,
         numeroCedula: this.cedula,
+        correo: this.correo,
       };
 
       console.log("Cliente Recibido ", clienteBody);
