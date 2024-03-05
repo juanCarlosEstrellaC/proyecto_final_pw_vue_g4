@@ -156,9 +156,19 @@ export default {
       } else {
         await this.buscarCedula();
         await this.fechasDisponibilidad();
-
         if (this.formulario) {
-          if (this.fechasDeshabilitadas.length == 0) {
+          const fechasEntreInicioYFin = this.obtenerFechasEntreInicioYFin();
+          const fechasDeshabilitadas = this.fechasDeshabilitadas.map(
+            (fecha) => new Date(fecha)
+          );
+
+          const coincidencia = fechasEntreInicioYFin.some((fecha) =>
+            fechasDeshabilitadas.some(
+              (deshabilitada) => fecha.getTime() === deshabilitada.getTime()
+            )
+          );
+
+          if (!coincidencia) {
             this.vehiculoDisponible = true;
             const cotizacion = {
               placa: this.placa,
@@ -179,6 +189,21 @@ export default {
           );
         }
       }
+    },
+    obtenerFechasEntreInicioYFin() {
+      const fechas = [];
+      const inicio = new Date(this.fechaInicio);
+      const fin = new Date(this.fechaFin);
+      const unDia = 24 * 60 * 60 * 1000; // milisegundos en un día
+
+      for (
+        let fecha = inicio;
+        fecha <= fin;
+        fecha.setDate(fecha.getDate() + 1)
+      ) {
+        fechas.push(new Date(fecha));
+      }
+      return fechas;
     },
     async fechasDisponibilidad() {
       const listaFechas = await consultarfechasRentasPorVehiculoFachada(
