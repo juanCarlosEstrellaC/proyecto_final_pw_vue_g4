@@ -1,7 +1,7 @@
 <template>
   <NavBarInicioVue/>
   <router-view />
-   <h5>Selecciona el método de ingreso</h5>
+   
   <div class="inicio">
     <div @click="clientes" class="clientes">
       <img src="https://www.esic.edu/sites/default/files/styles/full/public/rethink/580280b3-atencion-al-cliente-y-servicio-al-cliente.jpg?itok=REGLgDj2" alt="">
@@ -24,7 +24,7 @@
     </video>
     
   <h5>EXPLORE TODAS LAS FORMAS EN QUE PUEDE AHORRAR</h5>
-    <img src="../assets/principalbajo.png" alt="">
+    <img class="foot" src="../assets/principalbajo.png" alt="">
 </template>
 
 <script>
@@ -103,6 +103,8 @@ export default {
   cursor: pointer; /* Cambia el cursor al pasar el ratón */
 }
 
-
+.foot{
+  width: 100%;
+}
 
 </style>

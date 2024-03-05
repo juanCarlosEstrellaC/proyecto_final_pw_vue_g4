@@ -44,7 +44,7 @@
      
       v-model="correo"
     />
-     <Button @click="insertar" severity="danger" raised  label="Ingresar auto" />
+     <Button @click="insertar" severity="danger" raised  label="Ingresar cliente" />
    
   </div>
 

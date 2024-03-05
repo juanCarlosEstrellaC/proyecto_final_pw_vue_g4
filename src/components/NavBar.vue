@@ -36,20 +36,20 @@ export default {
       items: [
         {
           label: 'Registro',
-          icon: 'pi pi-fw pi-home',
+          icon: 'pi pi-fw pi-users',
           command: () => {
             this.$router.push('/registro');
           }
         },
         {
           label: 'Actualizacion de datos',
-          icon: 'pi pi-fw pi-chart-bar',
+          icon: 'pi pi-fw pi-user-edit',
           command: () => {
             this.$router.push('/actualizar');
           }
         }, {
           label: 'Buscar un auto',
-          icon: 'pi pi-fw pi-home',
+          icon: 'pi pi-fw pi-car',
           command: () => {
             this.$router.push('/renta');
           }

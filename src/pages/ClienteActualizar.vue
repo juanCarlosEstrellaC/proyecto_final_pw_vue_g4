@@ -14,11 +14,20 @@
         </div>
         <div v-if="formulario">
           <div v-if="!mostrarMensaje">
+            <!-- Aquí pasamos cedulaEditable como false y el cliente con la cédula prellenada -->
             <FormularioCliente
               titulo=""
               nombreBoton="Actualizar"
-              :mostrarCedula="false"
+              :cedulaEditable="false"
               @eventoBoton="presionarBoton($event)"
+              :cliente="{
+                nombre: cliente.nombre,
+                apellido: cliente.apellido,
+                numeroCedula: cedula, // Cédula prellenada
+                correo: cliente.correo,
+                fechaNacimiento: cliente.fechaNacimiento,
+                genero: cliente.genero,
+              }"
             />
           </div>
           <div v-else class="mensaje">
@@ -43,7 +52,7 @@
     </Dialog>
   </div>
 </template>
-  
+
 <script>
 import FormularioCliente from "@/components/FormularioCliente.vue";
 import Mensaje from "@/components/Mensaje.vue";
@@ -76,7 +85,14 @@ export default {
       formulario: false,
       mostrarAlerta: false,
       mensajeAlerta: '',
-      mostrarActualizacionExitosa: false
+      mostrarActualizacionExitosa: false,
+      cliente: {  // Cliente con cédula prellenada
+        nombre: "Nombre del Cliente",
+        apellido: "Apellido del Cliente",
+        correo: "correo@ejemplo.com",
+        fechaNacimiento: "1990-01-01",
+        genero: { label: "Masculino", value: "masculino" },
+      }
     };
   },
   methods: {
@@ -123,11 +139,9 @@ export default {
   },
 };
 </script>
-  
+
 <style scoped>
 .mensaje {
   margin-top: 100px;
 }
-
-
 </style>

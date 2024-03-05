@@ -57,7 +57,7 @@ export default {
         },
         {
           label: 'Vehículo',
-          icon: 'pi pi-fw pi-chart-bar',
+          icon: 'pi pi-fw pi-car',
           items:[{
              label: 'Nuevo Vehículo',
           
@@ -75,7 +75,7 @@ export default {
           
         }, {
           label: 'Reserva',
-          icon: 'pi pi-fw pi-home',
+          icon: 'pi pi-fw pi-shopping-cart',
           items:[{
              label: 'Retiro con reserva',
           
@@ -92,7 +92,7 @@ export default {
           ]
         },{
           label: 'Reportes',
-          icon: 'pi pi-fw pi-home',
+          icon: 'pi pi-fw pi-file',
           
         
            command: () => {
