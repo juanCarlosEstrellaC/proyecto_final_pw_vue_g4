@@ -49,10 +49,12 @@ h3{
    
     font-size: 4.5vmin;
     margin-left: 50px;
+    text-shadow:  -1px 1px 1px  rgba(255, 255, 255, 0.998);
 }
 h4{
     color: rgb(31, 37, 43);
     font-size: 3vmin;
+    text-shadow:  1px 1px 5px  rgba(255, 255, 255, 0.998);
 }
 h5{
     color: aliceblue;

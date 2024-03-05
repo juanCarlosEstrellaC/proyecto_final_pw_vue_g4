@@ -1,3 +1,4 @@
+[16:44] LUIS FERNANDO MOSQUERA ROMERO
 <template>
   <section>
     <div class="container">
@@ -11,7 +12,7 @@
             <InputText id="cedula" v-model="cedula" />
             <label for="cedula">Cédula</label>
           </FloatLabel>
-
+ 
           <label class="label" for="fechaInicio">Fecha Inicio</label>
           <InputText
             id="fechaInicio"
@@ -20,7 +21,7 @@
             :min="fechaMinima"
             @input="validarFechaInicio"
           />
-
+ 
           <label class="label" for="fechaFin">Fecha Fin</label>
           <InputText
             id="fechaFin"
@@ -29,11 +30,11 @@
             :min="fechaInicio"
             @input="validarFechaFin"
           />
-
-  
-
+ 
+ 
+ 
           <!-- ---------------------------------------------------------------->
-
+ 
           <Button
             @click="presionarBoton"
             severity="danger"
@@ -41,7 +42,7 @@
             label="Verificar Disponibilidad"
           />
         </div>
-
+ 
         <div class="mensajes" v-if="imprimirMenjajes">
           <div>
             <div v-if="vehiculoDisponible" class="mensajeOk">
@@ -49,14 +50,14 @@
               <h5>Es posible rentar el vehículo</h5>
               <h4>El valor total a pagar es:</h4>
               <h3>$ {{ valorTotal }}</h3>
-
+ 
               <FloatLabel>
                 <InputText id="tarjeta" type="number" v-model="tarjeta" />
                 <label for="tarjeta"
                   >Ingrese su Número Tarjeta de Crédito</label
                 >
               </FloatLabel>
-
+ 
               <Button
                 @click="reservar"
                 severity="danger"
@@ -76,7 +77,7 @@
           >
             <ul>
               <li v-for="fecha in fechasUnicas" :key="fecha">
-                {{ formatearFecha(fecha) }}
+                {{ fecha }}
               </li>
             </ul>
           </template>
@@ -84,7 +85,7 @@
             <h2>No hay fechas disponibles</h2>
           </template>
           <h5>Por favor, cambie las fechas e intente nuevamente.</h5>
-
+ 
               <Button
                 @click="cambiarFechas"
                 severity="danger"
@@ -95,12 +96,12 @@
           </div>
         </div>
       </div>
-
+ 
       <div ref="pdfContent" v-else class="reservaCorrecta">
         <h1>Vehículo Reservado con éxito</h1>
         <h2>Estimado usuario, se ha generado el número de reserva:</h2>
         <h2>{{ numeroReserva }}</h2>
-
+ 
         <h4>Para el vehículo:</h4>
         <p>
           <span><strong>Marca:</strong> {{ marca }}</span
@@ -135,10 +136,10 @@
     </div>
   </section>
 </template>
-
+ 
 <script>
 import html2pdf from "html2pdf.js";
-
+ 
 import {
   consultarClientePorCIFachada,
   consultarValorTotalFachada,
@@ -147,10 +148,10 @@ import {
   consultarfechasRentasPorVehiculoFachada,
 } from "@/helpers/clienteCliente";
 import FloatLabel from "primevue/floatlabel";
-
+ 
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
-
+ 
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
 import router from "@/router/router";
@@ -189,21 +190,16 @@ export default {
   },
   created() {
     this.ejemplo();
+    console.log(this.fechasDeshabilitadas);
   },
-
+ 
   mounted() {
-    consultarfechasRentasPorVehiculoFachada(this.placa)
-      .then((fechas) => {
-        this.fechasDeshabilitadas = fechas;
-        console.log("Fechas deshabilitadas:", fechas);
-      })
-      .catch((error) => {
-        console.error("Error al obtener las fechas deshabilitadas:", error);
-      });
+   
   },
   computed: {
     fechasUnicas() {
       if (!Array.isArray(this.fechasDeshabilitadas)) return [];
+      console.log(this.fechaDisponibilidad);
       const conjuntoFechas = new Set(this.fechasDeshabilitadas);
       return Array.from(conjuntoFechas);
     },
@@ -211,6 +207,9 @@ export default {
   methods: {
     async ejemplo() {
       this.fechasNoValidas = await consultarfechasRentasPorVehiculoFachada(
+        this.$route.query.placa
+      );
+      this.fechasDeshabilitadas = await consultarfechasRentasPorVehiculoFachada(
         this.$route.query.placa
       );
     },
@@ -246,13 +245,13 @@ export default {
           const fechasDeshabilitadas = this.fechasDeshabilitadas.map(
             (fecha) => new Date(fecha)
           );
-
+ 
           const coincidencia = fechasEntreInicioYFin.some((fecha) =>
             fechasDeshabilitadas.some(
               (deshabilitada) => fecha.getTime() === deshabilitada.getTime()
             )
           );
-
+ 
           if (!coincidencia) {
             this.vehiculoDisponible = true;
             const cotizacion = {
@@ -280,7 +279,7 @@ export default {
       const inicio = new Date(this.fechaInicio);
       const fin = new Date(this.fechaFin);
       const unDia = 24 * 60 * 60 * 1000; // milisegundos en un día
-
+ 
       for (
         let fecha = inicio;
         fecha <= fin;
@@ -325,7 +324,7 @@ export default {
         fechaInicio: this.fechaInicio,
         fechaFin: this.fechaFin,
       };
-
+ 
       const reserva = await guardarRentaFachada(renta);
       console.log(reserva);
       console.log(reserva.numeroReserva);
@@ -340,19 +339,19 @@ export default {
       const dia = hoy.getDate() < 10 ? `0${hoy.getDate()}` : hoy.getDate();
       return `${hoy.getFullYear()}-${mes}-${dia}`;
     },
-
+ 
     validarFechaInicio() {
       this.validarFecha(this.fechaInicio);
     },
-
+ 
     validarFechaFin() {
       this.validarFecha(this.fechaFin);
     },
-
+ 
     validarFecha(fecha) {
       if (fecha) {
         const fechaSeleccionada = new Date(fecha);
-
+ 
         // Verificar si la fecha es válida
         if (
           isNaN(fechaSeleccionada.getTime()) ||
@@ -361,18 +360,18 @@ export default {
           alert("Fecha no válida. Por favor, selecciona una fecha válida.");
           // Puedes reiniciar la fecha o manejarlo según tus necesidades
         }
-
+ 
         // Puedes agregar más lógica de validación si es necesario
       }
     },
      generarPDF() {
       const content = this.$refs.pdfContent;
-
+ 
       html2pdf(content);
     },
   },
 };
 </script>
-
+ 
 <style scoped>
 </style>
