@@ -5,7 +5,10 @@
   
       <Menubar :model="items" class="custom-menubar">
          <template #start>
-            <h3>Clientes</h3>
+            
+             <router-link :to="{ path: '/clientes' }" class="menu-link">
+           <h3>Clientes</h3>
+            </router-link>
         </template>
         <template #end>
           <router-link :to="{ path: '/' }" class="menu-link">

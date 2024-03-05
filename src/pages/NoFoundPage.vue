@@ -1,7 +1,7 @@
 <template>
  
 
-  <div class="error"> <h3>Error</h3>
+  <div class="error"> 
   <img src="../assets/NOT.gif" alt="img de error 404">
   </div>
 </template>

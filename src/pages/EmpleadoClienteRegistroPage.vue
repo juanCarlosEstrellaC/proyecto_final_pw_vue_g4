@@ -65,10 +65,9 @@
     </div>
   </div>
   <div v-if="errorcedula">
-    <MensajeTemp
-      titulo="Error con los datos"
-      informacion="Cedula ya existente en la base de datos"
-    />
+
+    <p>Cedula ya existente en la base de datos</p>
+  
   </div>
   </div>
   </section>

@@ -1,7 +1,7 @@
 <template>
   <NavBarEmpleadoVue />
 
-  <h1>Actulizar Vehiculo</h1>
+  <h1>Actualizar Vehículo</h1>
   <section>
     <div class="container">
       <div>
@@ -22,7 +22,7 @@
 
         <FormularioGenerico
           type="text"
-          etiqueta="Pais Fabricaión"
+          etiqueta="País Fabricación"
           v-model="pFabricacion"
         />
 
@@ -43,26 +43,20 @@
           @click="actualizar"
           severity="danger"
           raised
-          label="Actualizar vehículo"
+          label="Actualizar Vehículo"
         />
       </div>
 
       <div v-if="correcto">
-        <label for="">se actualizó correctamente</label>
+        <Dialog header="Actualización Correcta" :visible="correcto" @hide="cerrarDialogCorrecto">
+          <p>Todos los datos se actualizaron correctamente.</p>
+        </Dialog>
       </div>
 
       <div v-if="datosincompletos">
-        <MensajeTemp
-          titulo="Error con los datos"
-          informacion="Completa los datos minimos"
-        />
-      </div>
-
-      <div v-if="correcto">
-        <MensajeTemp
-          titulo="Actulizacion Correcta"
-          informacion="Todos se hizo correctamente"
-        />
+        <Dialog header="Error con los datos" :visible="datosincompletos" @hide="cerrarDialogDatosIncompletos">
+          <p>Completa todos los campos para actualizar el vehículo.</p>
+        </Dialog>
       </div>
     </div>
   </section>
@@ -71,22 +65,21 @@
 <script>
 import FormularioGenerico from "../components/FormularioGenerico.vue";
 import { actualizarEmpleadoVehiculoFachada } from "../helpers/clienteEmpleado.js";
-import MensajeTemp from "@/components/MensajeTemp.vue";
 import NavBarEmpleadoVue from "@/components/NavBarEmpleado.vue";
 import InputText from "primevue/inputtext";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
-import FloatLabel from "primevue/floatlabel";
+import Dialog from 'primevue/dialog';
+
 export default {
   name: "EmpleadoVehiculoActualizarPage",
   components: {
     FormularioGenerico,
-    MensajeTemp,
     NavBarEmpleadoVue,
     InputText,
     Dropdown,
     Button,
-    FloatLabel,
+    Dialog
   },
   data() {
     return {
@@ -170,8 +163,7 @@ export default {
         );
 
         this.correcto = true;
-        console.log("se actualzó");
-         setTimeout(() => {
+        setTimeout(() => {
           this.$router.push({
             name: "VisualizarVehiculo",
             params: { placa: placaParaBuscar },
@@ -191,6 +183,14 @@ export default {
       setTimeout(() => {
         this.datosincompletos = false;
       }, 3000);
+    },
+
+    cerrarDialogCorrecto() {
+      this.correcto = false;
+    },
+
+    cerrarDialogDatosIncompletos() {
+      this.datosincompletos = false;
     },
   },
 };

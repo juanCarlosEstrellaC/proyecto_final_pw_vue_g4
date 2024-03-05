@@ -1,7 +1,7 @@
 <template>
 <NavBarVue/>
   <h1>Reservar</h1>
-<ReservaVehiculoVue/>
+<ReservaVehiculoVue  @envioReserva="metodo($event)"/>
 </template>
 
 <script>
@@ -11,7 +11,24 @@ import NavBarVue from '@/components/NavBar.vue'
 export default {
 components:{
   ReservaVehiculoVue,NavBarVue,ClienteRentarVue
-}
+},
+data(){
+  return{
+          reserva: null,
+  }
+},
+methods: {
+    metodo(nre) {
+      this.reserva = nre;
+     
+        console.log(this.reserva)
+
+         if(this.reserva!=null){
+           this.$router.push("/clientes");
+         }
+      
+    }
+  }
 }
 </script>
 

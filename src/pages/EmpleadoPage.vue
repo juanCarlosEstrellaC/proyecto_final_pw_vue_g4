@@ -2,6 +2,7 @@
   
   <NavBarEmpleadoVue />
    <router-view />  
+   <h1>sjebfkjsefnksje</h1>
   <Footer/>
 </template>
 

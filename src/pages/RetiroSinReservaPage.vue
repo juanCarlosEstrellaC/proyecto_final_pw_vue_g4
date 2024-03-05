@@ -33,7 +33,7 @@ export default {
       this.reserva = nre;
      
         console.log(this.reserva)
-
+    
        
       
     }

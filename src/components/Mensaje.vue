@@ -2,7 +2,7 @@
   <div class="contenedor">
     <h1>{{ titulo }}</h1>
     <h4>{{ informacion }}</h4>
-    <button @click="presionarBoton">{{ nombreBoton }}</button>
+    <button @click="presionarBoton"><p>{{ nombreBoton }}</p></button>
   </div>
 </template>
 
@@ -41,14 +41,18 @@ export default {
   align-items: center;
   flex-direction: column;
   margin: 0 auto;
-  width: 300px;
-  background-color: #66c9e7;
+  width: 100%;
+  padding-inline: 50px;
+  background-color: #ffffff;
   border: solid 1px black;
+
 }
 
 button {
+  border-radius: 5px;
+ padding: 0px 10px 0px 10px;
   margin: 10px;
-  background-color: rgb(255, 206, 127);
+  background-color: rgb(194, 38, 38);
   border: solid 1px black;
 }
 </style>

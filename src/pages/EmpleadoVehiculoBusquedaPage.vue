@@ -1,64 +1,60 @@
 <template>
-<NavBarEmpleadoVue/>
-<h1>Buscar vehículo por Marca</h1>
-<section>
+  <div>
+    <NavBarEmpleadoVue/>
+    <h1>Buscar vehículo por Marca</h1>
+    <section>
+      <div class="container">
+        <FloatLabel>
+          <InputText id="marca" v-model="marcaid" @keydown.enter="consultarPorMarca"/>
+          <label for="marca">Marca</label>
+        </FloatLabel>
+        <Button @click="consultarPorMarca" severity="danger" raised label="Buscar" />
 
-  <div class="container">
-  
-<FloatLabel>
-  
-        <InputText id="marca" v-model="marcaid" @keydown.enter="consultarPorMarca"/>
-        <label for="marca">Marca</label>
-      </FloatLabel>
-      <Button @click="consultarPorMarca" severity="danger" raised  label="Buscar" />
+        <div v-if="mensajeVacio">
+          <p>No existen coincidencias</p>
+        </div>
 
- 
-
-  <div v-if="mensajeVacio">
-    <MensajeTemp
-      titulo="NO EXISTEN COINCIDENCIAS"
-      informacion="verifica la marca"
-    />
+        <div v-if="mostrar">
+          <table class="tabla">
+            <thead>
+              <tr>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Placa</th>
+                <th>Opciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="vehiculo in data" :key="vehiculo.id">
+                <td>{{ vehiculo.marca }}</td>
+                <td>{{ vehiculo.modelo }}</td>
+                <td>{{ vehiculo.placa }}</td>
+                <td>
+                  <Button @click="goVisualizar(vehiculo.placa)" severity="Plain" plain text raised label="Visualizar" />
+                  <Button @click="goActualizar(vehiculo.id)" severity="secondary" text raised label="Actualizar" />
+                  <Button @click="confirmarEliminarVehiculo(vehiculo)" icon="pi pi-trash" severity="danger" text raised />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <!-- Dialog para confirmación de eliminación -->
+        <Dialog v-model="mostrarDialogEliminar" :visible="mostrarDialogEliminar" header="Eliminar Vehículo" :modal="true" @update:visible="ocultarDialogEliminar">
+          <p>¿Está seguro de eliminar este vehículo?</p>
+          <div class="p-d-flex p-jc-between">
+            <Button @click="cancelarEliminar" label="Cancelar" />
+            <Button @click="eliminarVehiculo" label="Eliminar" class="p-button-danger" />
+          </div>
+        </Dialog>
+        
+        <!-- Dialog para mensaje de vehículo eliminado -->
+        <Dialog v-model="mostrarDialogEliminado" :visible="mostrarDialogEliminado" header="Vehículo Eliminado" :modal="true" @update:visible="ocultarDialogEliminado">
+          <p>El vehículo ha sido eliminado correctamente.</p>
+        </Dialog>
+      </div>
+    </section>
   </div>
-
-  <div v-if="mostrar">
-    <table>
-      <thead>
-        <tr>
-          <th>Marca</th>
-          <th>Modelo</th>
-          <th>Placa</th>
-          <th>Opciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="vehiculo in data" :key="vehiculo.id">
-          <td>{{ vehiculo.marca }}</td>
-          <td>{{ vehiculo.modelo }}</td>
-          <td>{{ vehiculo.placa }}</td>
-          <td>
-
-            <Button @click="goVisualizar(vehiculo.placa)" severity="Plain" plain text raised label="Visualizar" />
-              
-              <Button @click="goActulizar(vehiculo.id)"  severity="secondary" text raised   label="Actualizar" />
-<Button @click="goEliminar(vehiculo.id, vehiculo.placa)" icon="pi pi-trash" severity="danger" text raised/>
-
-            
-           
-            
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div v-if="mostrarEliminacion">
-    <MensajeTemp
-      titulo="Eliminado de la base"
-      :informacion="'Se eliminó el vehículo con placa ' + valPlaca"
-    />
-  </div>
-  </div>
-</section>
 </template>
 
 <script>
@@ -73,11 +69,13 @@ import FloatLabel from 'primevue/floatlabel';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import NavBarEmpleadoVue from '@/components/NavBarEmpleado.vue';
+import Dialog from 'primevue/dialog';
+
 export default {
   name: "EmpleadoVehiculoBusquedaPage",
   components: {
     MensajeTemp, FloatLabel,
-    Button,InputText,NavBarEmpleadoVue
+    Button, InputText, NavBarEmpleadoVue, Dialog
   },
   data() {
     return {
@@ -85,49 +83,51 @@ export default {
       data: [],
       mostrar: false,
       mensajeVacio: false,
-      mostrarMensaje: false,
-      mostrarEliminacion: false,
-      valPlaca: null,
+      mostrarDialogEliminar: false,
+      mostrarDialogEliminado: false,
+      vehiculoAEliminar: null,
     };
   },
   methods: {
     async consultarPorMarca() {
       this.data = await consultarEmpleadoVehiculoFachada(this.marcaid);
-      if (this.data.length != 0) {
-        this.mostrar = true;
-        console.log("consulat desde em,todo");
-        console.log(this.data);
-        return this.data;
-      }
-      this.mostrar = false;
-      this.mensajeVacio = true;
-      setTimeout(() => {
-        this.mensajeVacio = false;
-      }, 3000);
+      this.mostrar = this.data.length > 0;
+      this.mensajeVacio = this.data.length === 0;
     },
-    //debe ir el id del vehiculo como argumento para relizar la busqueda de Vehiculo completo en el path
     goVisualizar(placa) {
       this.$router.push({ name: "VisualizarVehiculo", params: { placa } });
     },
-    //debe ir el id del vehiculo como argumento para relizar la actualizacion en el path
-    goActulizar(id) {
+    goActualizar(id) {
       this.$router.push({ name: "ActualizarVehiculo", params: { id } });
     },
-    //solo debe mostrar mensaje si se eliminó o no el vehículo
-    async goEliminar(id, placa) {
-      await eliminarEmpleadoVehiculoFachada(id);
-      this.valPlaca = placa;
-      console.log(placa);
-      this.mostrarEliminacion = true;
+    confirmarEliminarVehiculo(vehiculo) {
+      this.vehiculoAEliminar = vehiculo;
+      this.mostrarDialogEliminar = true;
+    },
+    async eliminarVehiculo() {
+      await eliminarEmpleadoVehiculoFachada(this.vehiculoAEliminar.id);
+      this.mostrarDialogEliminar = false;
+      this.mostrarDialogEliminado = true;
       setTimeout(() => {
-        this.mostrarEliminacion = false;
-        this.consultarPorMarca(this.marcaid);
-      }, 3000);
-      console.log("se elimino");
+        this.mostrarDialogEliminado = false;
+        this.consultarPorMarca();
+      }, 2000);
+    },
+    cancelarEliminar() {
+      this.mostrarDialogEliminar = false;
+    },
+    ocultarDialogEliminar() {
+      this.mostrarDialogEliminar = false;
+    },
+    ocultarDialogEliminado() {
+      this.mostrarDialogEliminado = false;
     },
   },
 };
 </script>
 
-<style>
+<style scoped>
+.tabla {
+  margin-top: 20px;
+}
 </style>

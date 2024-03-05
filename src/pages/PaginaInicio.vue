@@ -17,17 +17,22 @@
     </div>
     
   </div>
-
-  <h5>Te presentamos el mejor luegar para la renta de autos</h5>
+ <h5>Te presentamos el mejor luegar para la renta de autos</h5>
+ 
    <video controls autoplay muted>
       <source src="../assets/AVISVideo.mp4" type="video/mp4" />
     </video>
+    
+  <h5>EXPLORE TODAS LAS FORMAS EN QUE PUEDE AHORRAR</h5>
+    <img src="../assets/principalbajo.png" alt="">
 </template>
 
 <script>
 import NavBarInicioVue from '@/components/NavBarInicio.vue';
-
+ 
 export default {
+  name: "inicio",
+
   components: {
     NavBarInicioVue
   },
