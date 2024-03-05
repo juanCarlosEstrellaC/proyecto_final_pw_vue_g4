@@ -52,7 +52,7 @@
     <div v-if="registroExitoso">
       <Mensaje
         titulo="Registrado con Éxito"
-        informacion="Se Ingreso el cliente por un usuario"
+        informacion="Se Ingreso el cliente"
         @eventoMensaje="regresarEstado"
       />
     </div>

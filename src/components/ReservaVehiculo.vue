@@ -1,4 +1,4 @@
-[16:44] LUIS FERNANDO MOSQUERA ROMERO
+
 <template>
   <section>
     <div class="container">
@@ -33,7 +33,7 @@
  
  
  
-          <!-- ---------------------------------------------------------------->
+      
  
           <Button
             @click="presionarBoton"
