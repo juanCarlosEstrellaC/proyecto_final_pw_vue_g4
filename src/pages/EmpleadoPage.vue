@@ -2,7 +2,14 @@
   
   <NavBarEmpleadoVue />
    <router-view />  
-   <h1>sjebfkjsefnksje</h1>
+   <h1>Empleados</h1>
+   
+  <div class="princ">
+<img src="@/assets/cabeceraemp.jpg" alt="">
+
+  </div>
+  
+  
   <Footer/>
 </template>
 
@@ -28,5 +35,9 @@ name: 'EmpleadoPage',
 </script>
 
 <style>
+.princ img{
 
+  width: 60%;
+  height: 500px;
+}
 </style>

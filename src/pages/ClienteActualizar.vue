@@ -7,8 +7,8 @@
         <div v-if="!mostrarMensaje">
           <h5>Por favor, ingrese su número de cédula</h5>
           <FloatLabel>
-            <InputText id="cedula" v-model="cedula" @keydown.enter="buscarCedula"/>
-            <label for="cedula">{{cedula}}</label>
+            <InputText id="cedula" v-model="cedula" @keydown.enter="buscarCedula" />
+            <label for="cedula">Cédula</label>
           </FloatLabel>
           <Button @click="buscarCedula" severity="danger" raised label="Buscar" />
         </div>

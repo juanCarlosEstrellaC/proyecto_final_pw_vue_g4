@@ -1,85 +1,77 @@
 <template>
-
-<NavBarEmpleadoVue/>
- <h1>Actualizar</h1>
-<section>
-
-  <div class="container">
- 
   <div>
-     
-    <FormularioGenerico
-      type="text"
-      etiqueta="Cédula"
- 
-      v-model="cedula"
-    />
+    <NavBarEmpleadoVue />
+    <h1>Actualizar Cliente</h1>
+    <section>
+      <div class="container">
+        <div>
+          <FormularioGenerico
+            type="text"
+            etiqueta="Cédula"
+            v-model="cedula"
+          />
 
-    <FormularioGenerico
-      type="text"
-      etiqueta="Nombre"
+          <FormularioGenerico
+            type="text"
+            etiqueta="Nombre"
+            v-model="nombre"
+          />
 
-      v-model="nombre"
-    />
+          <FormularioGenerico
+            type="text"
+            etiqueta="Apellido"
+            v-model="apellido"
+          />
 
-    <FormularioGenerico
-      type="text"
-      etiqueta="Apellido"
-  
-      v-model="apellido"
-    />
-     <label class="label" for="fechaNacimiento">Fecha de Nacimiento</label>
-        <InputText id="fechaNacimiento" v-model="fNacimiento" type="date" />
+          <label class="label" for="fechaNacimiento">Fecha de Nacimiento</label>
+          <InputText id="fechaNacimiento" v-model="fNacimiento" type="date" />
 
-    <FloatLabel>
-       <label class="label" for="genero">Genero</label>
-         <Dropdown v-model="genero" :options="generoOptions" optionLabel="label" placeholder="Selecciona un género" />
-       
-      </FloatLabel>
+          <FloatLabel>
+            <label class="label" for="genero">Género</label>
+            <Dropdown v-model="genero" :options="generoOptions" optionLabel="label" placeholder="Selecciona un género" />
+          </FloatLabel>
 
-     <Button @click="actualizar" severity="danger" raised  label="Actualizar" />
+          <Button @click="actualizar" severity="danger" raised label="Actualizar" />
 
+          <!-- Dialog para datos incompletos -->
+          <Dialog v-model="mostrarDialogDatosIncompletos" header="Error" :visible="mostrarDialogDatosIncompletos" @hide="ocultarDialogDatosIncompletos">
+            <p>Todos los campos son obligatorios. Por favor, complete todos los campos.</p>
+          </Dialog>
 
-
-  <div v-if="datosincompletos">
-    <MensajeTemp
-      titulo="Error con los datos"
-      informacion="Cedula ya existente en la base de datos"
-    />
+          <!-- Dialog para actualización correcta -->
+          <Dialog v-model="mostrarDialogCorrecto" header="Éxito" :visible="mostrarDialogCorrecto" @hide="ocultarDialogCorrecto">
+            <p>La actualización se realizó correctamente.</p>
+          </Dialog>
+        </div>
+      </div>
+    </section>
   </div>
-
-  <div v-if="correcto">
-    <MensajeTemp
-      titulo="Actulizacion Correcta"
-      informacion="Todos se hizo correctamente"
-    />
-  </div>
-  </div> </div>
-</section>
 </template>
 
 <script>
-import FormularioClienteFer from "../components/FormularioClienteFer.vue";
 import FormularioGenerico from "../components/FormularioGenerico.vue";
 import { actualizarEmpleadoClienteFachada } from "../helpers/clienteEmpleado.js";
-import MensajeTemp from "@/components/MensajeTemp.vue";
 import InputText from 'primevue/inputtext';
 import Dropdown from 'primevue/dropdown';
 import Button from 'primevue/button';
+import FloatLabel from 'primevue/floatlabel';
 import NavBarEmpleadoVue from '@/components/NavBarEmpleado.vue';
+import Dialog from 'primevue/dialog';
+
 export default {
   name: "EmpleadoClienteActualizarPage",
-
   components: {
-    FormularioClienteFer,
     FormularioGenerico,
-    MensajeTemp,
-    NavBarEmpleadoVue,InputText,
-    Dropdown,Button
+    NavBarEmpleadoVue,
+    InputText,
+    Dropdown,
+    Button,
+    FloatLabel,
+    Dialog
   },
   data() {
     return {
-        generoOptions: [
+      generoOptions: [
         { label: 'Masculino', value: 'masculino' },
         { label: 'Femenino', value: 'femenino' },
         { label: 'Otro', value: 'otro' }
@@ -89,52 +81,74 @@ export default {
       apellido: null,
       fNacimiento: null,
       genero: null,
-      datosincompletos: false,
-      correcto: false,
+      mostrarDialogDatosIncompletos: false,
+      mostrarDialogCorrecto: false,
     };
   },
   methods: {
     async actualizar() {
-      const clienteBody = {
-        nombre: this.nombre,
-        apellido: this.apellido,
-        genero: this.genero ? this.genero.label : null,
-        fechaNacimiento: this.fNacimiento,
-        numeroCedula: this.cedula,
-      };
+      // Verificar si todos los campos están llenos
+      if (
+        this.cedula &&
+        this.nombre &&
+        this.apellido &&
+        this.genero &&
+        this.fNacimiento
+      ) {
+        const clienteBody = {
+          nombre: this.nombre,
+          apellido: this.apellido,
+          genero: this.genero.label,
+          fechaNacimiento: this.fNacimiento,
+          numeroCedula: this.cedula,
+        };
 
-      const cedulaParaBuscar = clienteBody.numeroCedula;
-      if (this.cedula !== null && this.apellido !== null) {
+        const cedulaParaBuscar = clienteBody.numeroCedula;
         await actualizarEmpleadoClienteFachada(
           this.$route.params.id,
           clienteBody
         );
 
-        this.correcto = true; 
-       
-        console.log("se actualzó");
+        this.mostrarDialogCorrecto = true;
         setTimeout(() => {
+          this.mostrarDialogCorrecto = false;
           this.$router.push({
             name: "VisualizarCliente",
             params: { cedula: cedulaParaBuscar },
           });
         }, 2500);
 
-        this.nombre = null;
-        this.apellido = null;
-        this.genero = null;
-        this.fNacimiento = null;
-        this.cedula = null;
-        return;
+        this.limpiarCampos();
+      } else {
+        this.mostrarDialogDatosIncompletos = true;
+        setTimeout(() => {
+          this.mostrarDialogDatosIncompletos = false;
+        }, 3000);
       }
-      this.datosincompletos = true; 
-      setTimeout(() => {
-        this.datosincompletos = false;
-      }, 3000);
+    },
+
+    // Limpiar campos después de la actualización
+    limpiarCampos() {
+      this.cedula = null;
+      this.nombre = null;
+      this.apellido = null;
+      this.genero = null;
+      this.fNacimiento = null;
+    },
+
+    // Ocultar dialog de datos incompletos
+    ocultarDialogDatosIncompletos() {
+      this.mostrarDialogDatosIncompletos = false;
+    },
+
+    // Ocultar dialog de actualización correcta
+    ocultarDialogCorrecto() {
+      this.mostrarDialogCorrecto = false;
     },
   },
 };
 </script>
 
-<style>
+<style scoped>
+  /* Estilos opcionales para personalizar los dialogs */
 </style>
