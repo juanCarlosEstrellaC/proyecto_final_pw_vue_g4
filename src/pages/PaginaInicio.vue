@@ -1,6 +1,7 @@
 <template>
   <NavBarInicioVue/>
   <router-view />
+   <h5>Selecciona el método de ingreso</h5>
   <div class="inicio">
     <div @click="clientes" class="clientes">
       <img src="https://www.esic.edu/sites/default/files/styles/full/public/rethink/580280b3-atencion-al-cliente-y-servicio-al-cliente.jpg?itok=REGLgDj2" alt="">
@@ -14,7 +15,13 @@
         <p>EMPLEADOS</p>
       </div>
     </div>
+    
   </div>
+
+  <h5>Te presentamos el mejor luegar para la renta de autos</h5>
+   <video controls autoplay muted>
+      <source src="../assets/AVISVideo.mp4" type="video/mp4" />
+    </video>
 </template>
 
 <script>

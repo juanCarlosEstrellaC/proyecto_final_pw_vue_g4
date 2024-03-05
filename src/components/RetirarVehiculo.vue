@@ -4,7 +4,7 @@
     <div class="container">
       <div class="center-input">
         <FloatLabel>
-          <InputText id="numeroReserva" v-model="nReserva"/>
+          <InputText id="numeroReserva" v-model="nReserva" />
           <label for="numeroReserva">Numero de reserva</label>
         </FloatLabel>
         <Button @click="buscarRetiroPorNReserva" severity="danger" raised label="Buscar reserva" />
@@ -65,6 +65,15 @@ export default {
     InputText,
     FloatLabel,
     Dialog
+  },
+  props:{
+valor: {
+      type: String,
+      required: true
+  }},
+   created() {
+    console.log(this.valor)
+    this.nReserva=this.valor
   },
   data() {
     return {

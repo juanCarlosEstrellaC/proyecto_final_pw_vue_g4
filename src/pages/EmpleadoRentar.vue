@@ -1,5 +1,5 @@
 <template>
-<NavBarVue/>
+<NavBarEmpleado/>
 <h1>Rentar Vehículo</h1>
 <section>
   <div class="container">
@@ -44,7 +44,7 @@
     
             <router-link 
               :to="{
-                path: '/rentar',
+                path: '/rentarGlobal',
                 query: {
                   id: vehiculo.id,
                   placa: vehiculo.placa,
@@ -74,15 +74,12 @@ import InputText from 'primevue/inputtext';
 import Dropdown from 'primevue/dropdown';
 
 import NavBarVue from '@/components/NavBar.vue';
+import NavBarEmpleado from '@/components/NavBarEmpleado.vue';
 export default {
   components:{
       FloatLabel,
-    Button,InputText,Dropdown,NavBarVue,NavBarVue
-  },props:{
-    url:{
-        type: String,
-        required:true
-    }
+    Button,InputText,Dropdown,NavBarVue,NavBarEmpleado
+  
   },
   data() {
 

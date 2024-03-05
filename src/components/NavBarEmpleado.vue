@@ -1,6 +1,8 @@
 <template>
 
+  
 <img src="https://payload.cargocollective.com/1/5/176144/6655422/Pulling%20out%20no%20FPO_o.jpg" class="imagen-header" alt="header">
+
     <header >
   
       <Menubar :model="items" class="custom-menubar">
@@ -15,8 +17,9 @@
          </router-link>
         </template>
       </Menubar>
-  
+ 
     </header>
+
 
 
 
@@ -82,7 +85,7 @@ export default {
           label: 'Retiro sin reserva',
         
           command: () => {
-            this.$router.push('/empleado/reserva/sinreserva');
+            this.$router.push('/empleados/rentar');
           }
 
           }
@@ -107,25 +110,7 @@ export default {
 }
 </script>
 
-<style scoped>
-.imagen-header{
-  width: 100%;
-  height: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: -1;
-}
+<style >
 
-@media screen and (max-width:825px){
-  
-   
-  
-    .imagen-header{
-        height: 100%;
-    }
-
-    
-}
 
 </style>

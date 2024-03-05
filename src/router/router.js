@@ -16,7 +16,7 @@ const routes = [
         component: () => import('../pages/EmpleadoPage.vue')
     },
     {
-        path: '/empleado/reserva/sinreserva',
+        path: '/empleados/sinreserva',
         component: () => import('../pages/RetiroSinReservaPage.vue')
     },
     
@@ -81,11 +81,22 @@ component: () => import('../pages/EmpleadoRetirarPage.vue')
     path: '/clientes',
     component: () => import('../pages/Clientes.vue')
 },
-
 {
     path: '/rentar',
     component: () => import('../pages/VehiculoRentar.vue')
 },
+{
+    path: '/rentarGlobal',
+    component: () => import('../pages/RetiroSinReservaPage.vue')
+
+},{
+    path: '/empleados/rentar',
+    component: () => import('../pages/EmpleadoRentar.vue')
+
+},
+
+
+
 
 {
     path: '/:pathMatch(.*)*',

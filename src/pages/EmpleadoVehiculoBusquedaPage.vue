@@ -6,6 +6,7 @@
   <div class="container">
   
 <FloatLabel>
+  
         <InputText id="marca" v-model="marcaid" @keydown.enter="consultarPorMarca"/>
         <label for="marca">Marca</label>
       </FloatLabel>

@@ -1,47 +1,45 @@
 <template>
-<NavBarEmpleadoVue/>
-<h1>Retiro sin reserva</h1>
-<div >
+  <NavBarEmpleadoVue/>
+  <h1>Retiro sin reserva</h1>
 
-<ReservaVehiculoVue @envioReserva="metodo(event)"/>
+  <div>
+    <ReservaVehiculoVue v-show="this.reserva===null" @envioReserva="metodo($event)"/>
+  </div>
 
-</div>
-<div>
-
-<RetirarVehiculoVue :valor="reserva"/>
-  
-</div>
-
-
-  
-
+  <div>
+    <RetirarVehiculoVue v-if="this.reserva!==null" :valor="reserva"/>
+  </div>
 </template>
 
 <script>
+import NavBarEmpleadoVue from '@/components/NavBarEmpleado.vue'
+import ReservaVehiculoVue from '@/components/ReservaVehiculo.vue'
 import RetirarVehiculoVue from '@/components/RetirarVehiculo.vue'
 
-import ReservaVehiculoVue from '@/components/ReservaVehiculo.vue'
-
-import NavBarEmpleadoVue from '@/components/NavBarEmpleado.vue'
-
 export default {
- components:{RetirarVehiculoVue,ReservaVehiculoVue,NavBarEmpleadoVue},
- methods: {
-  data(){
-    return{
-      reserva:null
-    }
+  components: {
+    ReservaVehiculoVue,
+    RetirarVehiculoVue,
+    NavBarEmpleadoVue
   },
-  metodo(nre){
-    
-    this.reserva= nre;
-    console.log(this.reserva)
-  }
-},
-}
+  data() {
+    return {
+      reserva: null,
+      mostrar: false
+    };
+  },
+  methods: {
+    metodo(nre) {
+      this.reserva = nre;
+     
+        console.log(this.reserva)
 
+       
+      
+    }
+  }
+}
 </script>
 
 <style>
-
 </style>

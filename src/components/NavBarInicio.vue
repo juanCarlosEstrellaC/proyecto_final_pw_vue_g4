@@ -42,26 +42,10 @@ export default {
 }
 </script>
 
-<style scoped>
-.imagen-header{
-  width: 100%;
-  height: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: -1;
-}
-
-@media screen and (max-width:825px){
-  
-   
-  
-    .imagen-header{
-        height: 100%;
-    }
+<style >
 
     
-}
+
 h2{
    
     margin-top:55px;

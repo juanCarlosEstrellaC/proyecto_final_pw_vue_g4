@@ -3,11 +3,23 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
-    color: #2c3e50;
-    
+    color: #182533;
+   
    
   }
- 
+
+.main-container{
+    background-color: rgb(10, 7, 7);
+    transition: background-color 0.5s ease;
+ background-image: url('../assets/avisss.png');
+  background-repeat: repeat;
+    width: 100%;
+  height: auto ;
+position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
   h1{
     margin: 50px 0px 50px;
     color: rgb(241, 57, 57);
@@ -39,12 +51,12 @@ h3{
     margin-left: 50px;
 }
 h4{
-    color: aliceblue;
+    color: rgb(31, 37, 43);
     font-size: 3vmin;
 }
 h5{
     color: aliceblue;
-    font-size: 3.5vmin;
+    font-size: 3.5vmin; text-shadow: 1px 1px 0 #040404, -1px -1px 0 #000000, 1px -1px 0 #212121, -1px 1px 0 #252323;
 }
 p{
     
@@ -100,7 +112,25 @@ p{
     padding-left: 25px;
   
 }
+.imagen-header{
+  width: 100%;
+  height: auto ;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
 
+@media screen and (max-width:825px){
+  
+   
+  
+    .imagen-header{
+        height: 100%;
+    }
+
+    
+}
 .container{
     display: grid;
    
@@ -114,6 +144,14 @@ p{
     backdrop-filter: blur(20px);
     border: 2px solid rgba(255, 255, 255, 0.429);
     
+}
+.error img{
+    margin-inline: 20px;
+    height: 700px;
+    width: 100%;
+}
+.error{
+    background-color: rgb(244, 251, 250);
 }
 .label{
     display: flex;
@@ -132,7 +170,7 @@ section{
     
 }
 .reservaCorrecta p{
-    color: rgb(233, 231, 255);
+    color: rgb(104, 111, 170);
 }
 
 .p-button :hover{
@@ -178,9 +216,33 @@ td a{
 .p-float-label{
     font-size: 2.5vmin;
     color: rgb(33, 33, 33);
-    
+    padding-top: -10px;
 
 }
+.inputlabel label{
+    display: flex;
+    justify-content: start;
+    margin-left: 10px;
+
+}
+.p-inputtext{
+    margin-top: 15px;
+    
+}
+.p-float-label label {
+    position: absolute;
+    pointer-events: none;
+   
+    margin-top: -0.1rem;
+    transition-property: all;
+    transition-timing-function: ease;
+    line-height: 0;
+  }
+  .p-float-label > label {
+    left: 0.75rem;
+
+    transition-duration: 0.3s;
+  }
 label{
     color: rgb(33, 33, 33);
     font-size: 2vmin;
@@ -191,6 +253,9 @@ label{
 }
 .input{
     width: 100%;
+}
+.p-dropdown-label {
+font-size: 2vmin;
 }
 input{
     margin: 25px 0px 25px;
@@ -214,6 +279,10 @@ a :after{
 .botonesReserva{
     margin-inline: 100px;
 }
+video{
+    width: 100%;
+}
+
 
 @media screen and (max-width:700px){
   

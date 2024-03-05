@@ -2,7 +2,7 @@
 
   <section>
     <div class="container">
- 
+  <div v-if="!reservaRealizada">
     <div class="contenedor">
 <FloatLabel>
         <InputText id="placa" v-model="placa" />
@@ -53,7 +53,7 @@
         </div>
       </div>
     </div>
-  
+  </div>
 
   <div ref="pdfContent" v-else class="reservaCorrecta">
     <h1>Vehículo Reservado con éxito</h1>
@@ -109,10 +109,7 @@ export default {
     ,Button,NavBarInicioVue
   },
   props:{
-    valor:{
-        type: String,
-        required:true
-    }
+
   },
   data() {
     
@@ -139,7 +136,7 @@ export default {
   methods: {
     regresarPaginaPrincipal() {
       this.$emit("envioReserva",this.numeroReserva)  
-      router.push("/renta");
+      
     },
     async presionarBoton() {
       if (!this.placa || !this.cedula || !this.fechaInicio || !this.fechaFin) {

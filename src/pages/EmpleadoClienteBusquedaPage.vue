@@ -1,4 +1,5 @@
 <template>
+
 <NavBarEmpleadoVue/>
 <h1>Buscar cliente por Apellido</h1>
 <section>
@@ -52,6 +53,7 @@
   </div>
 
   </section>
+
 </template>
 
 <script>

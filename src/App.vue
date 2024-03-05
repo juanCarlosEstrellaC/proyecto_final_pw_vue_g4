@@ -1,10 +1,10 @@
 <template>
 <!-- <EmpleadoPage/> -->
-
+<div class="main-container">
    <router-view />
 
   <Footer/>
-
+</div>
 </template>
 
 <script>
