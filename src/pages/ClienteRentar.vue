@@ -16,6 +16,7 @@
           <th>Placa</th>
           <th>Marca</th>
           <th>Modelo</th>
+          <th>Año de Fabricación</th>
           <th>Estado</th>
           <th>Precio Diario</th>
           <th>Acciones</th>
@@ -26,10 +27,12 @@
           <td>{{ vehiculo.placa }}</td>
           <td>{{ vehiculo.marca }}</td>
           <td>{{ vehiculo.modelo }}</td>
+          <td>{{ vehiculo.anio }}</td>
           <td>{{ vehiculo.estado }}</td>
           <td>{{ vehiculo.renta }}</td>
           <td>
-            <router-link class="j"
+            <router-link
+              class="botonRentar"
               :to="{
                 path: '/rentar',
                 query: {
@@ -57,8 +60,8 @@ export default {
       id: null,
       existeBusqueda: false,
       listadoVehiculos: [],
-      marca: null,
-      modelo: null,
+      marca: "Toyota",
+      modelo: "Corolla",
     };
   },
   methods: {
@@ -67,7 +70,8 @@ export default {
       this.listadoVehiculos = await consultarVehiculoPorMarcaYModeloFachada(
         this.marca,
         this.modelo
-      );
+      )
+      console.log(this.listadoVehiculos);
     },
   },
 };
@@ -85,9 +89,9 @@ export default {
   border: solid 1px black;
 }
 
-.j {
-  padding: 10px 20px; 
-  font-size: 16px; 
+.botonRentar {
+  padding: 10px 20px;
+  font-size: 16px;
   background-color: #4caf50;
   border: none;
   color: white;
