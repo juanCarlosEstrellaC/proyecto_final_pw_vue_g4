@@ -57,14 +57,12 @@ export const consultarVehiculoPorMarcaYModeloFachada = async (marca, modelo) => 
 
 const consultarfechasRentasPorVehiculo = async (placa) => {
     const info = await axios.get(`http://localhost:8082/API/v1.0/Renta/clientes/fechas/${placa}`).then(r => r.data)
-    console.log("helper: ",info);
+    console.log("helper lista: ",info);
     return info;
 }
 export const consultarfechasRentasPorVehiculoFachada = async (placa) => {
     return await consultarfechasRentasPorVehiculo(placa);
 }
-
-
 
 
 

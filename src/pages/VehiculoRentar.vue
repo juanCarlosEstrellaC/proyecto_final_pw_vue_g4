@@ -6,7 +6,13 @@
       <label for="">Cédula:</label>
       <input type="text" v-model="cedula" />
       <label for="fechaInicio">Fecha Inicio:</label>
-      <input type="date" v-model="fechaInicio" :min="fechaMinima" />
+      <input
+        type="date"
+        id="fechaInicio"
+        v-model="fechaInicio"
+        :min="fechaMinima"
+      />
+
       <label for="">Fecha Fin:</label>
       <input type="date" v-model="fechaFin" :min="fechaMinima" />
 
@@ -27,10 +33,22 @@
         <div v-else class="mensajeBad">
           <h3>Vehículo No Disponible</h3>
           <h5>No es posible rentar el vehículo en las fechas solicitadas.</h5>
-          <h3>El vehículo se no se encontrará disponible las siguientes fechas:</h3>
-          <ul class="uli">
-            <li v-for="fecha in fechasFormateadas" :key="fecha">{{ fecha }}</li>
-          </ul>
+          <h3>El vehículo se encontrará disponible desde el</h3>
+          <template
+            v-if="
+              Array.isArray(fechasDeshabilitadas) &&
+              fechasDeshabilitadas.length > 0
+            "
+          >
+            <ul>
+              <li v-for="fecha in fechasUnicas" :key="fecha">
+                {{ formatearFecha(fecha) }}
+              </li>
+            </ul>
+          </template>
+          <template v-else>
+            <h2>No hay fechas disponibles</h2>
+          </template>
           <h5>Por favor, cambie las fechas e intente nuevamente.</h5>
           <button @click="cambiarFechas">Cambiar fechas</button>
         </div>
@@ -64,9 +82,9 @@
 <script>
 import {
   consultarClientePorCIFachada,
+  consultarfechasRentasPorVehiculoFachada,
   consultarReservaPorPlacaFachada,
   consultarValorTotalFachada,
-  consultarfechasRentasPorVehiculoFachada,
   guardarRentaFachada,
 } from "@/helpers/clienteCliente";
 import router from "@/router/router";
@@ -84,49 +102,48 @@ export default {
       vehiculoDisponible: false,
       reservaRealizada: false,
       tarjeta: null,
-      valorTotal: null,
+      valorTotal: 100,
       numeroReserva: null,
       fechaDisponibilidad: null,
       formulario: false,
       fechaMinima: this.getFechaMinima(),
-      lasFechas: [
-        "2024-03-06",
-        "2024-03-07",
-        "2024-03-08",
-        "2024-03-09",
-        "2024-03-10",
-        "2024-03-11",
-        "2024-03-12",
-        "2024-03-13",
-        "2024-03-14",
-        "2024-03-14",
-      ],
+      fechasDeshabilitadas: [],
+      miLista: null,
     };
   },
-  created(){
-    this.lasFechas = consultarfechasRentasPorVehiculoFachada(this.placa);
-    console.log(this.lasFechas);
+  mounted() {
+    consultarfechasRentasPorVehiculoFachada(this.placa)
+      .then((fechas) => {
+        this.fechasDeshabilitadas = fechas;
+        console.log("Fechas deshabilitadas:", fechas);
+      })
+      .catch((error) => {
+        console.error("Error al obtener las fechas deshabilitadas:", error);
+      });
   },
-  // computed: {
-  //   fechasFormateadas() {
-  //     return this.lasFechas.map(fecha => {
-  //       const partesFecha = fecha.split('-');
-  //       const dia = parseInt(partesFecha[2]);
-  //       const numeroMes = parseInt(partesFecha[1]);
-  //       const mesesNombres = {
-  //         1: 'Enero', 2: 'Febrero', 3: 'Marzo', 4: 'Abril', 5: 'Mayo',
-  //         6: 'Junio', 7: 'Julio', 8: 'Agosto', 9: 'Septiembre', 10: 'Octubre',
-  //         11: 'Noviembre', 12: 'Diciembre'
-  //       };
-  //       const mes = mesesNombres[numeroMes];
-  //       const anio = partesFecha[0];
-  //       return `${dia} de ${mes} del ${anio}`;
-  //     });
-  //   }
-  // },
+  computed: {
+    fechasUnicas() {
+      if (!Array.isArray(this.fechasDeshabilitadas)) return [];
+      const conjuntoFechas = new Set(this.fechasDeshabilitadas);
+      return Array.from(conjuntoFechas);
+    },
+  },
   methods: {
+    formatearFecha(fecha) {
+      const fechaObj = new Date(fecha);
+      const dia =
+        fechaObj.getDate() < 10 ? `0${fechaObj.getDate()}` : fechaObj.getDate();
+      const mes =
+        fechaObj.getMonth() + 1 < 10
+          ? `0${fechaObj.getMonth() + 1}`
+          : fechaObj.getMonth() + 1;
+      const año = fechaObj.getFullYear();
+      return `${dia} - ${mes} - ${año}`;
+    },
+    regresarPaginaPrincipal() {
+      router.push("/renta");
+    },
     async presionarBoton() {
-      console.log(this.lasFechas);
       if (!this.placa || !this.cedula || !this.fechaInicio || !this.fechaFin) {
         alert(
           "Por favor, completa todos los campos antes de verificar la disponibilidad."
@@ -138,9 +155,10 @@ export default {
         this.cambiarFechas();
       } else {
         await this.buscarCedula();
+        await this.fechasDisponibilidad();
 
         if (this.formulario) {
-          if (true) {
+          if (this.fechasDeshabilitadas.length == 0) {
             this.vehiculoDisponible = true;
             const cotizacion = {
               placa: this.placa,
@@ -161,6 +179,12 @@ export default {
           );
         }
       }
+    },
+    async fechasDisponibilidad() {
+      const listaFechas = await consultarfechasRentasPorVehiculoFachada(
+        this.placa
+      );
+      console.log(listaFechas);
     },
     async buscarCedula() {
       try {
@@ -205,9 +229,6 @@ export default {
       const dia = hoy.getDate() < 10 ? `0${hoy.getDate()}` : hoy.getDate();
       return `${hoy.getFullYear()}-${mes}-${dia}`;
     },
-  },
-  regresarPaginaPrincipal() {
-    router.push("/renta");
   },
 };
 </script>
@@ -274,9 +295,5 @@ label {
 input {
   margin: 5px;
   text-align: center;
-}
-li {
-  list-style-type: none; 
-  
 }
 </style>
