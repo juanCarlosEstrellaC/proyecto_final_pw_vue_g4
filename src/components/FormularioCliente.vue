@@ -13,14 +13,20 @@
         <InputText id="numeroCedula" v-model="numeroCedula"/>
         <label for="numeroCedula">Cédula</label>
       </FloatLabel>
+
+      <FloatLabel>
+        <InputText id="correo" v-model="correo"/>
+        <label for="correo">Correo electrónico</label>
+      </FloatLabel>
     <label for="fechaNacimiento">Fecha de Nacimiento</label>
         <InputText id="fechaNacimiento" v-model="fechaNacimiento" type="date" />
         
     
-       <FloatLabel>
+     
+          <label class="label" for="genero">Genero</label>
          <Dropdown v-model="genero" :options="generoOptions" optionLabel="label" placeholder="Selecciona un género" />
-        <label for="genero">Genero</label>
-      </FloatLabel>
+      
+    
 
    <Button @click="presionarBoton" severity="danger" raised  :label="nombreBoton" />
 
@@ -68,6 +74,7 @@ export default {
       fechaNacimiento: null,
       genero: null,
       mostrarMensaje: false,
+      correo: null
     };
   },
   methods: {
@@ -77,7 +84,8 @@ export default {
         apellido: this.apellido,
         numeroCedula: this.numeroCedula,
         fechaNacimiento: this.fechaNacimiento,
-        genero: this.genero,
+       genero: this.genero ? this.genero.label : null,
+        correo:this.correo
       };
       this.$emit("eventoBoton", cliente);
     },

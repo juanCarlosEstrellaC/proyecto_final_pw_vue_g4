@@ -50,7 +50,9 @@ export default {
           command: () => {
             this.$router.push('/renta');
           }
-        }
+        },
+        
+        
       ]
     };
   }

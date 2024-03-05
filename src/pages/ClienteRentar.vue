@@ -1,137 +1,143 @@
 <template>
-  <h1>Rentar Vehículo</h1>
-  <div class="contenedor">
-    <label for="">Marca:</label>
-    <input type="text" v-model="marca" />
-    <label for="">Modelo:</label>
-    <input type="text" v-model="modelo" />
-    <button @click="buscar">Buscar</button>
+<NavBarVue/>
+<h1>Rentar Vehículo</h1>
+<section>
+  <div class="container">
+  <div class="arriba">
+    
+      <label class="label" for="marca">Marca</label>
+        <Dropdown
+          v-model="marca"
+          :options="marcaOptions"
+          optionLabel="label"
+          placeholder="Selecciona una marca"
+        />
+       <FloatLabel>
+        <InputText id="modelo" v-model="modelo"/>
+        <label for="modelo">Modelo</label>
+      </FloatLabel>
+    
+<Button @click="buscar" severity="danger" raised  label="Buscar" />
+   
   </div>
-
   <div class="tabla" v-if="existeBusqueda">
-    <div class="encabezado">
-      <table>
-        <thead>
-          <tr>
-            <th>Placa</th>
-            <th>Marca</th>
-            <th>Modelo</th>
-            <th>Año de Fabricación</th>
-            <th>Estado</th>
-            <th>Precio Diario</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-      </table>
-    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Placa</th>
+          <th>Marca</th>
+          <th>Modelo</th>
+          <th>Estado</th>
+          <th>Precio Diario</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="vehiculo in listadoVehiculos" :key="vehiculo.id">
+          <td>{{ vehiculo.placa }}</td>
+          <td>{{ vehiculo.marca }}</td>
+          <td>{{ vehiculo.modelo }}</td>
+          <td>{{ vehiculo.estado }}</td>
+          <td>{{ vehiculo.renta }}</td>
+          <td>
 
-    <div class="cuerpo">
-      <table>
-        <tbody>
-          <tr v-for="vehiculo in listadoVehiculos" :key="vehiculo.id">
-            <td>{{ vehiculo.placa }}</td>
-            <td>{{ vehiculo.marca }}</td>
-            <td>{{ vehiculo.modelo }}</td>
-            <td>{{ vehiculo.anioFabricacion }}</td>
-            <td>{{ vehiculo.estado }}</td>
-            <td>{{ vehiculo.renta }}</td>
-            <td>
-              <router-link
-                :to="{
-                  path: '/rentar',
-                  query: { id: vehiculo.id, placa: vehiculo.placa },
-                }"
-                >Rentar</router-link
-              >
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    
+            <router-link 
+              :to="{
+                path: '/rentar',
+                query: {
+                  id: vehiculo.id,
+                  placa: vehiculo.placa,
+                  estado: vehiculo.estado,
+                  marca: vehiculo.marca,
+                  modelo: vehiculo.modelo,
+                },
+              }"
+              >Rentar</router-link
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
+  </div>
+
+</section>
 </template>
 
 <script>
-import { consultarVehiFachada } from "@/helpers/clienteCliente";
+import { consultarVehiculoPorMarcaYModeloFachada } from "@/helpers/clienteCliente";
+import FloatLabel from 'primevue/floatlabel';
+
+import Button from 'primevue/button';
+import InputText from 'primevue/inputtext';
+import Dropdown from 'primevue/dropdown';
+
+import NavBarVue from '@/components/NavBar.vue';
 export default {
+  components:{
+      FloatLabel,
+    Button,InputText,Dropdown,NavBarVue
+  },
   data() {
+
     return {
+       marcaOptions: [
+        { label: "Audi" },
+        { label: "BMW" },
+        { label: "Chevrolet" },
+        { label: "Ford" },
+        { label: "Honda" },
+        { label: "Hyundai" },
+        { label: "Kia" },
+        { label: "Mazda" },
+        { label: "Mercedes-Benz" },
+        { label: "Nissan" },
+        { label: "Toyota" },
+        { label: "Volkswagen" },
+        { label: "Volvo" },
+        { label: "Fiat" },
+        { label: "Jeep" },
+        { label: "Subaru" },
+        { label: "Tesla" },
+        { label: "Porsche" },
+        { label: "Lexus" },
+        { label: "Infiniti" },
+        { label: "Acura" },
+        { label: "Jaguar" },
+        { label: "Land Rover" },
+        { label: "Mitsubishi" },
+        { label: "Suzuki" },
+        { label: "Chrysler" },
+        { label: "Dodge" },
+        { label: "GMC" },
+        { label: "Ram" },
+        { label: "Buick" },
+        { label: "Cadillac" },
+        { label: "Lincoln" },
+        { label: "Alfa Romeo" },
+        { label: "Genesis" },
+        { label: "Mini" },
+      ],
       id: null,
       existeBusqueda: false,
       listadoVehiculos: [],
-      marca:null,
-      modelo:null,
+      marca: null,
+      modelo: null,
     };
   },
   methods: {
-   async buscar() {
+    async buscar() {
       this.existeBusqueda = true;
-     this.listadoVehiculos = await consultarVehiFachada(this.marca, this.modelo);
-     console.log(this.listadoVehiculos);
+      this.listadoVehiculos = await consultarVehiculoPorMarcaYModeloFachada(
+        this.marca.label,
+        this.modelo
+      );
     },
   },
 };
 </script>
 
 <style scoped>
-.contenedor {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  margin: 0 auto;
-  width: 300px;
-  background-color: rgb(241, 222, 198);
-  border: solid 1px black;
-}
 
-.tabla {
-  position: relative;
-  margin: 20px;
-  overflow: hidden;
-}
-
-.encabezado {
-  position: absolute;
-  top: 0;
-  width: 100%;
-}
-
-.cuerpo {
-  overflow-y: auto;
-  max-height: 350px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th,
-td {
-  border: 1px solid #dddddd;
-  text-align: center;
-  padding: 8px;
-  width: 14.28%;
-}
-
-th {
-  background-color: #4caf50;
-  color: white;
-}
-
-button {
-  margin: 25px;
-  background-color: rgb(255, 206, 127);
-  border: solid 1px black;
-}
-
-label {
-  margin-top: 10px;
-}
-
-input {
-  margin: 5px;
-  text-align: center;
-}
 </style>

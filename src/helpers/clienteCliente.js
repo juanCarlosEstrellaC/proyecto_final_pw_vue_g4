@@ -1,65 +1,94 @@
 import axios from "axios";
 
-const consultar = async (id) => {
-    const info = axios.get(`http://localhost:8082/API/v1.0/Renta/clientes/${id}`).then(r => r.data)
+// Consultar Cliente por Cédula:
+const consultarClientePorCedula = async (cedula) => {
+    const info = axios.get(`http://localhost:8082/API/v1.0/Renta/clientes/${cedula}`).then(r => r.data)
     console.log(info);
     return info;
 }
 
-const consultarPorCedula = async (cedula) => {
-    const info = axios.get(`http://localhost:8082/API/v1.0/Renta/empleados/${cedula}`).then(r => r.data)
-    console.log(info);
-    return info;
-}
-const insertar = async (body) => {
+// Guardar Cliente:
+const guardarCliente = async (body) => {
     try {
         const response = await axios.post(`http://localhost:8082/API/v1.0/Renta/clientes`, body);
-        console.log("respuesta desde helpers: "+response);
-        console.log("respuesta desde helpers: "+response.data);
         return response.data;
     } catch (error) {
         throw error;
     }
 }
 
-const actualizar = async (id, body) => {
-    const info = axios.put(`http://localhost:8082/API/v1.0/Renta/clientes/${id}`, body).then(r => r.data)
-    console.log(info);
-}
-const eliminar = async (id) => {
-    const info = axios.delete(`http://localhost:8082/API/v1.0/Renta/clientes/${id}`).then(r => r.data)
+// Actualizar Cliente Parcial (Sin cédula): 
+const actualizarClienteParcial = async (id, body) => {
+    const info = axios.patch(`http://localhost:8082/API/v1.0/Renta/clientes/${id}`, body).then(r => r.data)
     console.log(info);
 }
 
-// Métodos Fachada:
-export const consultarClienteFachada = async (id) => {
-    return await consultar(id);
+
+// METODOS FACHADA:
+export const consultarClientePorCIFachada = async (id) => {
+    return await consultarClientePorCedula(id);
 }
-export const consultarClientePorCedulaFachada = async (cedula) => {
-    return await consultarPorCedula(cedula);
-}
+
 export const insertarClienteFachada = async (body) => {
     try {
-        const response = await insertar(body);
+        const response = await guardarCliente(body);
         return response;
     } catch (error) {
         throw error;
     }
 }
 
-export const actualizarClienteFachada = async (id, body) => {
-    //return await actualizar(id, body);
-}
-export const eliminarClienteFachada = async (id) => {
-    return await eliminar(id);
+export const actualizarClienteParcialFachada = async (id, body) => {
+    return await actualizarClienteParcial(id, body);
 }
 
-// ********************************************
-const consultarVehi = async (marca, modelo) => {
-    const info = axios.get(`http://localhost:8082/API/v1.0/Renta/vehiculos/buscarAutos?marca=${marca}&modelo=${modelo}`).then(r => r.data)
+
+//-------------------------------------------------------------------------------
+// Vehiculo
+const consultarVehiculoPorMarcaYModelo = async (marca, modelo) => {
+    const info = await axios.get(`http://localhost:8082/API/v1.0/Renta/vehiculos/buscarAutos?marca=${marca}&modelo=${modelo}`).then(r => r.data)
+    console.log("helper: ",info);
+    return info;
+}
+export const consultarVehiculoPorMarcaYModeloFachada = async (marca, modelo) => {
+    return await consultarVehiculoPorMarcaYModelo(marca, modelo);
+}
+
+//-------------------------------------------------------------------------------
+// Renta:
+const guardarRenta = async (body) => {
+    try {
+        const response = await axios.post(`http://localhost:8082/API/v1.0/Renta/clientes/generarReserva`, body);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+export const guardarRentaFachada = async (body) => {
+    try {
+        const response = await guardarRenta(body);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
+const consultarValorTotal = async (body) => {
+    console.log("helper",body);
+    const info = axios.post(`http://localhost:8082/API/v1.0/Renta/clientes/cotizar`, body).then(r => r.data)
     console.log(info);
     return info;
 }
-export const consultarVehiFachada = async (marca, modelo) => {
-    return await consultarVehi(marca, modelo);
+
+export const consultarValorTotalFachada = async (body) => {
+    return await consultarValorTotal(body);
+}
+// Consultar Reserva por Placa desde Cliente:
+const consultarReservaPorPlaca = async (placa) => {
+    const info = await axios.get(`http://localhost:8082/API/v1.0/Renta/clientes/reservas/${placa}`).then(r => r.data)
+    console.log(info);
+    return info;
+}
+export const consultarReservaPorPlacaFachada = async (placa) => {
+    return await consultarReservaPorPlaca(placa);
 }

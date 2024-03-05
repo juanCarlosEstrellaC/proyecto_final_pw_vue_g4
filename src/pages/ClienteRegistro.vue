@@ -1,10 +1,11 @@
 <template>
 <NavBarVue/>
+<h1>Registro de cliente</h1>
 <section>
 <div class="container">
   <div v-if="!mostrarMensaje">
     <FormularioCliente
-      titulo="Registro de Cliente"
+      titulo=""
       nombreBoton="Registrar"
       :editablenumeroCedula="true"
       @eventoBoton="presionarBoton($event)"

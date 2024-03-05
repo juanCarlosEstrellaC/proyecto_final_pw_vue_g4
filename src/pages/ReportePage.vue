@@ -5,7 +5,7 @@
   <section>
     <div class="container">
       <div class="center-input">
-        <label for="fechaInicio">Fecha inicio</label>
+        <label class="label" for="fechaInicio">Fecha inicio</label>
         <InputText
           v-model="fechaInicio"
           id="fechaInicio"
@@ -13,7 +13,7 @@
           format="yyyy-MM-ddT00:00:00"
         />
 
-        <label for="fechaFin">Fecha fin</label>
+        <label class="label" for="fechaFin">Fecha fin</label>
         <InputText v-model="fechaFin" id="fechaFin" type="date" />
 
         <Button
@@ -24,7 +24,7 @@
         />
       </div>
       <div v-if="mostrarTabla">
-        <h2>Reserva</h2>
+        <h2>Reservas</h2>
         <DataTable class="tabla" :value="lista">
           <Column field="numeroCedula" header="Numero Cedula"></Column>
           <Column field="apellido" header="Apellido"></Column>
@@ -42,7 +42,7 @@
         <p>Error al buscar reservas. Verifique las fechas e intente nuevamente.</p>
       </div>
       <div v-if="fechaInvalida" class="error-message">
-       <p>La fecha de inicio no puede ser posterior a la fecha de fin.</p> 
+       <h3>La fecha de inicio no puede ser posterior a la fecha de fin.</h3> 
       </div>
     </div>
   </section>

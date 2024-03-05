@@ -20,7 +20,7 @@
           <Column field="reservadoPor" header="Reservado por"></Column>
         </DataTable>
         <Button @click="confirmarRetiro" v-if="datos.length > 0 && datos[0].estado === 'Disponible'" severity="danger" raised label="Retirar auto" />
-        <p v-else-if="datos.length > 0 && datos[0].estado === 'No Disponible'" class="error-message">Auto no disponible.</p>
+        <p v-else-if="datos.length > 0 && datos[0].estado === 'No Disponible'" class="error-message">Auto actualmente retirado</p>
       </div>
       <div v-else>
         <p v-if="busquedaFallida" class="error-message"></p>

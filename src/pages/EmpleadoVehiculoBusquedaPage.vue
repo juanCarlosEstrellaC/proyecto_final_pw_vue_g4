@@ -1,10 +1,23 @@
 <template>
-  <h1>Buscar vehículo por Marca</h1>
-  <input type="text" name="" id="" v-model="marcaid" />
-  <button @click="consultarPorMarca">Buscar</button>
+<NavBarEmpleadoVue/>
+<h1>Buscar vehículo por Marca</h1>
+<section>
+
+  <div class="container">
+  
+<FloatLabel>
+        <InputText id="marca" v-model="marcaid" @keydown.enter="consultarPorMarca"/>
+        <label for="marca">Marca</label>
+      </FloatLabel>
+      <Button @click="consultarPorMarca" severity="danger" raised  label="Buscar" />
+
+ 
 
   <div v-if="mensajeVacio">
-    <label for="">no existe coincidencias</label>
+    <MensajeTemp
+      titulo="NO EXISTEN COINCIDENCIAS"
+      informacion="verifica la marca"
+    />
   </div>
 
   <div v-if="mostrar">
@@ -23,14 +36,28 @@
           <td>{{ vehiculo.modelo }}</td>
           <td>{{ vehiculo.placa }}</td>
           <td>
-            <button @click="goVisualizar(vehiculo.placa)">Visualizar</button>
-            <button @click="goActulizar(vehiculo.id)">Actualizar</button>
-            <button @click="goEliminar(vehiculo.id)">Eliminar</button>
+
+            <Button @click="goVisualizar(vehiculo.placa)" severity="Plain" plain text raised label="Visualizar" />
+              
+              <Button @click="goActulizar(vehiculo.id)"  severity="secondary" text raised   label="Actualizar" />
+<Button @click="goEliminar(vehiculo.id, vehiculo.placa)" icon="pi pi-trash" severity="danger" text raised/>
+
+            
+           
+            
           </td>
         </tr>
       </tbody>
     </table>
   </div>
+  <div v-if="mostrarEliminacion">
+    <MensajeTemp
+      titulo="Eliminado de la base"
+      :informacion="'Se eliminó el vehículo con placa ' + valPlaca"
+    />
+  </div>
+  </div>
+</section>
 </template>
 
 <script>
@@ -39,14 +66,27 @@ import {
   eliminarEmpleadoVehiculoFachada,
 } from "../helpers/clienteEmpleado.js";
 
+import MensajeTemp from "../components/MensajeTemp.vue";
+import FloatLabel from 'primevue/floatlabel';
+
+import Button from 'primevue/button';
+import InputText from 'primevue/inputtext';
+import NavBarEmpleadoVue from '@/components/NavBarEmpleado.vue';
 export default {
   name: "EmpleadoVehiculoBusquedaPage",
+  components: {
+    MensajeTemp, FloatLabel,
+    Button,InputText,NavBarEmpleadoVue
+  },
   data() {
     return {
       marcaid: null,
       data: [],
       mostrar: false,
       mensajeVacio: false,
+      mostrarMensaje: false,
+      mostrarEliminacion: false,
+      valPlaca: null,
     };
   },
   methods: {
@@ -58,6 +98,7 @@ export default {
         console.log(this.data);
         return this.data;
       }
+      this.mostrar = false;
       this.mensajeVacio = true;
       setTimeout(() => {
         this.mensajeVacio = false;
@@ -72,11 +113,15 @@ export default {
       this.$router.push({ name: "ActualizarVehiculo", params: { id } });
     },
     //solo debe mostrar mensaje si se eliminó o no el vehículo
-    async goEliminar(id) {
+    async goEliminar(id, placa) {
       await eliminarEmpleadoVehiculoFachada(id);
+      this.valPlaca = placa;
+      console.log(placa);
+      this.mostrarEliminacion = true;
       setTimeout(() => {
+        this.mostrarEliminacion = false;
         this.consultarPorMarca(this.marcaid);
-      }, 200);
+      }, 3000);
       console.log("se elimino");
     },
   },

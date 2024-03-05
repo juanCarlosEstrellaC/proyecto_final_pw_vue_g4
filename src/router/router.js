@@ -17,7 +17,7 @@ const routes = [
     },
     {
         path: '/empleado/reserva/sinreserva',
-        component: () => import('../pages/ReportePage.vue')
+        component: () => import('../pages/RetiroSinReservaPage.vue')
     },
     
     {
@@ -85,9 +85,18 @@ component: () => import('../pages/EmpleadoRetirarPage.vue')
 {
     path: '/rentar',
     component: () => import('../pages/VehiculoRentar.vue')
-}
+},
 
-   
+{
+    path: '/:pathMatch(.*)*',
+
+    component: ()=> import('../pages/NoFoundPage')
+},
+{
+    path: '/cliente/reserva',
+
+    component: ()=> import('../pages/ClienteReserva')
+}
 ]
 
 // Configuro el router[c]:

@@ -1,42 +1,46 @@
 <template>
-  <h1>Visualziar toda la info de cliente</h1>
-
+<NavBarEmpleadoVue/>
+ 
+ <section>
+    <div class="container">
   <div>
-    <table>
-      <thead>
-        <tr>
-          <th>Marca</th>
-          <th>Modelo</th>
-          <th>Placa</th>
-          <th>Año Fabricación</th>
-          <th>País Fabricación</th>
-          <th>Cilindraje</th>
-          <th>Avaluo</th>
-          <th>Valor</th>
-          <th>Estado</th>
-        </tr>
-      </thead>
-      <tbody>
-        <td>{{ valMarca }}</td>
-        <td>{{ valModelo }}</td>
-        <td>{{ valPlaca }}</td>
-        <td>{{ valAnioFabricacion }}</td>
-        <td>{{ valPfabricacion }}</td>
-        <td>{{ valCilindraje }}</td>
-        <td>{{ valAvaluo }}</td>
-        <td>{{ valRenta }}</td>
-        <td>{{ valEstado }}</td>
-      </tbody>
-    </table>
+ <h1>Información de vehículo</h1>
+ <DataTable :value="lista"  :rows="10" >
+        <Column field="marca" header="Marca"></Column>
+        <Column field="modelo" header="Modelo"></Column>
+        <Column field="placa" header="Placa"></Column>
+        <Column field="anioFabricacion" header="Año Fabricación"></Column>
+        <Column field="paisFabricacion" header="País Fabricación"></Column>
+        <Column field="cilindraje" header="Cilindraje"></Column>
+        <Column field="avaluo" header="Avalúo"></Column>
+       
+        <Column field="estado" header="Estado"></Column>
+      </DataTable>
   </div>
+   </div>
+  </section>
 </template>
 
 <script>
 import { consultarEmpleadoVehiculoPlacaFachada } from "../helpers/clienteEmpleado.js";
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import Button from 'primevue/button';
+import InputText from 'primevue/inputtext';
+import FloatLabel from 'primevue/floatlabel';
+import Dialog from 'primevue/dialog';
 
+import NavBarEmpleadoVue from '@/components/NavBarEmpleado.vue';
 export default {
-  name: "EmpleadoVehiculoVisualizarPage",
 
+  name: "EmpleadoVehiculoVisualizarPage",
+components:{  DataTable,
+    NavBarEmpleadoVue,
+    Column,
+    Button,
+    InputText,
+    FloatLabel,
+    Dialog},
   created() {
     this.visualizar(this.$route.params.placa);
   },
@@ -50,21 +54,27 @@ export default {
       valCilindraje: null,
       valAvaluo: null,
       valRenta: null,
-      valEstado: null
+      valEstado: null,
+      lista:[]
     };
   },
   methods: {
     async visualizar(id) {
       const data = await consultarEmpleadoVehiculoPlacaFachada(id);
       console.log(data);
-      this.valPlaca = data.placa;
-      this.valMarca = data.marca;
-      this.valAnioFabricacion = data.anioFabricacion;
-      this.valPfabricacion = data.paisFabricacion;
-      this.valCilindraje = data.cilindraje;
-      this.valAvaluo = data.avaluo;
-      this.valRenta = data.renta;
-      this.valEstado = data.estado;
+      const datosVehiculo = [{
+  placa: data.placa,
+  modelo: data.modelo,
+  marca: data.marca,
+  anioFabricacion: data.anioFabricacion,
+  paisFabricacion: data.paisFabricacion,
+  cilindraje: data.cilindraje,
+  avaluo: data.avaluo,
+  renta: data.renta,
+  valor: data.valor,
+  estado: data.estado
+}];
+this.lista=datosVehiculo
       console.log("se cargo al inicio");
       
       console.log(data.numeroCedula);

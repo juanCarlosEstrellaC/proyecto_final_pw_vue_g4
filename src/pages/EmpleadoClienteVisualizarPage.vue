@@ -1,36 +1,37 @@
 <template>
-  <h1>Visualziar toda la info de cliente</h1>
+<NavBarEmpleadoVue/>
+
+ <section>
+  <div class="container">
+  
 
   <div>
-    <table>
-      <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Apellido</th>
-          <th>Cedula</th>
-          <th>Fecha Nacimiento</th>
-          <th>Genero</th>
-          <th>Registro</th>
-        </tr>
-      </thead>
-      <tbody>
-        <td>{{ nombre }}</td>
-        <td>{{ apellido }}</td>
-        <td>{{ cedula }}</td>
-        <td>{{ fNacimiento }}</td>
-        <td>{{ genero }}</td>
-        <td>{{ registro }}</td>
-      </tbody>
-    </table>
+<h1>Datos del cliente</h1>
+<DataTable :value="lista" >
+          <Column field="nombre" header="Nombre"></Column>
+          <Column field="apellido" header="Apellido"></Column>
+          <Column field="cedula" header="Cedula"></Column>
+          <Column field="fNacimiento" header="Fecha Nacimiento"></Column>
+          <Column field="genero" header="Genero"></Column>
+          <Column field="registro" header="Registro"></Column>
+        </DataTable>
+
+
   </div>
+  </div>
+ </section>
 </template>
 
 <script>
+import NavBarEmpleadoVue from '@/components/NavBarEmpleado.vue';
 import { consultarEmpleadoClienteCedulaFachada } from "../helpers/clienteEmpleado.js";
-
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
 export default {
   name: "EmpleadoClienteVisualizarPage",
-
+components:{
+  NavBarEmpleadoVue,    DataTable,Column
+},
   created() {
     this.visualizar(this.$route.params.cedula);
   },
@@ -42,21 +43,29 @@ export default {
       fNacimiento: null,
       genero: null,
       registro: null,
+      lista:[]
     };
   },
   methods: {
     async visualizar(id) {
       const data = await consultarEmpleadoClienteCedulaFachada(id);
+
       console.log(data);
-      this.cedula = data.numeroCedula;
-      this.nombre = data.nombre;
-      this.apellido = data.apellido;
-      this.fNacimiento = data.fechaNacimiento;
-      this.genero = data.genero;
-      this.registro = data.registro;
+const datosCliente = [
+          {
+            nombre: data.nombre,
+            apellido: data.apellido,
+            cedula: data.numeroCedula,
+            fNacimiento: data.fechaNacimiento,
+            genero: data.genero,
+            registro: data.registro
+          }
+        ];
+
+this.lista=datosCliente
       console.log("se cargo al inicio");
       
-      console.log(data.numeroCedula);
+   
       
     },
   },

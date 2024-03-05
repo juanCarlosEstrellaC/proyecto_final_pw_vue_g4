@@ -1,17 +1,30 @@
 <template>
   <div>
-    <label>{{ etiqueta }}</label>
-    <input
-      v-bind="$attrs"
+   
+
+     <FloatLabel>
+        <InputText v-bind="$attrs"
       :value="modelValue"
-      @input="updateModelValue"
-    />
+      @input="updateModelValue"/>
+        <label >{{ etiqueta }}</label>
+        </FloatLabel>
+       
+
+
+   
   </div>
 </template>
 
 <script>
+import FloatLabel from 'primevue/floatlabel';
+
+import InputText from 'primevue/inputtext';
 export default {
   name: "FormularioGenerico",
+  components:{
+    FloatLabel,InputText
+  },
+  
   props: {
     etiqueta: {
       type: String,

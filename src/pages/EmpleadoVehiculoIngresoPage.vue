@@ -1,83 +1,146 @@
 <template>
+  <NavBarEmpleadoVue />
   <h1>Ingresar Vehículo</h1>
+  <section>
+    <div class="container">
+      <div v-if="!mostrarMensaje">
+        <FormularioGenerico type="text" etiqueta="Placa" v-model="placa" />
+      
 
-  <!-- <FormularioVehiculo :txtBtn="Btn" />  -->
+        <label class="label" for="marca">Marca</label>
+        <Dropdown
+          v-model="marca"
+          :options="marcaOptions"
+          optionLabel="label"
+          placeholder="Selecciona una marca"
+        />
+  <FormularioGenerico type="text" etiqueta="Modelo" v-model="modelo" />
+        <label class="label" for="AñoFabricación">Año de Fabricación</label>
+        <InputText id="AñoFabricación" v-model="anio" type="date" />
 
-  <div>
-    <FormularioGenerico
-      type="text"
-      etiqueta="Placa"
-      placeholder="ABC-01234"
-      v-model="placa"
-    />
+        <FormularioGenerico
+          type="text"
+          etiqueta="País Fabricación"
+          v-model="pFabricacion"
+        />
+        <FormularioGenerico
+          type="number"
+          etiqueta="Cilindraje"
+     
+          v-model="cilindraje"
+        />
+        <FormularioGenerico
+          type="number"
+          etiqueta="Avalúo"
+     
+          v-model="avaluo"
+        />
+        <FormularioGenerico
+          type="number"
+          etiqueta="Valor por día"
+    
+          v-model="valDia"
+        />
 
-    <FormularioGenerico
-      type="text"
-      etiqueta="Modelo"
-      placeholder="A4"
-      v-model="modelo"
-    />
+        <div>
+          <Button
+            @click="ingreso"
+            severity="danger"
+            raised
+            label="Ingresar vehículo"
+          />
+        </div>
+      </div>
 
-    <FormularioGenerico
-      type="text"
-      etiqueta="Marca"
-      placeholder="BMW"
-      v-model="marca"
-    />
-    <FormularioGenerico
-      type="date"
-      etiqueta="Año Fabricación"
-      placeholder="12/12/2018"
-      v-model="anio"
-    />
+      <div v-else class="mensaje">
+        <div v-if="registroExitoso">
+          <Mensaje
+            titulo="Registrado con Éxito"
+            informacion="Se Ingresó el vehículo por un usuario"
+            @eventoMensaje="regresarEstado"
+          />
+        </div>
+        <div v-else>
+          <Mensaje
+            titulo="Error al registrarse"
+            informacion="Ocurrió un error al ingresar vehículo"
+            @eventoMensaje="regresarEstado"
+          />
+        </div>
+      </div>
 
-    <FormularioGenerico
-      type="text"
-      etiqueta="Pais Fabricaión"
-      placeholder="Mexico"
-      v-model="pFabricacion"
-    />
-
-    <FormularioGenerico
-      type="number"
-      etiqueta="Cilindraje"
-      placeholder="BMW"
-      v-model="cilindraje"
-    />
-
-    <FormularioGenerico
-      type="number"
-      etiqueta="Avalúo"
-      placeholder="18000.."
-      v-model="avaluo"
-    />
-
-    <FormularioGenerico
-      type="number"
-      etiqueta="Valor por día"
-      placeholder="BMW"
-      v-model="valDia"
-    />
-
-    <button @click="ingreso">Ingreso</button>
-  </div>
+      <div v-if="errorplaca">
+        <MensajeTemp
+          titulo="Error con los datos"
+          informacion="Placa ya existente en la base de datos"
+        />
+      </div>
+    </div>
+  </section>
 </template>
 
-
 <script>
-import FormularioVehiculoFer from "../components/FormularioVehiculoFer.vue";
 import FormularioGenerico from "../components/FormularioGenerico.vue";
-
-import {insertarEmpleadoVehiculoFachada} from "../helpers/clienteEmpleado.js";
+import Mensaje from "@/components/Mensaje.vue";
+import MensajeTemp from "@/components/MensajeTemp.vue";
+import { insertarEmpleadoVehiculoFachada } from "../helpers/clienteEmpleado.js";
+import NavBarEmpleadoVue from "@/components/NavBarEmpleado.vue";
+import InputText from "primevue/inputtext";
+import Dropdown from "primevue/dropdown";
+import Button from "primevue/button";
+import FloatLabel from "primevue/floatlabel";
 
 export default {
   name: "EmpleadoVehiculoIngresoPage",
   components: {
-    FormularioVehiculoFer,
     FormularioGenerico,
+    Mensaje,
+    MensajeTemp,
+    NavBarEmpleadoVue,
+    InputText,
+    Dropdown,
+    Button,
+    FloatLabel,
   },
   data() {
     return {
+      marcaOptions: [
+        { label: "Audi" },
+        { label: "BMW" },
+        { label: "Chevrolet" },
+        { label: "Ford" },
+        { label: "Honda" },
+        { label: "Hyundai" },
+        { label: "Kia" },
+        { label: "Mazda" },
+        { label: "Mercedes-Benz" },
+        { label: "Nissan" },
+        { label: "Toyota" },
+        { label: "Volkswagen" },
+        { label: "Volvo" },
+        { label: "Fiat" },
+        { label: "Jeep" },
+        { label: "Subaru" },
+        { label: "Tesla" },
+        { label: "Porsche" },
+        { label: "Lexus" },
+        { label: "Infiniti" },
+        { label: "Acura" },
+        { label: "Jaguar" },
+        { label: "Land Rover" },
+        { label: "Mitsubishi" },
+        { label: "Suzuki" },
+        { label: "Chrysler" },
+        { label: "Dodge" },
+        { label: "GMC" },
+        { label: "Ram" },
+        { label: "Buick" },
+        { label: "Cadillac" },
+        { label: "Lincoln" },
+        { label: "Alfa Romeo" },
+        { label: "Genesis" },
+        { label: "Mini" },
+      ],
       Btn: "Guardar",
 
       placa: null,
@@ -88,6 +151,9 @@ export default {
       cilindraje: null,
       avaluo: null,
       valDia: null,
+      mostrarMensaje: false,
+      registroExitoso: true,
+      errorplaca: false,
     };
   },
   methods: {
@@ -95,7 +161,8 @@ export default {
       const vehiculoBody = {
         placa: this.placa,
         modelo: this.modelo,
-        marca: this.marca,
+
+        marca: this.marca ? this.marca.label : null,
         anioFabricacion: this.anio,
         paisFabricacion: this.pFabricacion,
         cilindraje: this.cilindraje,
@@ -103,9 +170,32 @@ export default {
         renta: this.valDia,
       };
 
-      await insertarEmpleadoVehiculoFachada(vehiculoBody);
+      try {
+        const respuesta = await insertarEmpleadoVehiculoFachada(vehiculoBody);
 
-      console.log("se ingreso un vehiculo");
+        console.log(respuesta);
+        if (respuesta === 1) {
+          console.log("se ingreso un vehiculo");
+          this.mostrarMensaje = true;
+          this.registroExitoso = true;
+        } else if (respuesta === 2) {
+          console.log("Error al registrar vehiculo: Placa ya existente");
+          this.errorplaca = true;
+
+          setTimeout(() => {
+            this.errorplaca = false;
+          }, 3000);
+        } else {
+          console.error("Error al registrar cliente: ", respuesta);
+          this.mostrarMensaje = true;
+          this.registroExitoso = false;
+        }
+      } catch (error) {
+        console.error("Error al registrar cliente: ", error);
+        this.mostrarMensaje = true;
+        this.registroExitoso = false;
+      }
+
       this.placa = null;
       this.modelo = null;
       this.marca = null;
@@ -115,9 +205,16 @@ export default {
       this.avaluo = null;
       this.valDia = null;
     },
+
+    regresarEstado() {
+      this.mostrarMensaje = false;
+    },
   },
 };
 </script>
 
-<style>
+<style scoped>
+.mensaje {
+  margin-top: 100px;
+}
 </style>

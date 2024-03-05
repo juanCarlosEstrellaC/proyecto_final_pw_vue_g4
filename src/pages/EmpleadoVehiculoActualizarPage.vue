@@ -1,82 +1,132 @@
 <template>
+  <NavBarEmpleadoVue />
+
   <h1>Actulizar Vehiculo</h1>
-  <div>
-    <FormularioGenerico
-      type="text"
-      etiqueta="Placa"
-      placeholder="ABC-01234"
-      v-model="placa"
-    />
+  <section>
+    <div class="container">
+      <div>
+        <FormularioGenerico type="text" etiqueta="Placa" v-model="placa" />
 
-    <FormularioGenerico
-      type="text"
-      etiqueta="Modelo"
-      placeholder="A4"
-      v-model="modelo"
-    />
+        <FormularioGenerico type="text" etiqueta="Modelo" v-model="modelo" />
 
-    <FormularioGenerico
-      type="text"
-      etiqueta="Marca"
-      placeholder="BMW"
-      v-model="marca"
-    />
-    <FormularioGenerico
-      type="date"
-      etiqueta="Año Fabricación"
-      placeholder="12/12/2018"
-      v-model="anio"
-    />
+        <label class="label" for="marca">Marca</label>
+        <Dropdown
+          v-model="marca"
+          :options="marcaOptions"
+          optionLabel="label"
+          placeholder="Selecciona una marca"
+        />
 
-    <FormularioGenerico
-      type="text"
-      etiqueta="Pais Fabricaión"
-      placeholder="Mexico"
-      v-model="pFabricacion"
-    />
+        <label class="label" for="AñoFabricación">Año de Fabricación</label>
+        <InputText id="AñoFabricación" v-model="anio" type="date" />
 
-    <FormularioGenerico
-      type="number"
-      etiqueta="Cilindraje"
-      placeholder="BMW"
-      v-model="cilindraje"
-    />
+        <FormularioGenerico
+          type="text"
+          etiqueta="Pais Fabricaión"
+          v-model="pFabricacion"
+        />
 
-    <FormularioGenerico
-      type="number"
-      etiqueta="Avalúo"
-      placeholder="18000.."
-      v-model="avaluo"
-    />
+        <FormularioGenerico
+          type="number"
+          etiqueta="Cilindraje"
+          v-model="cilindraje"
+        />
 
-    <FormularioGenerico
-      type="number"
-      etiqueta="Valor por día"
-      placeholder="BMW"
-      v-model="valDia"
-    />
+        <FormularioGenerico type="number" etiqueta="Avalúo" v-model="avaluo" />
 
-    <button @click="actualizar">Actualizar</button>
-  </div>
+        <FormularioGenerico
+          type="number"
+          etiqueta="Valor por día"
+          v-model="valDia"
+        />
+        <Button
+          @click="actualizar"
+          severity="danger"
+          raised
+          label="Actualizar vehículo"
+        />
+      </div>
 
-  <div v-if="mensajeafirmativo">
-    <label for="">se actualizó correctamente</label>
-  </div>
+      <div v-if="correcto">
+        <label for="">se actualizó correctamente</label>
+      </div>
 
-  
+      <div v-if="datosincompletos">
+        <MensajeTemp
+          titulo="Error con los datos"
+          informacion="Completa los datos minimos"
+        />
+      </div>
+
+      <div v-if="correcto">
+        <MensajeTemp
+          titulo="Actulizacion Correcta"
+          informacion="Todos se hizo correctamente"
+        />
+      </div>
+    </div>
+  </section>
 </template>
 
 <script>
 import FormularioGenerico from "../components/FormularioGenerico.vue";
 import { actualizarEmpleadoVehiculoFachada } from "../helpers/clienteEmpleado.js";
-
+import MensajeTemp from "@/components/MensajeTemp.vue";
+import NavBarEmpleadoVue from "@/components/NavBarEmpleado.vue";
+import InputText from "primevue/inputtext";
+import Dropdown from "primevue/dropdown";
+import Button from "primevue/button";
+import FloatLabel from "primevue/floatlabel";
 export default {
   name: "EmpleadoVehiculoActualizarPage",
   components: {
     FormularioGenerico,
+    MensajeTemp,
+    NavBarEmpleadoVue,
+    InputText,
+    Dropdown,
+    Button,
+    FloatLabel,
   },
   data() {
     return {
+      marcaOptions: [
+        { label: "Audi" },
+        { label: "BMW" },
+        { label: "Chevrolet" },
+        { label: "Ford" },
+        { label: "Honda" },
+        { label: "Hyundai" },
+        { label: "Kia" },
+        { label: "Mazda" },
+        { label: "Mercedes-Benz" },
+        { label: "Nissan" },
+        { label: "Toyota" },
+        { label: "Volkswagen" },
+        { label: "Volvo" },
+        { label: "Fiat" },
+        { label: "Jeep" },
+        { label: "Subaru" },
+        { label: "Tesla" },
+        { label: "Porsche" },
+        { label: "Lexus" },
+        { label: "Infiniti" },
+        { label: "Acura" },
+        { label: "Jaguar" },
+        { label: "Land Rover" },
+        { label: "Mitsubishi" },
+        { label: "Suzuki" },
+        { label: "Chrysler" },
+        { label: "Dodge" },
+        { label: "GMC" },
+        { label: "Ram" },
+        { label: "Buick" },
+        { label: "Cadillac" },
+        { label: "Lincoln" },
+        { label: "Alfa Romeo" },
+        { label: "Genesis" },
+        { label: "Mini" },
+      ],
       Btn: "Actualizar",
       placa: null,
       modelo: null,
@@ -86,8 +136,8 @@ export default {
       cilindraje: null,
       avaluo: null,
       valDia: null,
-      mensajeafirmativo: false,
-      
+      datosincompletos: false,
+      correcto: false,
     };
   },
   methods: {
@@ -95,43 +145,52 @@ export default {
       const vehiculoBody = {
         placa: this.placa,
         modelo: this.modelo,
-        marca: this.marca,
+        marca: this.marca ? this.marca.label : null,
         anioFabricacion: this.anio,
         paisFabricacion: this.pFabricacion,
         cilindraje: this.cilindraje,
         avaluo: this.avaluo,
         renta: this.valDia,
       };
-if(vehiculoBody===null){
+      if (
+        this.placa !== null &&
+        this.marca !== null &&
+        this.modelo !== null &&
+        this.anio !== null &&
+        this.pFabricacion !== null &&
+        this.cilindraje !== null &&
+        this.valDia !== null &&
+        this.avaluo !== null &&
+        this.cilindraje !== null
+      ) {
+        const placaParaBuscar = vehiculoBody.placa;
+        await actualizarEmpleadoVehiculoFachada(
+          this.$route.params.id,
+          vehiculoBody
+        );
 
-
-}
-      const placaParaBuscar = vehiculoBody.placa;
-      await actualizarEmpleadoVehiculoFachada(
-        this.$route.params.id,
-        vehiculoBody
-      );
-
-      console.log("se actualizo un vehiculo");
-      this.mensajeafirmativo = true;
+        this.correcto = true;
+        console.log("se actualzó");
+         setTimeout(() => {
+          this.$router.push({
+            name: "VisualizarVehiculo",
+            params: { placa: placaParaBuscar },
+          });
+        }, 2500);
+        this.placa = null;
+        this.modelo = null;
+        this.marca = null;
+        this.anio = null;
+        this.pFabricacion = null;
+        this.cilindraje = null;
+        this.avaluo = null;
+        this.valDia = null;
+        return;
+      }
+      this.datosincompletos = true;
       setTimeout(() => {
-        this.mensajeafirmativo = false;
+        this.datosincompletos = false;
       }, 3000);
-
-      setTimeout(() => {
-        this.$router.push({
-          name: "VisualizarVehiculo",
-          params: { placa: placaParaBuscar },
-        });
-      }, 2000);
-      this.placa = null;
-      this.modelo = null;
-      this.marca = null;
-      this.anio = null;
-      this.pFabricacion = null;
-      this.cilindraje = null;
-      this.avaluo = null;
-      this.valDia = null;
     },
   },
 };
