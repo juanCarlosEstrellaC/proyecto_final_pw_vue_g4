@@ -23,7 +23,7 @@
           label="Buscar reservas"
         />
       </div>
-      <div v-if="mostrarTabla">
+      <div v-if="mostrarTabla && lista.length > 0">
         <h2>Reservas</h2>
         <DataTable class="tabla" :value="lista">
           <Column field="numeroCedula" header="Numero Cedula"></Column>
@@ -43,6 +43,9 @@
       </div>
       <div v-if="fechaInvalida" class="error-message">
        <h3>La fecha de inicio no puede ser posterior a la fecha de fin.</h3> 
+      </div>
+      <div v-if="mostrarTabla && lista.length === 0" class="error-message">
+        <p>No se encontraron reservas.</p>
       </div>
     </div>
   </section>
