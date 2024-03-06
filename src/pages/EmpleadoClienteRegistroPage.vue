@@ -157,6 +157,7 @@ export default {
       this.genero = null;
       this.fNacimiento = null;
       this.cedula = null;
+      this.correo = null;
     },
     regresarEstado() {
       this.mostrarMensaje = false;

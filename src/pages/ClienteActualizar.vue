@@ -1,33 +1,38 @@
 <template>
   <div>
-    <NavBar/>
+    <NavBar />
     <h1>Actualizar datos</h1>
     <section>
       <div class="container">
         <div v-if="!mostrarMensaje">
           <h5>Por favor, ingrese su número de cédula</h5>
           <FloatLabel>
-            <InputText id="cedula" v-model="cedula" @keydown.enter="buscarCedula" />
+            <InputText
+              id="cedula"
+              v-model="cedula"
+              @keydown.enter="buscarCedula"
+            />
             <label for="cedula">Cédula</label>
           </FloatLabel>
-          <Button @click="buscarCedula" severity="danger" raised label="Buscar" />
+          <Button
+            @click="buscarCedula"
+            severity="danger"
+            raised
+            label="Buscar"
+          />
         </div>
         <div v-if="formulario">
           <div v-if="!mostrarMensaje">
-            <!-- Aquí pasamos cedulaEditable como false y el cliente con la cédula prellenada -->
             <FormularioCliente
               titulo=""
               nombreBoton="Actualizar"
               :cedulaEditable="false"
               @eventoBoton="presionarBoton($event)"
-              :cliente="{
-                nombre: cliente.nombre,
-                apellido: cliente.apellido,
-                numeroCedula: cedula, // Cédula prellenada
-                correo: cliente.correo,
-                fechaNacimiento: cliente.fechaNacimiento,
-                genero: cliente.genero,
-              }"
+        
+              :nombre="nombre"
+              :apellido="apellido"
+              :correo="correo"
+              :hobby="hobby"
             />
           </div>
           <div v-else class="mensaje">
@@ -42,12 +47,24 @@
     </section>
 
     <!-- Dialog para la alerta -->
-    <Dialog v-model="mostrarAlerta" :visible="mostrarAlerta" header="Alerta" :modal="true" @update:visible="ocultarAlerta">
+    <Dialog
+      v-model="mostrarAlerta"
+      :visible="mostrarAlerta"
+      header="Alerta"
+      :modal="true"
+      @update:visible="ocultarAlerta"
+    >
       <p>{{ mensajeAlerta }}</p>
     </Dialog>
 
     <!-- Dialog para la actualización exitosa -->
-    <Dialog v-model="mostrarActualizacionExitosa" :visible="mostrarActualizacionExitosa" header="Actualización Exitosa" :modal="true" @update:visible="ocultarActualizacionExitosa">
+    <Dialog
+      v-model="mostrarActualizacionExitosa"
+      :visible="mostrarActualizacionExitosa"
+      header="Actualización Exitosa"
+      :modal="true"
+      @update:visible="ocultarActualizacionExitosa"
+    >
       <p>Sus datos han sido actualizados correctamente.</p>
     </Dialog>
   </div>
@@ -60,12 +77,12 @@ import {
   actualizarClienteParcialFachada,
   consultarClientePorCIFachada,
 } from "@/helpers/clienteCliente";
-import NavBar from '@/components/NavBar.vue';
-import InputText from 'primevue/inputtext';
-import Dropdown from 'primevue/dropdown';
-import Button from 'primevue/button';
-import FloatLabel from 'primevue/floatlabel';
-import Dialog from 'primevue/dialog';
+import NavBar from "@/components/NavBar.vue";
+import InputText from "primevue/inputtext";
+import Dropdown from "primevue/dropdown";
+import Button from "primevue/button";
+import FloatLabel from "primevue/floatlabel";
+import Dialog from "primevue/dialog";
 
 export default {
   components: {
@@ -76,7 +93,7 @@ export default {
     Dropdown,
     Button,
     FloatLabel,
-    Dialog
+    Dialog,
   },
   data() {
     return {
@@ -84,17 +101,18 @@ export default {
       mostrarMensaje: false,
       formulario: false,
       mostrarAlerta: false,
-      mensajeAlerta: '',
+      mensajeAlerta: "",
       mostrarActualizacionExitosa: false,
-      cliente: {  // Cliente con cédula prellenada
-        nombre: "Nombre del Cliente",
-        apellido: "Apellido del Cliente",
-        correo: "correo@ejemplo.com",
-        fechaNacimiento: "1990-01-01",
-        genero: { label: "Masculino", value: "masculino" },
-      }
+
+      nombre: null,
+      apellido: null,
+      correo: null,
+      fechaNacimiento: null,
+      genero: null,
+      hobby: null,
     };
   },
+
   methods: {
     async presionarBoton(clienteRecibido) {
       if (!this.camposLlenos(clienteRecibido)) {
@@ -102,9 +120,10 @@ export default {
         this.mensajeAlerta = "Por favor, complete todos los campos.";
         return;
       }
-      
-      const clienteConsultado = await consultarClientePorCIFachada(this.cedula);
-      await actualizarClienteParcialFachada(clienteConsultado.id, clienteRecibido);
+      await actualizarClienteParcialFachada(
+        clienteConsultado.id,
+        clienteRecibido
+      );
       this.mostrarActualizacionExitosa = true;
     },
     regresarEstado() {
@@ -115,16 +134,27 @@ export default {
     async buscarCedula() {
       try {
         const c = await consultarClientePorCIFachada(this.cedula);
+        console.log("holaaa ", c);
+        console.log("holaaa ", c.apellido);
+        this.nombre = c.nombre;
+        this.apellido = c.apellido;
+        this.correo = c.correo;
+        this.fechaNacimiento = c.fechaNacimiento;
+        this.genero = c.genero;
+        this.hobby = c.hobby;
+
         if (c !== null) {
           this.formulario = true;
         } else {
           this.formulario = false;
           this.mostrarAlerta = true;
-          this.mensajeAlerta = "Cédula no encontrada, por favor inténtelo de nuevo.";
+          this.mensajeAlerta =
+            "Cédula no encontrada, por favor inténtelo de nuevo.";
         }
       } catch (error) {
         this.mostrarAlerta = true;
-        this.mensajeAlerta = "Se produjo un error al buscar la cédula. Por favor, ingrese una cédula válida.";
+        this.mensajeAlerta =
+          "Se produjo un error al buscar la cédula. Por favor, ingrese una cédula válida.";
       }
     },
     ocultarAlerta() {
@@ -135,7 +165,7 @@ export default {
     },
     camposLlenos(cliente) {
       return cliente.nombre && cliente.apellido && cliente.correo;
-    }
+    },
   },
 };
 </script>

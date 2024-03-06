@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Consultar Cliente por Cédula:
 const consultarClientePorCedula = async (cedula) => {
-    const info = axios.get(`http://localhost:8082/API/v1.0/Renta/clientes/${cedula}`).then(r => r.data)
+    const info = await axios.get(`http://localhost:8082/API/v1.0/Renta/clientes/${cedula}`).then(r => r.data)
     console.log(info);
     return info;
 }
